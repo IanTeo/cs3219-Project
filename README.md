@@ -11,19 +11,19 @@
 ## Changes to XML files:
 
 **D13-1138**
-Changed line 550, remove <surname> tag
+Changed line 550, remove "\<surname>" tag
 
 **D14-1184**
-Changed line 561, remove <surname> tag
+Changed line 561, remove "\<surname>" tag
 
 **W14-1115**
-Changed line 561, remove < > tag
+Changed line 561, remove "<", ">" tag
 
 **W14-2609**
-Changed line 926, remove <firstName>.<lastName> tag
+Changed line 926, remove "\<firstName>.\<lastName>" tag
 
 **W14-3317**
-Changed line 634, remove <surname> tag
+Changed line 634, remove "\<surname>" tag
 
 ## Paper Counts
 
