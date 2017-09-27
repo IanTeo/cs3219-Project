@@ -24,14 +24,14 @@ public class XmlFileParser extends FileParser {
             Document document = documentBuilder.parse(file);
 
             Paper paper = parsePaper(document, file);
-            //Paper p;
-            //if ((p = model.getPaper(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
+            Paper p;
+            if ((p = model.getPaper(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
             model.addPaper(paper);
-            //System.out.println(paper.getTitle());
+            System.out.println(paper.getTitle());
 
             NodeList citationNodes = document.getElementsByTagName("citation");
             for (int i = 0; i < citationNodes.getLength(); i++) {
-                Paper citation = parseXmlNode(citationNodes.item(i), 0, file.getName());
+                Paper citation = parseXmlNode(citationNodes.item(i), 0, "");
                 model.addPaper(citation);
                 model.addCitation(paper.getTitle(), citation.getTitle());
             }
@@ -82,27 +82,30 @@ public class XmlFileParser extends FileParser {
         String rawString = "";
 
         for (int i = 0; i < childNodes.getLength(); i++) {
+            // We always want the first occurance in the xml
             switch (childNodes.item(i).getNodeName()) {
                 case "authors" :
                 case "author" :
-                    authors = childNodes.item(i).getTextContent().trim().split("\n");
+                    if (authors.length == 0) authors = childNodes.item(i).getTextContent().trim().split("\n");
                     break;
 
                 case "title" :
-                    title = StringUtil.parseString(childNodes.item(i).getTextContent());
+                    if (title.equals("")) title = StringUtil.parseString(childNodes.item(i).getTextContent());
                     break;
 
                 case "date" :
-                    try {
-                        String dateString = childNodes.item(i).getTextContent().trim();
-                        if (!dateString.equals("")) date = Integer.parseInt(childNodes.item(i).getTextContent());
-                    } catch (Exception e) {
-                        System.out.println("Date in invalid format: " + e.getMessage());
+                    if (date == 0) {
+                        try {
+                            String dateString = childNodes.item(i).getTextContent().trim();
+                            date = Integer.parseInt(childNodes.item(i).getTextContent());
+                        } catch (Exception e) {
+                            System.out.println("Date in invalid format: " + e.getMessage());
+                        }
                     }
                     break;
 
                 case "rawString" :
-                    rawString = childNodes.item(i).getTextContent().trim();
+                    if (rawString.equals("")) rawString = childNodes.item(i).getTextContent().trim();
                     break;
 
                 default:

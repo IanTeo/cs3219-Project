@@ -19,7 +19,7 @@ public class Paper {
     public Paper(String title, int date, String[] authors, String fileName) {
         this.title = title; //TODO: What if paper title is blank?
         this.date = date;
-        this.authors = new HashSet<>(Arrays.asList(authors));
+        this.authors = parseAuthors(authors);
         this.fileName = fileName;
         inCitation = new HashMap<>();
         outCitation = new HashMap<>();
@@ -30,6 +30,16 @@ public class Paper {
 
         this.outCitation.put(citation.title, citation);
         citation.inCitation.put(this.title, this);
+    }
+
+    public void updateMissingInformation(Paper paper) {
+        if (date == 0) this.date = paper.date;
+        if (authors.size() == 0) this.authors = parseAuthors(paper.getAuthors());
+        if (fileName.equals("")) this.fileName = paper.fileName;
+    }
+
+    private HashSet<String> parseAuthors(String[] authors) {
+        return new HashSet<>(Arrays.asList(authors));
     }
 
     public String getTitle() {
@@ -44,6 +54,10 @@ public class Paper {
         return authors.toArray(new String[authors.size()]);
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
     public Collection<Paper> getInCitation() {
         return inCitation.values();
     }
@@ -55,12 +69,14 @@ public class Paper {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(fileName).append("\n");
-        builder.append(title).append("\n");
-        builder.append(date).append("\n");
+        if (!fileName.equals("")) builder.append("File: ").append(fileName).append("\n");
+        builder.append("Title: ").append(title).append("\n");
+        builder.append("Date: ").append(date).append("\n");
+        builder.append("Authors: ");
         for (String author : getAuthors()) {
             builder.append(author + ",");
         }
+        builder.deleteCharAt(builder.length() - 1);
         builder.append("\n");
 
         return builder.toString();

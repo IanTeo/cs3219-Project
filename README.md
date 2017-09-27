@@ -1,11 +1,11 @@
 # CS3219 Project
 
 ## Duplicate Papers 
-* Embedding NomLex-BR nominalizations into OpenWordnet-PT
-* OpenWordNet-PT: A Project Report
-* Issues in building English-Chinese parallel corpora with WordNets Francis Bond and Shan Wang
-* Power of Confidence: How Poll Scores Impact Topic Dynamics in Political Debates [Very different]
-* Extraction system for Personal Attributes Extraction of CLP2014
+* Embedding NomLex-BR nominalizations into OpenWordnet-PT (W14-0152, W14-0156)
+* OpenWordNet-PT: A Project Report (W14-0153, W14-0157)
+* Issues in building English-Chinese parallel corpora with WordNets Francis Bond and Shan Wang (W14-0153, W14-0158)
+* Power of Confidence: How Poll Scores Impact Topic Dynamics in Political Debates [Very different] (W14-02514, W14-2710)
+* Extraction system for Personal Attributes Extraction of CLP2014 (W14-6829, W14-6830)
 
 
 ## Changes to XML files:

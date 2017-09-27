@@ -13,7 +13,10 @@ public class Model {
     }
 
     public void addPaper(Paper paper) {
-        if (papers.containsKey(paper.getTitle())) return;
+        if (papers.containsKey(paper.getTitle())) {
+            papers.get(paper.getTitle()).updateMissingInformation(paper);
+            return;
+        }
 
         papers.put(paper.getTitle(), paper);
     }

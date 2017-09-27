@@ -26,7 +26,7 @@ public class FileParserManager {
             } else {
                 if (!isHiddenFile(fileEntry)) {
                     numFiles++;
-                    //System.out.println(fileEntry.getName());
+                    System.out.println(fileEntry.getName());
                     FileParser parser = selectParser(fileEntry);
                     parser.parse(fileEntry);
                 }

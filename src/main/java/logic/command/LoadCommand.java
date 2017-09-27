@@ -13,10 +13,15 @@ public class LoadCommand implements Command{
         model.clear();
         StringBuilder builder = new StringBuilder();
         builder.append("Successfully loaded ");
-        for (String directoryName : directoryNames) {
-            FileParserManager fileParserManager = new FileParserManager(model);
-            fileParserManager.parseFilesInDirectory(String.format(BASE_URL, directoryName));
-            builder.append(directoryName);
+        try {
+            for (String directoryName : directoryNames) {
+                FileParserManager fileParserManager = new FileParserManager(model);
+                fileParserManager.parseFilesInDirectory(String.format(BASE_URL, directoryName));
+                builder.append(directoryName);
+            }
+        } catch (Exception e) {
+            model.clear();
+            return "Error parsing file";
         }
         return builder.toString();
     }
