@@ -27,15 +27,26 @@ Changed line 634, remove "\<surname>" tag
 
 ## Paper Counts
 
-D12:  135
-D13: 201
-D14: 220
-D15: 308
-J14: 35
-Q14: 39
-W14:  1023
+D12: 135<br>
+D13: 201<br>
+D14: 220<br>
+D15: 308<br>
+J14: 35<br>
+Q14: 39<br>
+W14: 1023<br>
 Total: 1961
 
-Total Citation: 48518 (Missing duplicate dataset citations [5 dataset])
-Unique Citation: 31989
+## Questions
+### Global Statistics
+**1. How many document are there in all datasets put together?**<br>
+1961
+
+**2. How many citations are there in all datasets put together?**<br>
+48518 (Missing duplicate dataset citations [5 datasets])
+
+**3. How many unique citations are there in all datasets put together?**<br>
+31989
+
+**4. How many author are mentioned in the citations in all datasets put together?**<br>
+6981
 
