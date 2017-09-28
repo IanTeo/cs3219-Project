@@ -1,6 +1,4 @@
 package model;
-
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,17 +8,19 @@ public class Paper {
     private int date;
     private HashSet<String> authors;
     private String fileName;
+    private String rawString;
     // List of papers that cite this paper
     private HashMap<String, Paper> inCitation;
     // List of papers that are cited in this paper
     private HashMap<String, Paper> outCitation;
 
     //TODO: Need to keep track of number of citations
-    public Paper(String title, int date, String[] authors, String fileName) {
-        this.title = title; //TODO: What if paper title is blank?
+    public Paper(String title, int date, String[] authors, String fileName, String rawString) {
+        this.title = title;
         this.date = date;
         this.authors = parseAuthors(authors);
         this.fileName = fileName;
+        this.rawString = rawString.toLowerCase();
         inCitation = new HashMap<>();
         outCitation = new HashMap<>();
     }
@@ -35,7 +35,8 @@ public class Paper {
     public void updateMissingInformation(Paper paper) {
         if (date == 0) this.date = paper.date;
         if (authors.size() == 0) this.authors = parseAuthors(paper.getAuthors());
-        if (fileName.equals("")) this.fileName = paper.fileName;
+        if ("".equals(fileName)) this.fileName = paper.fileName;
+        if ("".equals(rawString)) this.rawString = paper.rawString.toLowerCase();
     }
 
     private HashSet<String> parseAuthors(String[] authors) {
@@ -60,6 +61,10 @@ public class Paper {
 
     public String getFileName() {
         return fileName;
+    }
+    
+    public String getRawString() {
+        return rawString;
     }
 
     public Collection<Paper> getInCitation() {

@@ -72,7 +72,7 @@ public class XmlFileParser extends FileParser {
         if (authors.length == 0 && parsHedAuthors.length != 0) {
             authors = parsHedAuthors;
         }
-        return new Paper(title, date, authors, fileName);
+        return new Paper(title, date, authors, fileName, "");
     }
 
     private Paper parseXmlNode(Node node, int date, String fileName) {
@@ -97,7 +97,7 @@ public class XmlFileParser extends FileParser {
                     if (date == 0) {
                         try {
                             String dateString = childNodes.item(i).getTextContent().trim();
-                            date = Integer.parseInt(childNodes.item(i).getTextContent());
+                            date = Integer.parseInt(dateString);
                         } catch (Exception e) {
                             System.out.println("Date in invalid format: " + e.getMessage());
                         }
@@ -114,6 +114,6 @@ public class XmlFileParser extends FileParser {
         }
 
         if (title.equals("")) title = rawString;
-        return new Paper(title, date, authors, fileName);
+        return new Paper(title, date, authors, fileName, rawString);
     }
 }
