@@ -24,6 +24,10 @@ public class CommandParser {
             case CountCommand.COMMAND_WORD :
                 command = new CountCommand();
                 break;
+                
+            case CountYearCommand.COMMAND_WORD :
+                command = new CountYearCommand();
+                break;
 
             case DetailCommand.COMMAND_WORD :
                 command = new DetailCommand();
