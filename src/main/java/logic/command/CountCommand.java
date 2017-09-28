@@ -4,6 +4,7 @@ import model.Model;
 import model.Paper;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 public class CountCommand implements Command{
     public static final String COMMAND_WORD = "count";
@@ -23,6 +24,10 @@ public class CountCommand implements Command{
 
             case "unique citation" :
                 count = countUniqueNumberOfCitations();
+                break;
+                
+            case "citation author" :
+                count = countCitationAuthors();
                 break;
 
             default :
@@ -60,5 +65,18 @@ public class CountCommand implements Command{
             }
         }
         return count;
+    }
+    
+    private int countCitationAuthors() {
+        Collection<Paper> paperList = model.getPapers();
+        HashSet<String> authors = new HashSet<>();
+        for (Paper p : paperList) {
+            if (p.getInCitation().size() > 0) {
+                for (String author : p.getAuthors()) {
+                    authors.add(author);
+                }
+            }
+        }
+        return authors.size();
     }
 }
