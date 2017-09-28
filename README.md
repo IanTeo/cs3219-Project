@@ -42,11 +42,14 @@ Total: 1961
 1961
 
 **2. How many citations are there in all datasets put together?**<br>
-48518 (Missing duplicate dataset citations [5 datasets])
+48518 (Missing duplicate dataset citations [5 datasets])<br>
+48683 (alt.)
 
 **3. How many unique citations are there in all datasets put together?**<br>
 31989
 
 **4. How many author are mentioned in the citations in all datasets put together?**<br>
-6981
+33915
 
+**5. What is the range of the years of the cited documents in all datasets put together?**<br>
+41
