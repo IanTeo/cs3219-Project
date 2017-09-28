@@ -53,3 +53,22 @@ Total: 1961
 
 **5. What is the range of the years of the cited documents in all datasets put together?**<br>
 41
+
+### Transition over time
+**6. For the conference D12 give number of cited documents published in each of the years 2000 to 2015.**<br>
+2000 91<br>
+2001 77<br>
+2002 130<br>
+2003 145<br>
+2004 184<br>
+2005 198<br>
+2006 249<br>
+2007 297<br>
+2008 300<br>
+2009 333<br>
+2010 391<br>
+2011 437<br>
+2012 82<br>
+2013 0<br>
+2014 0<br>
+2015 0<br>
