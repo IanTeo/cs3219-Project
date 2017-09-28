@@ -29,6 +29,10 @@ public class CountCommand implements Command{
             case "citation author" :
                 count = countCitationAuthors();
                 break;
+                
+            case "citation range" :
+                count = countCitationRangeOfYears();
+                break;
 
             default :
                 count = -1;
@@ -78,5 +82,23 @@ public class CountCommand implements Command{
             }
         }
         return authors.size();
+    }
+    
+    private int countCitationRangeOfYears() {
+        Collection<Paper> paperList = model.getPapers();
+        int minYear = -1, maxYear = -1;
+        for (Paper p : paperList) {
+            if (p.getInCitation().size() > 0) {
+                int year = p.getDate();
+                if (year == 0) break;
+                if (minYear == -1 || minYear > year) {
+                    minYear = year;
+                }
+                if (maxYear == -1 || maxYear < year) {
+                    maxYear = year;
+                }
+            }
+        }
+        return (maxYear - minYear) + 1;
     }
 }
