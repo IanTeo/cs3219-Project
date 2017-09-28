@@ -39,7 +39,11 @@ public class Paper {
     }
 
     private HashSet<String> parseAuthors(String[] authors) {
-        return new HashSet<>(Arrays.asList(authors));
+        HashSet<String> authorSet = new HashSet<>();
+        for (String author : authors) {
+            authorSet.add(author.trim().toLowerCase());
+        }
+        return authorSet;
     }
 
     public String getTitle() {
