@@ -42,7 +42,7 @@ public class Model {
     }
 
     public void incNumDataSet(int numDataSet) {
-        this.numDataSet += numDataSet; //TODO: Problem when duplicate load
+        this.numDataSet += numDataSet;
     }
 
     public int getNumDataSet() {

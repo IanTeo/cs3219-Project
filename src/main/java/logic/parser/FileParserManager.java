@@ -6,12 +6,10 @@ import java.io.File;
 
 public class FileParserManager {
     private Model model;
-    private int numFiles;
     private FileParser xmlParser;
 
     public FileParserManager(Model model) {
         this.model = model;
-        numFiles = 0;
         xmlParser = new XmlFileParser(model);
     }
     public void parseFilesInDirectory(String directoryName) {
@@ -20,6 +18,7 @@ public class FileParserManager {
     }
 
     private void parseFilesInDirectory(File folder) {
+        int numFiles = 0;
         for (File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
                 parseFilesInDirectory(fileEntry);

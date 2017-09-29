@@ -17,7 +17,7 @@ public class LoadCommand implements Command{
             for (String directoryName : directoryNames) {
                 FileParserManager fileParserManager = new FileParserManager(model);
                 fileParserManager.parseFilesInDirectory(String.format(BASE_URL, directoryName));
-                builder.append(directoryName);
+                builder.append(directoryName + " ");
             }
         } catch (Exception e) {
             model.clear();

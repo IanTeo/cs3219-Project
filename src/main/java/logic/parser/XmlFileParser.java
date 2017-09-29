@@ -31,9 +31,12 @@ public class XmlFileParser extends FileParser {
 
             NodeList citationNodes = document.getElementsByTagName("citation");
             for (int i = 0; i < citationNodes.getLength(); i++) {
-                Paper citation = parseXmlNode(citationNodes.item(i), 0, "");
-                model.addPaper(citation);
-                model.addCitation(paper.getTitle(), citation.getTitle());
+                Node citationNode = citationNodes.item(i);
+                if (citationNode.getAttributes().getNamedItem("valid").getTextContent().equalsIgnoreCase("true")) {
+                    Paper citation = parseXmlNode(citationNode, 0, "");
+                    model.addPaper(citation);
+                    model.addCitation(paper.getTitle(), citation.getTitle());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
