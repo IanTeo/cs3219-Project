@@ -37,19 +37,29 @@ W14: 1023<br>
 Total: 1961
 
 ## Questions
+
 ### Global Statistics
+
+CM: Counting Method (Count while parsing)<br>
+WIC: Without Invalid Citations
+
 **1. How many document are there in all datasets put together?**<br>
 1961
 
 **2. How many citations are there in all datasets put together?**<br>
-48518 (Missing duplicate dataset citations [5 datasets])<br>
-48683 (alt.)
+46824 (CM, WIC)<br>
+48683 (CM)<br>
+46662 (WIC, Missing duplicate dataset citations [5 datasets])<br>
+48518 (Missing duplicate dataset citations [5 datasets])
 
 **3. How many unique citations are there in all datasets put together?**<br>
-31989
+30372 (CM, WIC)<br>
+31989 (CM)
 
 **4. How many author are mentioned in the citations in all datasets put together?**<br>
-33915
+33986 (CM, WIC)<br>
+32546 (WIC)<br>
+33991 (WIC)
 
 **5. What is the range of the years of the cited documents in all datasets put together?**<br>
 41

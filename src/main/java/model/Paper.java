@@ -1,4 +1,6 @@
 package model;
+import util.StringUtil;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +20,8 @@ public class Paper {
     public Paper(String title, int date, String[] authors, String fileName, String rawString) {
         this.title = title;
         this.date = date;
-        this.authors = parseAuthors(authors);
+        this.authors = new HashSet<>();
+        this.authors.addAll(parseAuthors(authors));
         this.fileName = fileName;
         this.rawString = rawString.toLowerCase();
         inCitation = new HashMap<>();
@@ -34,7 +37,7 @@ public class Paper {
 
     public void updateMissingInformation(Paper paper) {
         if (date == 0) this.date = paper.date;
-        if (authors.size() == 0) this.authors = parseAuthors(paper.getAuthors());
+        this.authors.addAll(parseAuthors(paper.getAuthors()));
         if ("".equals(fileName)) this.fileName = paper.fileName;
         if ("".equals(rawString)) this.rawString = paper.rawString.toLowerCase();
     }
@@ -42,7 +45,7 @@ public class Paper {
     private HashSet<String> parseAuthors(String[] authors) {
         HashSet<String> authorSet = new HashSet<>();
         for (String author : authors) {
-            authorSet.add(author.trim().toLowerCase());
+            authorSet.add(StringUtil.parseString(author));
         }
         return authorSet;
     }
