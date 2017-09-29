@@ -2,6 +2,7 @@ package logic.command;
 
 import model.Model;
 import model.Paper;
+import util.StringUtil;
 
 import java.util.Collection;
 
@@ -14,7 +15,7 @@ public class CountYearCommand implements Command{
         try {
             int start = Integer.parseInt(startYear);
             int end = Integer.parseInt(endYear);
-            return countCitationsInYear(start, end);
+            return StringUtil.formatYearCountReply(countCitationsByYear(start, end), start);
         } catch (Exception e) {
             return "Invalid year";
         }
@@ -22,12 +23,12 @@ public class CountYearCommand implements Command{
 
     public void setParameters(Model model, String arguments) {
         this.model = model;
-        String years[] = arguments.split(" ");
+        String years[] = arguments.split("-");
         this.startYear = years[0];
         this.endYear = years[1];
     }
 
-    private String countCitationsInYear(int start, int end) {
+    private int[] countCitationsByYear(int start, int end) {
         int[] citationCounts = new int[end - start + 1];
         
         Collection<Paper> paperList = model.getPapers();
@@ -39,15 +40,6 @@ public class CountYearCommand implements Command{
                 }
             }
         }
-        return formatReply(citationCounts, start);
-    }
-    
-    private String formatReply(int[] citationCounts, int start) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(start).append(": ").append(citationCounts[0]);
-        for (int i = 1; i < citationCounts.length; i++) {
-            builder.append(String.format(", %s: %s", start + i, citationCounts[i]));
-        }
-        return builder.toString();
+        return citationCounts;
     }
 }

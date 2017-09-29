@@ -58,6 +58,10 @@ public class Paper {
     public String[] getAuthors() {
         return authors.toArray(new String[authors.size()]);
     }
+    
+    public boolean hasAuthor(String author) {
+        return authors.contains(author);
+    }
 
     public String getFileName() {
         return fileName;

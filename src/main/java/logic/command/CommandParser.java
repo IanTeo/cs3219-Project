@@ -32,6 +32,10 @@ public class CommandParser {
             case CountConferenceCommand.COMMAND_WORD :
                 command = new CountConferenceCommand();
                 break;
+                
+            case CountAuthorCommand.COMMAND_WORD :
+                command = new CountAuthorCommand();
+                break;
 
             case DetailCommand.COMMAND_WORD :
                 command = new DetailCommand();
