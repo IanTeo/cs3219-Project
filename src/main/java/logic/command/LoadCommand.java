@@ -11,11 +11,11 @@ public class LoadCommand implements Command{
 
     public String execute() {
         model.clear();
+        FileParserManager fileParserManager = new FileParserManager(model);
         StringBuilder builder = new StringBuilder();
         builder.append("Successfully loaded ");
         try {
             for (String directoryName : directoryNames) {
-                FileParserManager fileParserManager = new FileParserManager(model);
                 fileParserManager.parseFilesInDirectory(String.format(BASE_URL, directoryName));
                 builder.append(directoryName + " ");
             }

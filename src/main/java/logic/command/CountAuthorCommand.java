@@ -38,7 +38,7 @@ public class CountAuthorCommand implements Command{
         
         Collection<Paper> paperList = model.getPapers();
         for (Paper p : paperList) {
-            if (p.getInCitation().size() > 0 && hasAuthor(p)) {
+            if (!p.getInCitation().isEmpty() && hasAuthor(p)) {
                 int index = p.getDate() - start;
                 if (index >= 0 && index < authorCounts.length) authorCounts[index] = authorCounts[index] + 1;
             }

@@ -64,7 +64,7 @@ public class CountCommand implements Command{
         Collection<Paper> paperList = model.getPapers();
         int count = 0;
         for (Paper p : paperList) {
-            if (p.getInCitation().size() > 0) {
+            if (!p.getInCitation().isEmpty()) {
                 count++;
             }
         }
@@ -75,7 +75,7 @@ public class CountCommand implements Command{
         Collection<Paper> paperList = model.getPapers();
         HashSet<String> authors = new HashSet<>();
         for (Paper p : paperList) {
-            if (p.getInCitation().size() > 0) {
+            if (!p.getInCitation().isEmpty()) {
                 for (String author : p.getAuthors()) {
                     authors.add(author);
                 }
@@ -88,7 +88,7 @@ public class CountCommand implements Command{
         Collection<Paper> paperList = model.getPapers();
         int minYear = -1, maxYear = -1;
         for (Paper p : paperList) {
-            if (p.getInCitation().size() > 0) {
+            if (!p.getInCitation().isEmpty()) {
                 int year = p.getDate();
                 if (year == 0) break;
                 if (minYear == -1 || minYear > year) {
