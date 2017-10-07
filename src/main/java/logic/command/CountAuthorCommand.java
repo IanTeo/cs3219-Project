@@ -40,7 +40,9 @@ public class CountAuthorCommand implements Command{
         for (Paper p : paperList) {
             if (!p.getInCitation().isEmpty() && hasAuthor(p)) {
                 int index = p.getDate() - start;
-                if (index >= 0 && index < authorCounts.length) authorCounts[index] = authorCounts[index] + 1;
+                if (index >= 0 && index < authorCounts.length) {
+                    authorCounts[index] += p.getInCitation().size();
+                }
             }
         }
         return authorCounts;
