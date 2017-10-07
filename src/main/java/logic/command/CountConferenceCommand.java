@@ -23,8 +23,8 @@ public class CountConferenceCommand implements Command{
         Collection<Paper> paperList = model.getPapers();
         int count = 0;
         for (Paper p : paperList) {
-            if (p.getInCitation().size() > 0 && hasConferenceReference(p)) {
-                count++;
+            if (!p.getInCitation().isEmpty() && hasConferenceReference(p)) {
+                count += p.getInCitation().size();
             }
         }
         return count;
