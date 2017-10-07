@@ -93,7 +93,7 @@ public class XmlFileParser extends FileParser {
                     break;
 
                 case "title" :
-                    if (title.equals("")) title = StringUtil.parseString(childNodes.item(i).getTextContent());
+                    if (title.equals("")) title = childNodes.item(i).getTextContent();
                     break;
 
                 case "date" :

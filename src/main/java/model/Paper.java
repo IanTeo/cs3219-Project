@@ -18,7 +18,7 @@ public class Paper {
 
     //TODO: Need to keep track of number of citations
     public Paper(String title, int date, String[] authors, String fileName, String rawString) {
-        this.title = title;
+        this.title = StringUtil.parseString(title);
         this.date = date;
         this.authors = new HashSet<>();
         this.authors.addAll(parseAuthors(authors));

@@ -36,7 +36,7 @@ public class CountYearCommand implements Command{
             if (!p.getInCitation().isEmpty()) {
                 if (p.getDate() >= start && p.getDate() <= end) {
                     int index = p.getDate() - start;
-                    citationCounts[index] = citationCounts[index] + 1;
+                    citationCounts[index] += 1;
                 }
             }
         }
