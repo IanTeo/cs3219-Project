@@ -24,7 +24,7 @@ public class CountConferenceCommand implements Command{
         int count = 0;
         for (Paper p : paperList) {
             if (!p.getInCitation().isEmpty() && hasConferenceReference(p)) {
-                count += p.getInCitation().size();
+                count += 1;
             }
         }
         return count;
