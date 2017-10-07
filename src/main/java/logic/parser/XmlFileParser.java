@@ -24,16 +24,16 @@ public class XmlFileParser extends FileParser {
             Document document = documentBuilder.parse(file);
 
             Paper paper = parsePaper(document, file);
-            Paper p;
-            if ((p = model.getPaper(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
+            //Paper p;
+            //if ((p = model.getPaper(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
             model.addPaper(paper);
-            System.out.println(paper.getTitle());
+            //System.out.println(paper.getTitle());
 
             NodeList citationNodes = document.getElementsByTagName("citation");
             for (int i = 0; i < citationNodes.getLength(); i++) {
                 Node citationNode = citationNodes.item(i);
                 if (citationNode.getAttributes().getNamedItem("valid").getTextContent().equalsIgnoreCase("true")) {
-                    Paper citation = parseXmlNode(citationNode, 0, "");
+                    Paper citation = parseXmlNode(citationNode, 0, file.getName());
                     model.addPaper(citation);
                     model.addCitation(paper.getTitle(), citation.getTitle());
                 }

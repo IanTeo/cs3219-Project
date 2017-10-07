@@ -86,16 +86,13 @@ public class CountCommand implements Command{
     
     private int countCitationRangeOfYears() {
         Collection<Paper> paperList = model.getPapers();
-        int minYear = -1, maxYear = -1;
+        int minYear = Integer.MAX_VALUE, maxYear = Integer.MIN_VALUE;
         for (Paper p : paperList) {
             if (!p.getInCitation().isEmpty()) {
                 int year = p.getDate();
-                if (year == 0) break;
-                if (minYear == -1 || minYear > year) {
-                    minYear = year;
-                }
-                if (maxYear == -1 || maxYear < year) {
-                    maxYear = year;
+                if (year != 0) {
+                    minYear = Math.min(minYear, year);
+                    maxYear = Math.max(maxYear, year);
                 }
             }
         }
