@@ -25,7 +25,7 @@ public class XmlFileParser extends FileParser {
 
             Paper paper = parsePaper(document, file);
             //Paper p;
-            //if ((p = model.getPaper(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
+            //if ((p = model.getPaperByName(paper.getTitle())) != null) System.out.println("======= Paper exists: " + paper.getTitle() +" =======");
             model.addPaper(paper);
             //System.out.println(paper.getTitle());
 

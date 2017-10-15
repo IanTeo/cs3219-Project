@@ -6,14 +6,17 @@ import java.util.Map.Entry;
 
 public class Model {
     private HashMap<String, Paper> papers;
+    private HashMap<String, String> titleToIdMap;
     private int numDataSet;
 
     public Model() {
         papers = new HashMap<>();
+        titleToIdMap = new HashMap<>();
         numDataSet = 0;
     }
 
     public void addPaper(Paper paper) {
+        titleToIdMap.put(paper.getTitle(), paper.getId());
         if (papers.containsKey(paper.getId())) {
             papers.get(paper.getId()).updateMissingInformation(paper);
             return;
@@ -22,13 +25,12 @@ public class Model {
         papers.put(paper.getId(), paper);
     }
 
-    public Paper getPaper(String paperName) {
-        for (Entry<String, Paper> entry : papers.entrySet()) {
-            if (entry.getValue().getTitle().contains(paperName)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+    public Paper getPaperByName(String paperName) {
+        return getPaperById(titleToIdMap.get(paperName));
+    }
+
+    public Paper getPaperById(String id) {
+        return papers.get(id);
     }
 
     /**

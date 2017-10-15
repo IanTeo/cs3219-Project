@@ -59,7 +59,6 @@ public class JsonFileParser extends FileParser {
     }
 
     private void parseInCitation(JSONObject object, Paper paper) {
-        System.out.println(((JSONArray) object.get("inCitations")).size());
         JSONArray inCitations = (JSONArray) object.get("inCitations");
         for (int i = 0; i < inCitations.size(); i++) {
             Paper citation = new Paper(inCitations.get(i).toString());
