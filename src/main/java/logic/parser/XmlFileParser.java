@@ -75,7 +75,7 @@ public class XmlFileParser extends FileParser {
         if (authors.length == 0 && parsHedAuthors.length != 0) {
             authors = parsHedAuthors;
         }
-        return new Paper(title, date, authors, fileName, "");
+        return new Paper(title, title, date, authors, "");
     }
 
     private Paper parseXmlNode(Node node, int date, String fileName) {
@@ -117,6 +117,6 @@ public class XmlFileParser extends FileParser {
         }
 
         if (title.equals("")) title = rawString;
-        return new Paper(title, date, authors, fileName, rawString);
+        return new Paper(title, title, date, authors, rawString);
     }
 }

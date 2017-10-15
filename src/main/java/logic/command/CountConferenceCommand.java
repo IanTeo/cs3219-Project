@@ -32,7 +32,7 @@ public class CountConferenceCommand implements Command{
     
     private boolean hasConferenceReference(Paper paper) {
         for (String conferenceName : conferenceNames) {
-            if (paper.getRawString().contains(conferenceName)) {
+            if (paper.getVenue().contains(conferenceName)) {
                 return true;
             }
         }

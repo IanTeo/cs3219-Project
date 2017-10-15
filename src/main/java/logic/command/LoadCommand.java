@@ -21,6 +21,7 @@ public class LoadCommand implements Command{
             }
         } catch (Exception e) {
             model.clear();
+            e.printStackTrace();
             return "Error parsing file";
         }
         return builder.toString();

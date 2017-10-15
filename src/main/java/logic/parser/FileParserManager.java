@@ -7,10 +7,12 @@ import java.io.File;
 public class FileParserManager {
     private Model model;
     private FileParser xmlParser;
+    private FileParser jsonParser;
 
     public FileParserManager(Model model) {
         this.model = model;
         xmlParser = new XmlFileParser(model);
+        jsonParser = new JsonFileParser(model);
     }
     public void parseFilesInDirectory(String directoryName) {
         File folder = new File(directoryName);
@@ -48,9 +50,9 @@ public class FileParserManager {
                 parser = xmlParser;
                 break;
 
-            /*case "json" :
+            case "json" :
                 parser = jsonParser;
-                break;*/
+                break;
         }
         return parser;
     }

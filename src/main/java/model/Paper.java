@@ -6,24 +6,32 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Paper {
+    private String id;
     private String title;
     private int date;
     private HashSet<String> authors;
-    private String fileName;
-    private String rawString;
+    private String venue;
     // List of papers that cite this paper
     private HashMap<String, Paper> inCitation;
     // List of papers that are cited in this paper
     private HashMap<String, Paper> outCitation;
 
-    //TODO: Need to keep track of number of citations
-    public Paper(String title, int date, String[] authors, String fileName, String rawString) {
+    public Paper(String id) {
+        this.id = id;
+        this.title = "";
+        this.date = 0;
+        this.authors = new HashSet<>();
+        this.venue = "";
+        inCitation = new HashMap<>();
+        outCitation = new HashMap<>();
+    }
+    public Paper(String id, String title, int date, String[] authors, String venue) {
+        this.id = id;
         this.title = StringUtil.parseString(title);
         this.date = date;
         this.authors = new HashSet<>();
         this.authors.addAll(parseAuthors(authors));
-        this.fileName = fileName;
-        this.rawString = rawString.toLowerCase();
+        this.venue = StringUtil.parseString(venue);
         inCitation = new HashMap<>();
         outCitation = new HashMap<>();
     }
@@ -38,8 +46,8 @@ public class Paper {
     public void updateMissingInformation(Paper paper) {
         if (date == 0) this.date = paper.date;
         this.authors.addAll(parseAuthors(paper.getAuthors()));
-        if ("".equals(fileName)) this.fileName = paper.fileName;
-        if ("".equals(rawString)) this.rawString = paper.rawString.toLowerCase();
+        if ("".equals(venue)) this.venue = StringUtil.parseString(paper.venue);
+        if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
     }
 
     private HashSet<String> parseAuthors(String[] authors) {
@@ -48,6 +56,10 @@ public class Paper {
             authorSet.add(StringUtil.parseString(author));
         }
         return authorSet;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -66,12 +78,8 @@ public class Paper {
         return authors.contains(author);
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-    
-    public String getRawString() {
-        return rawString;
+    public String getVenue() {
+        return venue;
     }
 
     public Collection<Paper> getInCitation() {
@@ -85,7 +93,7 @@ public class Paper {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        if (!fileName.equals("")) builder.append("File: ").append(fileName).append("\n");
+        if (!id.equals("")) builder.append("ID: ").append(id).append("\n");
         builder.append("Title: ").append(title).append("\n");
         builder.append("Date: ").append(date).append("\n");
         builder.append("Authors: ");

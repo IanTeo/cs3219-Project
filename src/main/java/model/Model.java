@@ -2,6 +2,8 @@ package model;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Model {
     private HashMap<String, Paper> papers;
@@ -13,16 +15,21 @@ public class Model {
     }
 
     public void addPaper(Paper paper) {
-        if (papers.containsKey(paper.getTitle())) {
-            papers.get(paper.getTitle()).updateMissingInformation(paper);
+        if (papers.containsKey(paper.getId())) {
+            papers.get(paper.getId()).updateMissingInformation(paper);
             return;
         }
 
-        papers.put(paper.getTitle(), paper);
+        papers.put(paper.getId(), paper);
     }
 
     public Paper getPaper(String paperName) {
-        return papers.get(paperName);
+        for (Entry<String, Paper> entry : papers.entrySet()) {
+            if (entry.getValue().getTitle().equals(paperName)) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     /**
@@ -34,6 +41,10 @@ public class Model {
         Paper citation = papers.get(citationName);
         if (paper == null || citation == null) return;
 
+        addCitation(paper, citation);
+    }
+
+    public void addCitation(Paper paper, Paper citation) {
         paper.addCitation(citation);
     }
 
