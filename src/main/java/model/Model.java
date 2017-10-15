@@ -2,7 +2,6 @@ package model;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class Model {
@@ -25,7 +24,7 @@ public class Model {
 
     public Paper getPaper(String paperName) {
         for (Entry<String, Paper> entry : papers.entrySet()) {
-            if (entry.getValue().getTitle().equals(paperName)) {
+            if (entry.getValue().getTitle().contains(paperName)) {
                 return entry.getValue();
             }
         }

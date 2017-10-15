@@ -19,8 +19,14 @@ public class JsonFileParser extends FileParser {
         try {
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            while (reader.ready()) {
-                JSONObject object = (JSONObject) parser.parse(reader.readLine());
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // handle line breaks in between json data
+                while (line.charAt(line.length()-1) != '}') {
+                    line = line + reader.readLine();
+                }
+                //System.out.println(line);
+                JSONObject object = (JSONObject) parser.parse(line);
                 Paper paper = parsePaper(object);
                 model.addPaper(paper);
                 System.out.println(paper);
@@ -36,7 +42,12 @@ public class JsonFileParser extends FileParser {
     private Paper parsePaper(JSONObject object) {
         String id = object.get("id").toString();
         String title = object.get("title").toString();
-        int date = Integer.parseInt(object.get("year").toString());
+        int date = 0;
+        try {
+            date = Integer.parseInt(object.get("year").toString());
+        } catch (Exception e) {
+            System.out.println("Date in invalid format: " + e.getMessage());
+        }
         String venue = object.get("venue").toString();
         JSONArray authors = (JSONArray)object.get("authors");
         String[] authorNames = new String[authors.size()];
@@ -48,6 +59,7 @@ public class JsonFileParser extends FileParser {
     }
 
     private void parseInCitation(JSONObject object, Paper paper) {
+        System.out.println(((JSONArray) object.get("inCitations")).size());
         JSONArray inCitations = (JSONArray) object.get("inCitations");
         for (int i = 0; i < inCitations.size(); i++) {
             Paper citation = new Paper(inCitations.get(i).toString());

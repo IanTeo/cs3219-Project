@@ -1,0 +1,22 @@
+{
+  "authors":[
+    {
+      "ids":["8701086"],
+      "name":"A T George"
+    },
+    {
+      "ids":["4730440"],
+      "name":"T C Dudding"
+    }
+  ],
+  "id":"0000c8f31b6058b1b42d9580c7afaa2e673a98c2",
+  "inCitations":["<id of paper 1>", "<id of paper 2>",...],
+  "keyPhrases":[],
+  "outCitations":["<id of paper 1>", "<id of paper 2>"...],
+  "paperAbstract":"<abstract goes here>",
+  "pdfUrls":[],
+  "s2Url":"<some url goes here>",
+  "title":"<title goes here>",
+  "venue":"<venue goes here>",
+  "year":<year goes here>
+}

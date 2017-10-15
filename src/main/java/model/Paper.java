@@ -37,10 +37,10 @@ public class Paper {
     }
 
     protected void addCitation(Paper citation) {
-        if (citation.inCitation.containsKey(this.title) || this.outCitation.containsKey(citation.title)) return;
+        if (citation.inCitation.containsKey(this.id) || this.outCitation.containsKey(citation.id)) return;
 
-        this.outCitation.put(citation.title, citation);
-        citation.inCitation.put(this.title, this);
+        this.outCitation.put(citation.id, citation);
+        citation.inCitation.put(this.id, this);
     }
 
     public void updateMissingInformation(Paper paper) {
