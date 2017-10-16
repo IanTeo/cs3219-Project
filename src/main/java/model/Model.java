@@ -33,18 +33,6 @@ public class Model {
         return papers.get(id);
     }
 
-    /**
-     * Adds a citation to a paper. Both papers must have been added to the Model before using this method.
-     * Nothing happens when at least one of the papers is not found or citation already exists
-     */
-    public void addCitation(String paperName, String citationName) {
-        Paper paper = papers.get(paperName);
-        Paper citation = papers.get(citationName);
-        if (paper == null || citation == null) return;
-
-        addCitation(paper, citation);
-    }
-
     public void addCitation(Paper paper, Paper citation) {
         paper.addCitation(citation);
     }
