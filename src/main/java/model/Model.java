@@ -2,11 +2,11 @@ package model;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 
 public class Model {
-    private HashMap<String, Paper> papers;
-    private HashMap<String, String> titleToIdMap;
+    private Map<String, Paper> papers;
+    private Map<String, String> titleToIdMap;
     private int numDataSet;
 
     public Model() {

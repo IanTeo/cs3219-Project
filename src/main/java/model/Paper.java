@@ -4,17 +4,19 @@ import util.StringUtil;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Paper {
     private String id;
     private String title;
     private int year;
-    private HashSet<String> authors;
+    private Set<String> authors;
     private String venue;
     // List of papers that cite this paper
-    private HashMap<String, Paper> inCitation;
+    private Map<String, Paper> inCitation;
     // List of papers that are cited in this paper
-    private HashMap<String, Paper> outCitation;
+    private Map<String, Paper> outCitation;
 
     public Paper(String id) {
         this.id = id;

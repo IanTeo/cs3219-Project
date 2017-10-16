@@ -4,7 +4,6 @@ import model.Model;
 import model.Paper;
 import util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class CountAuthorCommand implements Command{
