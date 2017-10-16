@@ -1,9 +1,10 @@
 package model;
+
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import util.StringUtil;
 
@@ -11,15 +12,15 @@ public class Paper {
     private String id;
     private String title;
     private int year;
-    private Set<String> authors;
+    private Set<Author> authors;
     private String venue;
     // List of papers that cite this paper
-    private Map<String, Paper> inCitation;
+    private Set<Paper> inCitation;
     // List of papers that are cited in this paper
-    private Map<String, Paper> outCitation;
+    private Set<Paper> outCitation;
 
-    private Paper(String id, String title, int year, Set<String> authors, String venue, Map<String, Paper> inCitation,
-            Map<String, Paper> outCitation) {
+    private Paper(String id, String title, int year, Set<Author> authors, String venue, Set<Paper> inCitation,
+            Set<Paper> outCitation) {
         this.id = id;
         this.title = title;
         this.year = year;
@@ -30,25 +31,15 @@ public class Paper {
     }
 
     protected void addCitation(Paper citation) {
-        if (citation.inCitation.containsKey(this.id) || this.outCitation.containsKey(citation.id)) return;
-
-        this.outCitation.put(citation.id, citation);
-        citation.inCitation.put(this.id, this);
+        this.outCitation.add(citation);
+        citation.inCitation.add(this);
     }
 
     public void updateMissingInformation(Paper paper) {
         if (year == 0) this.year = paper.year;
-        this.authors.addAll(parseAuthors(paper.getAuthors()));
+        this.authors.addAll(paper.getAuthors());
         if ("".equals(venue)) this.venue = StringUtil.parseString(paper.venue);
         if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
-    }
-
-    private static Set<String> parseAuthors(String[] authors) {
-        Set<String> authorSet = new HashSet<>();
-        for (String author : authors) {
-            authorSet.add(StringUtil.parseString(author));
-        }
-        return authorSet;
     }
 
     public String getId() {
@@ -63,24 +54,48 @@ public class Paper {
         return year;
     }
 
-    public String[] getAuthors() {
-        return authors.toArray(new String[authors.size()]);
+    public Set<Author> getAuthors() {
+        return authors;
     }
     
-    public boolean hasAuthor(String author) {
-        return authors.contains(author);
-    }
-
     public String getVenue() {
         return venue;
     }
 
     public Collection<Paper> getInCitation() {
-        return inCitation.values();
+        return inCitation;
     }
 
     public Collection<Paper> getOutCitation() {
-        return outCitation.values();
+        return outCitation;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Paper)) {
+            return false;
+        }
+
+        Paper otherPaper = (Paper) other;
+        // Calling paper or author equality will cause infinite recursion. See Author#equals(Object).
+        Set<String> thisInCitationId = inCitation.stream().map(Paper::getId).collect(Collectors.toSet());
+        Set<String> otherInCitationId = otherPaper.inCitation.stream().map(Paper::getId).collect(Collectors.toSet());
+        Set<String> thisOutCitationId = outCitation.stream().map(Paper::getId).collect(Collectors.toSet());
+        Set<String> otherOutCitationId = otherPaper.outCitation.stream().map(Paper::getId).collect(Collectors.toSet());
+        Set<String> thisAuthorId = authors.stream().map(Author::getId).collect(Collectors.toSet());
+        Set<String> otherAuthorId = otherPaper.authors.stream().map(Author::getId).collect(Collectors.toSet());
+
+        return id.equals(otherPaper.id)
+                && title.equals(otherPaper.title)
+                && year == otherPaper.year
+                && venue.equals(otherPaper.venue)
+                && thisAuthorId.equals(otherAuthorId)
+                && thisInCitationId.equals(otherInCitationId)
+                && thisOutCitationId.equals(otherOutCitationId);
     }
 
     @Override
@@ -90,7 +105,7 @@ public class Paper {
         builder.append("Title: ").append(title).append("\n");
         builder.append("Date: ").append(year).append("\n");
         builder.append("Authors: ");
-        for (String author : getAuthors()) {
+        for (Author author : getAuthors()) {
             builder.append(author + ",");
         }
         builder.deleteCharAt(builder.length() - 1);
@@ -104,10 +119,10 @@ public class Paper {
         private String id;
         private String title;
         private int year;
-        private Set<String> authors;
+        private Set<Author> authors;
         private String venue;
-        private Map<String, Paper> inCitation;
-        private Map<String, Paper> outCitation;
+        private Set<Paper> inCitation;
+        private Set<Paper> outCitation;
 
         public PaperBuilder() {
             id = "";
@@ -115,8 +130,8 @@ public class Paper {
             year = 0;
             authors = new HashSet<>();
             venue = "";
-            inCitation = new HashMap<>();
-            outCitation = new HashMap<>();
+            inCitation = new HashSet<>();
+            outCitation = new HashSet<>();
         }
 
         public PaperBuilder withId(String id) {
@@ -134,8 +149,8 @@ public class Paper {
             return this;
         }
 
-        public PaperBuilder withAuthors(String[] authors) {
-            this.authors = new HashSet<>(parseAuthors(authors));
+        public PaperBuilder withAuthors(Author[] authors) {
+            this.authors = new HashSet<>(Arrays.asList(authors));
             return this;
         }
 
