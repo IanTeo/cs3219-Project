@@ -1,11 +1,11 @@
 package model;
-import util.StringUtil;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import util.StringUtil;
 
 public class Paper {
     private String id;
@@ -18,24 +18,15 @@ public class Paper {
     // List of papers that are cited in this paper
     private Map<String, Paper> outCitation;
 
-    public Paper(String id) {
+    private Paper(String id, String title, int year, Set<String> authors, String venue, Map<String, Paper> inCitation,
+            Map<String, Paper> outCitation) {
         this.id = id;
-        this.title = "";
-        this.year = 0;
-        this.authors = new HashSet<>();
-        this.venue = "";
-        inCitation = new HashMap<>();
-        outCitation = new HashMap<>();
-    }
-    public Paper(String id, String title, int year, String[] authors, String venue) {
-        this.id = id;
-        this.title = StringUtil.parseString(title);
+        this.title = title;
         this.year = year;
-        this.authors = new HashSet<>();
-        this.authors.addAll(parseAuthors(authors));
-        this.venue = StringUtil.parseString(venue);
-        inCitation = new HashMap<>();
-        outCitation = new HashMap<>();
+        this.authors = authors;
+        this.venue = venue;
+        this.inCitation = inCitation;
+        this.outCitation = outCitation;
     }
 
     protected void addCitation(Paper citation) {
@@ -52,8 +43,8 @@ public class Paper {
         if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
     }
 
-    private HashSet<String> parseAuthors(String[] authors) {
-        HashSet<String> authorSet = new HashSet<>();
+    private static Set<String> parseAuthors(String[] authors) {
+        Set<String> authorSet = new HashSet<>();
         for (String author : authors) {
             authorSet.add(StringUtil.parseString(author));
         }
@@ -106,5 +97,58 @@ public class Paper {
         builder.append("\n");
 
         return builder.toString();
+    }
+
+    public static class PaperBuilder {
+        // copy of attributes used by Paper
+        private String id;
+        private String title;
+        private int year;
+        private Set<String> authors;
+        private String venue;
+        private Map<String, Paper> inCitation;
+        private Map<String, Paper> outCitation;
+
+        public PaperBuilder() {
+            id = "";
+            title = "";
+            year = 0;
+            authors = new HashSet<>();
+            venue = "";
+            inCitation = new HashMap<>();
+            outCitation = new HashMap<>();
+        }
+
+        public PaperBuilder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public PaperBuilder withTitle(String title) {
+            this.title = StringUtil.parseString(title);
+            return this;
+        }
+
+        public PaperBuilder withYear(int year) {
+            this.year = year;
+            return this;
+        }
+
+        public PaperBuilder withAuthors(String[] authors) {
+            this.authors = new HashSet<>(parseAuthors(authors));
+            return this;
+        }
+
+        public PaperBuilder withVenue(String venue) {
+            this.venue = StringUtil.parseString(venue);
+            return this;
+        }
+
+        public Paper build() {
+            if (id.isEmpty()) {
+                throw new RuntimeException("Paper's id is empty.");
+            }
+            return new Paper(id, title, year, authors, venue, inCitation, outCitation);
+        }
     }
 }

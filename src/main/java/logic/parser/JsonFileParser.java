@@ -1,14 +1,16 @@
 package logic.parser;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import model.Model;
-import model.Paper;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import model.Model;
+import model.Paper;
+import model.Paper.PaperBuilder;
 
 public class JsonFileParser extends FileParser {
     public JsonFileParser(Model model) {
@@ -55,13 +57,19 @@ public class JsonFileParser extends FileParser {
             JSONObject author = (JSONObject) authors.get(i);
             authorNames[i] = author.get("name").toString();
         }
-        return new Paper(id, title, date, authorNames, venue);
+        return new PaperBuilder()
+                .withId(id)
+                .withTitle(title)
+                .withYear(date)
+                .withAuthors(authorNames)
+                .withVenue(venue)
+                .build();
     }
 
     private void parseInCitation(JSONObject object, Paper paper) {
         JSONArray inCitations = (JSONArray) object.get("inCitations");
         for (int i = 0; i < inCitations.size(); i++) {
-            Paper citation = new Paper(inCitations.get(i).toString());
+            Paper citation = new PaperBuilder().withId(inCitations.get(i).toString()).build();
             model.addPaper(citation);
             model.addCitation(citation, paper); //citation cites paper
         }
@@ -70,7 +78,7 @@ public class JsonFileParser extends FileParser {
     private void parseOutCitation(JSONObject object, Paper paper) {
         JSONArray outCitations = (JSONArray) object.get("outCitations");
         for (int i = 0; i < outCitations.size(); i++) {
-            Paper citation = new Paper(outCitations.get(i).toString());
+            Paper citation = new PaperBuilder().withId(outCitations.get(i).toString()).build();
             model.addPaper(citation);
             model.addCitation(paper, citation); //paper cites citation
         }
