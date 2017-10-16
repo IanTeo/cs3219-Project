@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class Paper {
     private String id;
     private String title;
-    private int date;
+    private int year;
     private HashSet<String> authors;
     private String venue;
     // List of papers that cite this paper
@@ -19,16 +19,16 @@ public class Paper {
     public Paper(String id) {
         this.id = id;
         this.title = "";
-        this.date = 0;
+        this.year = 0;
         this.authors = new HashSet<>();
         this.venue = "";
         inCitation = new HashMap<>();
         outCitation = new HashMap<>();
     }
-    public Paper(String id, String title, int date, String[] authors, String venue) {
+    public Paper(String id, String title, int year, String[] authors, String venue) {
         this.id = id;
         this.title = StringUtil.parseString(title);
-        this.date = date;
+        this.year = year;
         this.authors = new HashSet<>();
         this.authors.addAll(parseAuthors(authors));
         this.venue = StringUtil.parseString(venue);
@@ -44,7 +44,7 @@ public class Paper {
     }
 
     public void updateMissingInformation(Paper paper) {
-        if (date == 0) this.date = paper.date;
+        if (year == 0) this.year = paper.year;
         this.authors.addAll(parseAuthors(paper.getAuthors()));
         if ("".equals(venue)) this.venue = StringUtil.parseString(paper.venue);
         if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
@@ -66,8 +66,8 @@ public class Paper {
         return title;
     }
 
-    public int getDate() {
-        return date;
+    public int getYear() {
+        return year;
     }
 
     public String[] getAuthors() {
@@ -95,7 +95,7 @@ public class Paper {
         StringBuilder builder = new StringBuilder();
         if (!id.equals("")) builder.append("ID: ").append(id).append("\n");
         builder.append("Title: ").append(title).append("\n");
-        builder.append("Date: ").append(date).append("\n");
+        builder.append("Date: ").append(year).append("\n");
         builder.append("Authors: ");
         for (String author : getAuthors()) {
             builder.append(author + ",");

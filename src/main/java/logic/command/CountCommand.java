@@ -89,7 +89,7 @@ public class CountCommand implements Command{
         int minYear = Integer.MAX_VALUE, maxYear = Integer.MIN_VALUE;
         for (Paper p : paperList) {
             if (!p.getInCitation().isEmpty()) {
-                int year = p.getDate();
+                int year = p.getYear();
                 if (year != 0) {
                     minYear = Math.min(minYear, year);
                     maxYear = Math.max(maxYear, year);
