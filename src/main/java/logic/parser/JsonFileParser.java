@@ -3,7 +3,7 @@ package logic.parser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Arrays;
+import java.util.Collection;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,45 +30,83 @@ public class JsonFileParser extends FileParser {
                 while (line.charAt(line.length()-1) != '}') {
                     line = line + reader.readLine();
                 }
-                //System.out.println(line);
+
                 JSONObject object = (JSONObject) parser.parse(line);
                 Paper paper = parsePaper(object);
-                model.addPaper(paper);
-                System.out.println(paper);
-
                 parseInCitation(object, paper);
                 parseOutCitation(object, paper);
+
+                addAuthor(paper.getAuthors(), paper);
+                model.addPaper(paper);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // TODO: This method will be refactored; this is tricky because of the bi-dependency between Paper & Author.
+    /**
+     * Parses {@code object} into a {@code Paper}.
+     */
     private Paper parsePaper(JSONObject object) {
         String id = object.get("id").toString();
         String title = object.get("title").toString();
-        int date = 0;
+        int year = 0;
         try {
-            date = Integer.parseInt(object.get("year").toString());
+            year = Integer.parseInt(object.get("year").toString());
         } catch (Exception e) {
             System.out.println("Date in invalid format: " + e.getMessage());
         }
         String venue = object.get("venue").toString();
-        JSONArray authorsJSON = (JSONArray)object.get("authors");
+        Author[] authors = parseAuthors(object);
+        processAuthors(authors);
+
+        return new PaperBuilder().withId(id).withTitle(title).withYear(year).withVenue(venue).withAuthors(authors).build();
+    }
+
+    /**
+     * Parses {@code object} into {@code Author}s.
+     */
+    private Author[] parseAuthors(JSONObject object) {
+        JSONArray authorsJSON = (JSONArray) object.get("authors");
         Author[] authors = new Author[authorsJSON.size()];
         for (int i = 0; i < authorsJSON.size(); i++) {
-            JSONObject author = (JSONObject) authorsJSON.get(i);
-            String[] ids = (String[]) author.get("ids");
-            String name = StringUtil.parseString(author.get("name").toString());
-            authors[i] = (ids.length == 0) ? new Author(name) : new Author(ids[0], name);
-            model.addAuthor(authors[i]);
+            JSONObject authorJSON = (JSONObject) authorsJSON.get(i);
+            JSONArray ids = (JSONArray) authorJSON.get("ids");
+            String name = StringUtil.parseString(authorJSON.get("name").toString());
+            authors[i] = (ids.size() == 0) ? new Author(name) : new Author(ids.get(0).toString(), name);
         }
+        return authors;
+    }
 
-        Paper paper = new PaperBuilder().withId(id).withTitle(title).withYear(date).withAuthors(authors)
-                .withVenue(venue).build();
-        Arrays.stream(authors).forEach(author -> author.addPaper(paper));
-        return paper;
+    /**
+     * Replaces each {@code Author} in authors with the copy in the model, if it already exists in the model.
+     */
+    private void processAuthors(Author[] authors) {
+        for (int i = 0; i < authors.length; i++) {
+            String authorUID = authors[i].getUniqueIdentifier();
+            if (model.hasAuthor(authorUID)) {
+                authors[i] = model.getAuthor(authorUID);
+            }
+        }
+    }
+
+    /**
+     * Appends {@code paper} to the list of papers written by each of the authors in {@code authorsArray}.
+     * Then add each author into {@code model}, if the author doesn't exist in the list of authors stored in
+     * {@code model}. Otherwise, merges the list of papers written by the author in {@code model} and the current
+     * author.
+     */
+    private void addAuthor(Collection<Author> authorsArray, Paper paper) {
+        for (Author author : authorsArray) {
+            String uniqueIdentifier = author.getUniqueIdentifier();
+            if (model.hasAuthor(uniqueIdentifier)) {
+                Author toModify = model.getAuthor(uniqueIdentifier);
+                toModify.addPaper(paper);
+            } else {
+                author.addPaper(paper);
+                model.addAuthor(author);
+            }
+        }
     }
 
     private void parseInCitation(JSONObject object, Paper paper) {
