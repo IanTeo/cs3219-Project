@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,18 +11,20 @@ import java.util.stream.Collectors;
 public class Author {
     private final String id;
     private final String name;
-    private final Set<Paper> papers;
+    private final Set<Paper> papers = new HashSet<>();
 
-    public Author(String name, Paper paper) {
+    public Author(String name) {
         this.id = "";
         this.name = name;
-        this.papers = new HashSet<>(Collections.singletonList(paper));
     }
 
-    public Author(String id, String name, Paper paper) {
+    public Author(String id, String name) {
         this.id = id;
         this.name = name;
-        this.papers = new HashSet<>(Collections.singletonList(paper));
+    }
+
+    public void addPaper(Paper paper) {
+        this.papers.add(paper);
     }
 
     public String getId() {

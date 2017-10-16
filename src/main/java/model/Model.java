@@ -7,11 +7,13 @@ import java.util.Map;
 public class Model {
     private Map<String, Paper> papers;
     private Map<String, String> titleToIdMap;
+    private Map<String, Author> authors;
     private int numDataSet;
 
     public Model() {
         papers = new HashMap<>();
         titleToIdMap = new HashMap<>();
+        authors = new HashMap<>();
         numDataSet = 0;
     }
 
@@ -27,6 +29,36 @@ public class Model {
 
     public Paper getPaperByName(String paperName) {
         return getPaperById(titleToIdMap.get(paperName));
+    }
+
+    /**
+     * Adds {@code author} if it does not exist.
+     */
+    public void addAuthor(Author author) {
+        String uniqueIdentifier = author.getUniqueIdentifier();
+        if (authors.containsKey(uniqueIdentifier)) {
+            return;
+        }
+
+        authors.put(uniqueIdentifier, author);
+    }
+
+    /**
+     * Returns true if this model contains an author that can be uniquely identified with {@code uniqueIdentifier}.
+     */
+    public boolean hasAuthor(String uniqueIdentifier) {
+        return authors.containsKey(uniqueIdentifier);
+    }
+
+    /**
+     * Returns the author stored in this model that is uniquely identified as {@code uniqueIdentifier}.
+     */
+    public Author getAuthor(String uniqueIdentifier) {
+        if (!hasAuthor(uniqueIdentifier)) {
+            throw new IllegalArgumentException("No such author exists.");
+        }
+
+        return authors.get(uniqueIdentifier);
     }
 
     public Paper getPaperById(String id) {

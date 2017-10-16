@@ -3,14 +3,17 @@ package logic.parser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Arrays;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import model.Author;
 import model.Model;
 import model.Paper;
 import model.Paper.PaperBuilder;
+import util.StringUtil;
 
 public class JsonFileParser extends FileParser {
     public JsonFileParser(Model model) {
@@ -41,6 +44,7 @@ public class JsonFileParser extends FileParser {
         }
     }
 
+    // TODO: This method will be refactored; this is tricky because of the bi-dependency between Paper & Author.
     private Paper parsePaper(JSONObject object) {
         String id = object.get("id").toString();
         String title = object.get("title").toString();
@@ -51,19 +55,20 @@ public class JsonFileParser extends FileParser {
             System.out.println("Date in invalid format: " + e.getMessage());
         }
         String venue = object.get("venue").toString();
-        JSONArray authors = (JSONArray)object.get("authors");
-        String[] authorNames = new String[authors.size()];
-        for (int i = 0; i < authors.size(); i++) {
-            JSONObject author = (JSONObject) authors.get(i);
-            authorNames[i] = author.get("name").toString();
+        JSONArray authorsJSON = (JSONArray)object.get("authors");
+        Author[] authors = new Author[authorsJSON.size()];
+        for (int i = 0; i < authorsJSON.size(); i++) {
+            JSONObject author = (JSONObject) authorsJSON.get(i);
+            String[] ids = (String[]) author.get("ids");
+            String name = StringUtil.parseString(author.get("name").toString());
+            authors[i] = (ids.length == 0) ? new Author(name) : new Author(ids[0], name);
+            model.addAuthor(authors[i]);
         }
-        return new PaperBuilder()
-                .withId(id)
-                .withTitle(title)
-                .withYear(date)
-                .withAuthors(authorNames)
-                .withVenue(venue)
-                .build();
+
+        Paper paper = new PaperBuilder().withId(id).withTitle(title).withYear(date).withAuthors(authors)
+                .withVenue(venue).build();
+        Arrays.stream(authors).forEach(author -> author.addPaper(paper));
+        return paper;
     }
 
     private void parseInCitation(JSONObject object, Paper paper) {
