@@ -1,6 +1,7 @@
 # CS3219 Project (Assignment 4)
 
 Download data file from [here](https://www.dropbox.com/s/som8h00sq8fn9gd/papers.json?dl=0&m=)
+If you encounter GC overhead limit exceeded error while loading the dataset, append "-Xmx4096m" to your VM options.
 
 # CS3219 Project (Assignment 3)
 
