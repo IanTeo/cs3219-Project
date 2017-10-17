@@ -5,3 +5,5 @@
 .settings
 bin/
 out/
+/build
+/Data/papers.json

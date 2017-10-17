@@ -21,20 +21,12 @@ public class CommandParser {
         }
 
         switch (commandWord) {
-            case CountCommand.COMMAND_WORD :
-                command = new CountCommand();
-                break;
-                
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
                 break;
                 
             case CountConferenceCommand.COMMAND_WORD :
                 command = new CountConferenceCommand();
-                break;
-                
-            case CountAuthorCommand.COMMAND_WORD :
-                command = new CountAuthorCommand();
                 break;
 
             case DetailCommand.COMMAND_WORD :

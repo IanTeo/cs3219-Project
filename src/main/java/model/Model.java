@@ -2,16 +2,18 @@ package model;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 
 public class Model {
-    private HashMap<String, Paper> papers;
-    private HashMap<String, String> titleToIdMap;
+    private Map<String, Paper> papers;
+    private Map<String, String> titleToIdMap;
+    private Map<String, Author> authors;
     private int numDataSet;
 
     public Model() {
         papers = new HashMap<>();
         titleToIdMap = new HashMap<>();
+        authors = new HashMap<>();
         numDataSet = 0;
     }
 
@@ -29,20 +31,38 @@ public class Model {
         return getPaperById(titleToIdMap.get(paperName));
     }
 
-    public Paper getPaperById(String id) {
-        return papers.get(id);
+    /**
+     * Adds {@code author} if it does not exist.
+     */
+    public void addAuthor(Author author) {
+        String uniqueIdentifier = author.getUniqueIdentifier();
+        if (authors.containsKey(uniqueIdentifier)) {
+            return;
+        }
+
+        authors.put(uniqueIdentifier, author);
     }
 
     /**
-     * Adds a citation to a paper. Both papers must have been added to the Model before using this method.
-     * Nothing happens when at least one of the papers is not found or citation already exists
+     * Returns true if this model contains an author that can be uniquely identified with {@code uniqueIdentifier}.
      */
-    public void addCitation(String paperName, String citationName) {
-        Paper paper = papers.get(paperName);
-        Paper citation = papers.get(citationName);
-        if (paper == null || citation == null) return;
+    public boolean hasAuthor(String uniqueIdentifier) {
+        return authors.containsKey(uniqueIdentifier);
+    }
 
-        addCitation(paper, citation);
+    /**
+     * Returns the author stored in this model that is uniquely identified as {@code uniqueIdentifier}.
+     */
+    public Author getAuthor(String uniqueIdentifier) {
+        if (!hasAuthor(uniqueIdentifier)) {
+            throw new IllegalArgumentException("No such author exists.");
+        }
+
+        return authors.get(uniqueIdentifier);
+    }
+
+    public Paper getPaperById(String id) {
+        return papers.get(id);
     }
 
     public void addCitation(Paper paper, Paper citation) {
@@ -125,5 +145,24 @@ public class Model {
         for (Paper p : paper.getOutCitation()) {
             System.out.println(p);
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Model)) {
+            return false;
+        }
+
+        Model otherModel = (Model) other;
+        return papers.equals(otherModel.papers) && authors.equals(otherModel.authors);
+    }
+
+    @Override
+    public String toString() {
+        return papers.values().toString() + authors.values().toString();
     }
 }
