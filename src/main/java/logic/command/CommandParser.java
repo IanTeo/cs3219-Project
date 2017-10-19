@@ -17,7 +17,7 @@ public class CommandParser {
 
         if (commandWordLastIndex != -1) {
             commandWord = query.substring(0, commandWordLastIndex).trim();
-            arguments = query.substring(commandWordLastIndex, query.length()).trim();
+            arguments = query.substring(commandWordLastIndex).trim();
         }
 
         switch (commandWord) {
@@ -35,6 +35,22 @@ public class CommandParser {
 
             case LoadCommand.COMMAND_WORD :
                 command = new LoadCommand();
+                break;
+
+            case TopCommand.COMMAND_WORD :
+                command = new TopCommand();
+                break;
+
+            case AuthorCommand.COMMAND_WORD :
+                command = new AuthorCommand();
+                break;
+
+            case PaperCommand.COMMAND_WORD :
+                command = new PaperCommand();
+                break;
+
+            case CitationCommand.COMMAND_WORD :
+                command = new CitationCommand();
                 break;
 
             default :

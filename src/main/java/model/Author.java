@@ -14,7 +14,7 @@ public class Author {
     private final Set<Paper> papers = new HashSet<>();
 
     public Author(String name) {
-        this.id = "";
+        this.id = name;
         this.name = name;
     }
 
@@ -39,11 +39,16 @@ public class Author {
         return papers;
     }
 
-    /**
-     * Returns id if it exists, else returns the name.
-     */
-    public String getUniqueIdentifier() {
-        return !id.isEmpty() ? id : name;
+    public int getPaperCountByVenue(String venue) {
+        if (venue.isEmpty()) return papers.size();
+
+        int count = 0;
+        for (Paper p : papers) {
+            if (p.getVenue().contains(venue)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override

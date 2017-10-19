@@ -19,15 +19,15 @@ public class AuthorTest {
         Author baz = new Author("123", "baz");
         Author bar = new Author("bar");
         authors.addAll(Arrays.asList(baz, bar));
-        assertEquals("123", baz.getUniqueIdentifier());
-        assertEquals("bar", bar.getUniqueIdentifier());
+        assertEquals("123", baz.getId());
+        assertEquals("bar", bar.getId());
         assertEquals(new HashSet<>(Arrays.asList(baz, bar)), authors);
 
         // authors are different if they have different papers
         Author bazWithPaper = new Author("123", "baz");
         bazWithPaper.addPaper(PAPER);
         authors.add(bazWithPaper);
-        assertEquals("123", bazWithPaper.getUniqueIdentifier());
+        assertEquals("123", bazWithPaper.getId());
         assertEquals(new HashSet<>(Arrays.asList(bar, baz, bazWithPaper)), authors);
     }
 }

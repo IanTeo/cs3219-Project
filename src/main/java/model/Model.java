@@ -8,13 +8,11 @@ public class Model {
     private Map<String, Paper> papers;
     private Map<String, String> titleToIdMap;
     private Map<String, Author> authors;
-    private int numDataSet;
 
     public Model() {
         papers = new HashMap<>();
         titleToIdMap = new HashMap<>();
         authors = new HashMap<>();
-        numDataSet = 0;
     }
 
     public void addPaper(Paper paper) {
@@ -35,7 +33,7 @@ public class Model {
      * Adds {@code author} if it does not exist.
      */
     public void addAuthor(Author author) {
-        String uniqueIdentifier = author.getUniqueIdentifier();
+        String uniqueIdentifier = author.getId();
         if (authors.containsKey(uniqueIdentifier)) {
             return;
         }
@@ -43,6 +41,9 @@ public class Model {
         authors.put(uniqueIdentifier, author);
     }
 
+    public boolean hasPaper(String paperId) {
+        return papers.containsKey(paperId);
+    }
     /**
      * Returns true if this model contains an author that can be uniquely identified with {@code uniqueIdentifier}.
      */
@@ -73,17 +74,12 @@ public class Model {
         return papers.values();
     }
 
-    public void incNumDataSet(int numDataSet) {
-        this.numDataSet += numDataSet;
-    }
-
-    public int getNumDataSet() {
-        return numDataSet;
+    public Collection<Author> getAuthors() {
+        return authors.values();
     }
 
     public void clear() {
         papers.clear();
-        numDataSet = 0;
     }
 
     // Stuff to do testing

@@ -42,6 +42,13 @@ public class Paper {
         if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
     }
 
+    public boolean isEmpty() {
+        return title.isEmpty()
+                && year == 0
+                && authors.isEmpty()
+                && venue.isEmpty();
+    }
+
     public String getId() {
         return id;
     }
@@ -66,8 +73,16 @@ public class Paper {
         return inCitation;
     }
 
+    public int getInCitationCount() {
+        return inCitation.size();
+    }
+
     public Collection<Paper> getOutCitation() {
         return outCitation;
+    }
+
+    public int getOutCitationCount() {
+        return outCitation.size();
     }
 
     @Override
