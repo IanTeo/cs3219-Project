@@ -35,20 +35,6 @@ public class Paper {
         citation.inCitation.add(this);
     }
 
-    public void updateMissingInformation(Paper paper) {
-        if (year == 0) this.year = paper.year;
-        this.authors.addAll(paper.getAuthors());
-        if ("".equals(venue)) this.venue = StringUtil.parseString(paper.venue);
-        if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
-    }
-
-    public boolean isEmpty() {
-        return title.isEmpty()
-                && year == 0
-                && authors.isEmpty()
-                && venue.isEmpty();
-    }
-
     public String getId() {
         return id;
     }

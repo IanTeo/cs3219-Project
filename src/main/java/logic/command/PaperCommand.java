@@ -10,12 +10,7 @@ public class PaperCommand implements Command{
     private String paperId;
 
     public String execute() {
-        Paper paper = model.getPaperById(paperId);
-        // Try to get paper by name if no paper found
-        if (paper == null) {
-            paper = model.getPaperByName(paperId);
-        }
-        // If still no paper found, paper does not exist
+        Paper paper = model.getPaper(paperId);
         if (paper == null) {
             return "Paper not found";
         }

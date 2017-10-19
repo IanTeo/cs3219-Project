@@ -16,17 +16,10 @@ public class Model {
     }
 
     public void addPaper(Paper paper) {
+        if (papers.containsKey(paper.getId())) return;
+
         titleToIdMap.put(paper.getTitle(), paper.getId());
-        if (papers.containsKey(paper.getId())) {
-            papers.get(paper.getId()).updateMissingInformation(paper);
-            return;
-        }
-
         papers.put(paper.getId(), paper);
-    }
-
-    public Paper getPaperByName(String paperName) {
-        return getPaperById(titleToIdMap.get(paperName));
     }
 
     /**
@@ -62,8 +55,12 @@ public class Model {
         return authors.get(uniqueIdentifier);
     }
 
-    public Paper getPaperById(String id) {
-        return papers.get(id);
+    public Paper getPaper(String id) {
+        Paper paper = papers.get(id);
+        if (paper == null) {
+            paper = papers.get(titleToIdMap.get(id));
+        }
+        return paper;
     }
 
     public void addCitation(Paper paper, Paper citation) {
@@ -80,67 +77,6 @@ public class Model {
 
     public void clear() {
         papers.clear();
-    }
-
-    // Stuff to do testing
-    public void printPapers() {
-        Collection<Paper> paperList = papers.values();
-        for (Paper p : paperList) {
-            System.out.println(p);
-        }
-    }
-
-    public int findMultipleCitation() {
-        Collection<Paper> paperList = papers.values();
-        int count = 0;
-        for (Paper p : paperList) {
-            Collection<Paper> citations = p.getInCitation();
-            if (citations.size() > 1) {
-                count += citations.size() - 1;
-                System.out.println("===== " + p.getTitle() + " cited by =====\n");
-                for (Paper citation : citations) {
-                    System.out.println(citation);
-                }
-                System.out.println("======================");
-            }
-        }
-        return count;
-    }
-
-    public int findInOutCitation() {
-        Collection<Paper> paperList = papers.values();
-        int count = 0;
-        for (Paper paper : paperList) {
-            Collection<Paper> inCitations = paper.getInCitation();
-            Collection<Paper> outCitations = paper.getOutCitation();
-            if (inCitations.size() > 0 && outCitations.size() > 0) {
-                count++;
-                System.out.print(paper);
-                System.out.println("======== IN CITATION ========");
-                for (Paper p : paper.getInCitation()) {
-                    System.out.println(p);
-                }
-                System.out.println("========================\n");
-            }
-        }
-        return count;
-    }
-
-    public void paperDetails(String paperName) {
-        Paper paper = papers.get(paperName);
-        if (paper == null) {
-            System.out.println("Paper not found");
-            return;
-        }
-
-        System.out.println("======== IN CITATION ========");
-        for (Paper p : paper.getInCitation()) {
-            System.out.println(p);
-        }
-        System.out.println("======== OUT CITATION ========");
-        for (Paper p : paper.getOutCitation()) {
-            System.out.println(p);
-        }
     }
 
     @Override

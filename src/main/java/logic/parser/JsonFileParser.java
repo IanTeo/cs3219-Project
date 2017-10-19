@@ -115,7 +115,7 @@ public class JsonFileParser extends FileParser {
         for (int i = 0; i < inCitations.size(); i++) {
             String citationId = inCitations.get(i).toString();
             if (model.hasPaper(citationId)) {
-                Paper citation = model.getPaperById(citationId);
+                Paper citation = model.getPaper(citationId);
                 model.addCitation(citation, paper); //citation cites paper
             }
         }
@@ -126,7 +126,7 @@ public class JsonFileParser extends FileParser {
         for (int i = 0; i < outCitations.size(); i++) {
             String citationId = outCitations.get(i).toString();
             if (model.hasPaper(citationId)) {
-                Paper citation = model.getPaperById(citationId);
+                Paper citation = model.getPaper(citationId);
                 model.addCitation(paper, citation); //paper cites citation
             }
         }

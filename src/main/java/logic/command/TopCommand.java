@@ -41,8 +41,8 @@ public class TopCommand implements Command{
         if (count == 0) return "";
         List<Author> authors = new ArrayList<>(model.getAuthors());
         authors.sort((Author a1, Author a2) -> {
-            int countA1 = a1.getPaperCountByVenue(venue);
-            int countA2 = a2.getPaperCountByVenue(venue);
+            int countA1 = getPaperCount(a1);
+            int countA2 = getPaperCount(a2);
             return countA1 == countA2 ? a2.getName().compareTo(a1.getName()) : countA2 - countA1;
         });
 
@@ -52,11 +52,18 @@ public class TopCommand implements Command{
             Author author = authors.get(i);
             object.put("id", author.getId());
             object.put("name", author.getName());
-            object.put("paperCount", author.getPaperCountByVenue(venue));
+            object.put("paperCount", getPaperCount(author));
             // TODO: need to add actual array of papers
             array.add(object);
         }
         return array.toString();
+    }
+
+    private int getPaperCount(Author author) {
+        Collection<Paper> papers = author.getPapers();
+        if (venue.isEmpty()) return papers.size();
+
+        return (int) papers.stream().filter(paper -> paper.getVenue().contains(venue)).count();
     }
 
     private String getTopPaperIds() {

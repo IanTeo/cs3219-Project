@@ -39,18 +39,6 @@ public class Author {
         return papers;
     }
 
-    public int getPaperCountByVenue(String venue) {
-        if (venue.isEmpty()) return papers.size();
-
-        int count = 0;
-        for (Paper p : papers) {
-            if (p.getVenue().contains(venue)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (this == other) {
