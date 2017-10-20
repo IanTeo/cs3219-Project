@@ -62,6 +62,6 @@ public class JsonFileParserTest {
     @Test
     public void parse() {
         parser.parse(parser_test);
-        //assertEquals(EXPECTED_MODEL, model);
+        assertEquals(EXPECTED_MODEL, model);
     }
 }
