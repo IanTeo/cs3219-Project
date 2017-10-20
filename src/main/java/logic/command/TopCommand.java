@@ -31,12 +31,16 @@ public class TopCommand implements Command{
         }
     }
 
-    public void setParameters(Model model, String arguments) {
-        this.model = model;
-        String[] args = arguments.split(" ");
-        this.count = Integer.parseInt(args[0]);
-        this.type = StringUtil.parseString(args[1]);
-        this.venue = StringUtil.parseString(args[2]);
+    public void setParameters(Model model, String arguments) throws Exception {
+        try {
+            this.model = model;
+            String[] args = arguments.split(" ");
+            this.count = Integer.parseInt(args[0]);
+            this.type = StringUtil.parseString(args[1]);
+            this.venue = StringUtil.parseString(args[2]);
+        } catch (Exception e) {
+            throw new Exception(String.format(HELP, "Error parsing parameters"));
+        }
     }
 
     private String getTopAuthorIds() {

@@ -14,18 +14,10 @@ public class WebCommand implements Command{
     public static final String HELP = "Error: %s\nUsage: web [#] [paper]\n" +
             "This command returns a JSON file representing a in-citation web with # levels, starting from the paper specified";
     private Model model;
-    private String arguments;
+    private int level;
+    private String paperId;
 
     public String execute() {
-        int level = 1;
-        String paperId = "";
-        try {
-            int levelEndIndex = arguments.indexOf(" ");
-            level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
-            paperId = arguments.substring(levelEndIndex).trim();
-        } catch (Exception e) {
-            return String.format(HELP, "Invalid inputs");
-        }
 
         Paper paper = model.getPaper(paperId);
         if (paper == null) {
@@ -35,9 +27,15 @@ public class WebCommand implements Command{
         return createCitationWeb(paper, level).toString();
     }
 
-    public void setParameters(Model model, String arguments) {
-        this.model = model;
-        this.arguments = StringUtil.parseString(arguments);
+    public void setParameters(Model model, String arguments) throws Exception {
+        try {
+            this.model = model;
+            int levelEndIndex = arguments.indexOf(" ");
+            level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
+            paperId = StringUtil.parseString(arguments.substring(levelEndIndex));
+        } catch (Exception e) {
+            throw new Exception(String.format(HELP, "Error parsing parameters"));
+        }
     }
 
     private JSONObject createCitationWeb(Paper basePaper, int level) {

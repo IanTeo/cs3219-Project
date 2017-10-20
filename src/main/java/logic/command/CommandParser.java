@@ -46,11 +46,14 @@ public class CommandParser {
                 break;
 
             default :
-                command = new InvalidCommand();
+                command = new InvalidCommand("Invalid command");
                 break;
         }
-
-        command.setParameters(model, arguments);
+        try {
+            command.setParameters(model, arguments);
+        } catch (Exception e) {
+            command = new InvalidCommand(e.getMessage());
+        }
         return command;
     }
 }

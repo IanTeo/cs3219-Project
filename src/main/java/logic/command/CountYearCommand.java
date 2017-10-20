@@ -33,13 +33,17 @@ public class CountYearCommand implements Command{
         }
     }
 
-    public void setParameters(Model model, String arguments) {
-        this.model = model;
-        String[] args = arguments.split(" ");
-        String years[] = args[0].split("-");
-        this.startYear = years[0];
-        this.endYear = years[1];
-        this.venue = StringUtil.parseString(args[1]);
+    public void setParameters(Model model, String arguments) throws Exception {
+        try {
+            this.model = model;
+            String[] args = arguments.split(" ");
+            String years[] = args[0].split("-");
+            this.startYear = years[0];
+            this.endYear = years[1];
+            this.venue = StringUtil.parseString(args[1]);
+        } catch (Exception e) {
+            throw new Exception(String.format(HELP, "Error parsing parameters"));
+        }
     }
 
     private int[] countCitationsByYear(int start, int end) {
