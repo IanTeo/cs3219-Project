@@ -53,6 +53,10 @@ public class CommandParser {
                 command = new CitationCommand();
                 break;
 
+            case WebCommand.COMMAND_WORD :
+                command = new WebCommand();
+                break;
+
             default :
                 command = new InvalidCommand();
                 break;
