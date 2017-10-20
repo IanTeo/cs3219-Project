@@ -24,10 +24,6 @@ public class CommandParser {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
                 break;
-                
-            case CountConferenceCommand.COMMAND_WORD :
-                command = new CountConferenceCommand();
-                break;
 
             case DetailCommand.COMMAND_WORD :
                 command = new DetailCommand();
@@ -40,15 +36,7 @@ public class CommandParser {
             case TopCommand.COMMAND_WORD :
                 command = new TopCommand();
                 break;
-
-            case AuthorCommand.COMMAND_WORD :
-                command = new AuthorCommand();
-                break;
-
-            case CitationCommand.COMMAND_WORD :
-                command = new CitationCommand();
-                break;
-
+            
             case WebCommand.COMMAND_WORD :
                 command = new WebCommand();
                 break;
