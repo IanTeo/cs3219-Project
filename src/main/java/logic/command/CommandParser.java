@@ -45,10 +45,6 @@ public class CommandParser {
                 command = new AuthorCommand();
                 break;
 
-            case PaperCommand.COMMAND_WORD :
-                command = new PaperCommand();
-                break;
-
             case CitationCommand.COMMAND_WORD :
                 command = new CitationCommand();
                 break;
