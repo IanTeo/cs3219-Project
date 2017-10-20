@@ -11,6 +11,8 @@ import java.util.Queue;
 
 public class WebCommand implements Command{
     public static final String COMMAND_WORD = "web";
+    public static final String HELP = "Error: %s\nUsage: web [#] [paper]\n" +
+            "This command returns a JSON file representing a in-citation web with # levels, starting from the paper specified";
     private Model model;
     private String arguments;
 
@@ -22,12 +24,12 @@ public class WebCommand implements Command{
             level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
             paperId = arguments.substring(levelEndIndex).trim();
         } catch (Exception e) {
-            return "Invalid inputs";
+            return String.format(HELP, "Invalid inputs");
         }
 
         Paper paper = model.getPaper(paperId);
         if (paper == null) {
-            return "Paper not found";
+            return String.format(HELP, "Paper not found");
         }
 
         return createCitationWeb(paper, level).toString();

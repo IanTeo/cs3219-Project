@@ -9,6 +9,8 @@ import util.StringUtil;
 
 public class VenueCommand implements Command{
     public static final String COMMAND_WORD = "venue";
+    public static final String HELP = "Error: %s\nUsage: venue [venue]\n" +
+            "This command returns a JSON file representing the papers for the specified venue";
     private Model model;
     private String venue;
 

@@ -11,6 +11,8 @@ import java.util.*;
 
 public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
+    public static final String HELP = "Error: %s\nUsage: top [#] [author/paper] [venue]\n" +
+            "This command returns a JSON file representing the top # of authors/papers for the specified venue";
     private Model model;
     private int count;
     private String type;
@@ -25,7 +27,7 @@ public class TopCommand implements Command{
                 return getTopPaperIds();
 
             default :
-                return "Invalid type";
+                return String.format(HELP, "Invalid type");
         }
     }
 

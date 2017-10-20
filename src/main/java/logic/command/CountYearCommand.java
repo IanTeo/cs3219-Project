@@ -10,6 +10,8 @@ import java.util.Collection;
 
 public class CountYearCommand implements Command{
     public static final String COMMAND_WORD = "countyear";
+    public static final String HELP = "Error: %s\nUsage: countyear [start year]-[end year] [venue]\n" +
+            "This command returns a JSON file representing the number of papers per year for the specified venue";
     private Model model;
     private String startYear, endYear, venue;
 
@@ -27,7 +29,7 @@ public class CountYearCommand implements Command{
             }
             return array.toString();
         } catch (Exception e) {
-            return "Invalid year";
+            return String.format(HELP,"Invalid year");
         }
     }
 

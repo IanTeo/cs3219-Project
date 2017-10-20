@@ -6,13 +6,15 @@ import util.StringUtil;
 
 public class DetailCommand implements Command{
     public static final String COMMAND_WORD = "detail";
+    public static final String HELP = "Error: %s\nUsage: detail [paper name/id]\n" +
+            "Debugging command to view details on specified paper";
     private Model model;
     private String paperName;
 
     public String execute() {
         Paper paper = model.getPaper(paperName);
         if (paper == null) {
-            return "Paper not found";
+            return String.format(HELP, "Paper not found");
         }
 
         StringBuilder builder = new StringBuilder();
