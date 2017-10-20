@@ -7,10 +7,10 @@ import org.json.simple.JSONObject;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class JsonPrinterUI implements UserInterface {
+public class FileWriterUI implements UserInterface {
     private Controller controller;
 
-    public JsonPrinterUI(Controller controller) {
+    public FileWriterUI(Controller controller) {
         this.controller = controller;
     }
 
@@ -22,7 +22,10 @@ public class JsonPrinterUI implements UserInterface {
         String input = sc.nextLine();
         while (!input.equals("0")) {
             int fileNameEndIndex = input.indexOf(" ");
-            outputToFile(input.substring(0, fileNameEndIndex), controller.executeQuery(input.substring(fileNameEndIndex)));
+            String fileName = input.substring(0, fileNameEndIndex).trim();
+            String command = input.substring(fileNameEndIndex).trim();
+            outputToFile(fileName, controller.executeQuery(command));
+            System.out.println("Output successful");
             input = sc.nextLine();
         }
     }
@@ -31,6 +34,8 @@ public class JsonPrinterUI implements UserInterface {
         try {
             PrintWriter out = new PrintWriter(fileName);
             out.println(text);
+            out.flush();
+            out.close();
         } catch (Exception e) {
             System.out.println("Unable to write file: " + fileName);
         }
