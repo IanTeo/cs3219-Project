@@ -48,12 +48,9 @@ public class TopCommand implements Command{
 
         JSONArray array = new JSONArray();
         for (int i = 0; i < count; i++) {
-            JSONObject object = new JSONObject();
             Author author = authors.get(i);
-            object.put("id", author.getId());
-            object.put("name", author.getName());
+            JSONObject object = author.toJson();
             object.put("paperCount", getPaperCount(author));
-            // TODO: need to add actual array of papers
             array.add(object);
         }
         return array.toString();
@@ -80,19 +77,8 @@ public class TopCommand implements Command{
 
         JSONArray array = new JSONArray();
         for (int i = 0; i < count; i++) {
-            JSONObject object = new JSONObject();
             Paper paper = filteredPapers.get(i);
-            object.put("id", paper.getId());
-            object.put("title", paper.getTitle());
-            object.put("year", paper.getYear());
-            object.put("citationCount", paper.getInCitationCount());
-            StringBuilder authorBuilder = new StringBuilder();
-            for (Author author : paper.getAuthors()) {
-                authorBuilder.append(author.getName()).append(", ");
-            }
-            authorBuilder.delete(authorBuilder.length() - 2, authorBuilder.length());
-            object.put("authors", authorBuilder.toString());
-            array.add(object);
+            array.add(paper.toJson());
         }
         return array.toString();
     }

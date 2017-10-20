@@ -1,5 +1,7 @@
 package model;
 
+import org.json.simple.JSONObject;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,5 +63,13 @@ public class Author {
     @Override
     public String toString() {
         return id + " " + name + " " + papers.stream().map(Paper::getId).collect(Collectors.toList());
+    }
+
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        object.put("id", id);
+        object.put("name", name);
+        object.put("paperCount", papers.size());
+        return object;
     }
 }
