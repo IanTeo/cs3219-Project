@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONObject;
 import util.StringUtil;
 
 public class Paper {
@@ -106,13 +107,23 @@ public class Paper {
         builder.append("Title: ").append(title).append("\n");
         builder.append("Date: ").append(year).append("\n");
         builder.append("Authors: ");
-        for (Author author : getAuthors()) {
-            builder.append(author + ",");
-        }
-        builder.deleteCharAt(builder.length() - 1);
+        builder.append(authors.stream().map(Author::getName).collect(Collectors.joining(", ")));
         builder.append("\n");
+        builder.append("In Citations: ").append(getInCitationCount()).append("\n");
+        builder.append("Out Citations: ").append(getOutCitationCount()).append("\n");
 
         return builder.toString();
+    }
+
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        object.put("id", id);
+        object.put("title", title);
+        object.put("year", year);
+        object.put("citationCount", getInCitationCount());
+        String authorString = authors.stream().map(Author::getName).collect(Collectors.joining(", "));
+        object.put("authors", authorString);
+        return object;
     }
 
     public static class PaperBuilder {
