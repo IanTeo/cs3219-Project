@@ -36,7 +36,11 @@ public class CommandParser {
             case TopCommand.COMMAND_WORD :
                 command = new TopCommand();
                 break;
-            
+
+            case VenueCommand.COMMAND_WORD :
+                command = new VenueCommand();
+                break;
+
             case WebCommand.COMMAND_WORD :
                 command = new WebCommand();
                 break;
