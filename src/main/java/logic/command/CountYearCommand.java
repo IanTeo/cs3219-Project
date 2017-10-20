@@ -51,7 +51,7 @@ public class CountYearCommand implements Command{
         
         Collection<Paper> paperList = model.getPapers();
         for (Paper p : paperList) {
-            if (p.getVenue().contains(venue) && !p.getInCitation().isEmpty()) {
+            if (p.getVenue().contains(venue)) {
                 if (p.getYear() >= start && p.getYear() <= end) {
                     int index = p.getYear() - start;
                     citationCounts[index] += 1;
