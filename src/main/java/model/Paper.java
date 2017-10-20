@@ -107,10 +107,7 @@ public class Paper {
         builder.append("Title: ").append(title).append("\n");
         builder.append("Date: ").append(year).append("\n");
         builder.append("Authors: ");
-        for (Author author : getAuthors()) {
-            builder.append(author + ",");
-        }
-        builder.deleteCharAt(builder.length() - 1);
+        builder.append(authors.stream().map(Author::getName).collect(Collectors.joining(", ")));
         builder.append("\n");
         builder.append("In Citations: ").append(getInCitationCount()).append("\n");
         builder.append("Out Citations: ").append(getOutCitationCount()).append("\n");
@@ -124,14 +121,8 @@ public class Paper {
         object.put("title", title);
         object.put("year", year);
         object.put("citationCount", getInCitationCount());
-        StringBuilder authorBuilder = new StringBuilder();
-        if (!authors.isEmpty()) {
-            for (Author author : authors) {
-                authorBuilder.append(author.getName()).append(", ");
-            }
-            authorBuilder.delete(authorBuilder.length() - 2, authorBuilder.length());
-        }
-        object.put("authors", authorBuilder.toString());
+        String authorString = authors.stream().map(Author::getName).collect(Collectors.joining(", "));
+        object.put("authors", authorString);
         return object;
     }
 
