@@ -120,6 +120,7 @@ public class Paper {
         object.put("id", id);
         object.put("title", title);
         object.put("year", year);
+        object.put("venue", venue);
         object.put("citationCount", getInCitationCount());
         String authorString = authors.stream().map(Author::getName).collect(Collectors.joining(", "));
         object.put("authors", authorString);
