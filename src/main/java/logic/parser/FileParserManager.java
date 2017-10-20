@@ -29,7 +29,6 @@ public class FileParserManager {
                 }
             }
         }
-        model.incNumDataSet(numFiles);
     }
 
     private boolean isHiddenFile(File file) {

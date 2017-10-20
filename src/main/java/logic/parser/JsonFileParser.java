@@ -21,6 +21,7 @@ public class JsonFileParser extends FileParser {
     }
 
     protected void parse(File file) {
+        int count = 0;
         try {
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -83,7 +84,7 @@ public class JsonFileParser extends FileParser {
      */
     private void processAuthors(Author[] authors) {
         for (int i = 0; i < authors.length; i++) {
-            String authorUID = authors[i].getUniqueIdentifier();
+            String authorUID = authors[i].getId();
             if (model.hasAuthor(authorUID)) {
                 authors[i] = model.getAuthor(authorUID);
             }
@@ -98,7 +99,7 @@ public class JsonFileParser extends FileParser {
      */
     private void addAuthor(Collection<Author> authorsArray, Paper paper) {
         for (Author author : authorsArray) {
-            String uniqueIdentifier = author.getUniqueIdentifier();
+            String uniqueIdentifier = author.getId();
             if (model.hasAuthor(uniqueIdentifier)) {
                 Author toModify = model.getAuthor(uniqueIdentifier);
                 toModify.addPaper(paper);
@@ -112,18 +113,22 @@ public class JsonFileParser extends FileParser {
     private void parseInCitation(JSONObject object, Paper paper) {
         JSONArray inCitations = (JSONArray) object.get("inCitations");
         for (int i = 0; i < inCitations.size(); i++) {
-            Paper citation = new PaperBuilder().withId(inCitations.get(i).toString()).build();
-            model.addPaper(citation);
-            model.addCitation(citation, paper); //citation cites paper
+            String citationId = inCitations.get(i).toString();
+            if (model.hasPaper(citationId)) {
+                Paper citation = model.getPaper(citationId);
+                model.addCitation(citation, paper); //citation cites paper
+            }
         }
     }
 
     private void parseOutCitation(JSONObject object, Paper paper) {
         JSONArray outCitations = (JSONArray) object.get("outCitations");
         for (int i = 0; i < outCitations.size(); i++) {
-            Paper citation = new PaperBuilder().withId(outCitations.get(i).toString()).build();
-            model.addPaper(citation);
-            model.addCitation(paper, citation); //paper cites citation
+            String citationId = outCitations.get(i).toString();
+            if (model.hasPaper(citationId)) {
+                Paper citation = model.getPaper(citationId);
+                model.addCitation(paper, citation); //paper cites citation
+            }
         }
     }
 }

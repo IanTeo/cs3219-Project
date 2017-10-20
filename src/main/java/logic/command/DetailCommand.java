@@ -10,7 +10,7 @@ public class DetailCommand implements Command{
     private String paperName;
 
     public String execute() {
-        Paper paper = model.getPaperByName(paperName);
+        Paper paper = model.getPaper(paperName);
         if (paper == null) {
             return "Paper not found";
         }

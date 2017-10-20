@@ -35,13 +35,6 @@ public class Paper {
         citation.inCitation.add(this);
     }
 
-    public void updateMissingInformation(Paper paper) {
-        if (year == 0) this.year = paper.year;
-        this.authors.addAll(paper.getAuthors());
-        if ("".equals(venue)) this.venue = StringUtil.parseString(paper.venue);
-        if ("".equals(title)) this.title = StringUtil.parseString(paper.title);
-    }
-
     public String getId() {
         return id;
     }
@@ -66,8 +59,16 @@ public class Paper {
         return inCitation;
     }
 
+    public int getInCitationCount() {
+        return inCitation.size();
+    }
+
     public Collection<Paper> getOutCitation() {
         return outCitation;
+    }
+
+    public int getOutCitationCount() {
+        return outCitation.size();
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Author {
     private final Set<Paper> papers = new HashSet<>();
 
     public Author(String name) {
-        this.id = "";
+        this.id = name;
         this.name = name;
     }
 
@@ -37,13 +37,6 @@ public class Author {
 
     public Set<Paper> getPapers() {
         return papers;
-    }
-
-    /**
-     * Returns id if it exists, else returns the name.
-     */
-    public String getUniqueIdentifier() {
-        return !id.isEmpty() ? id : name;
     }
 
     @Override
