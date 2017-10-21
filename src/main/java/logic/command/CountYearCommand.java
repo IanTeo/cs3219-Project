@@ -1,12 +1,10 @@
 package logic.command;
 
-import model.Model;
-import model.Paper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import util.StringUtil;
 
-import java.util.Collection;
+import model.Model;
+import util.StringUtil;
 
 public class CountYearCommand implements Command{
     public static final String COMMAND_WORD = "countyear";
@@ -48,16 +46,11 @@ public class CountYearCommand implements Command{
 
     private int[] countCitationsByYear(int start, int end) {
         int[] citationCounts = new int[end - start + 1];
-        
-        Collection<Paper> paperList = model.getPapers();
-        for (Paper p : paperList) {
-            if (p.getVenue().contains(venue)) {
-                if (p.getYear() >= start && p.getYear() <= end) {
-                    int index = p.getYear() - start;
-                    citationCounts[index] += 1;
-                }
-            }
-        }
+
+        model.getPapers().stream()
+                .filter(paper -> paper.getVenue().contains(venue) && paper.getYear() >= start && paper.getYear() <= end)
+                .forEach(paper -> citationCounts[paper.getYear() - start] += 1);
+
         return citationCounts;
     }
 }
