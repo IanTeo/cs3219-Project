@@ -31,7 +31,7 @@ public class Paper {
         this.outCitation = outCitation;
     }
 
-    protected void addCitation(Paper citation) {
+    public void addCitation(Paper citation) {
         this.outCitation.add(citation);
         citation.inCitation.add(this);
     }

@@ -54,9 +54,9 @@ public class JsonFileParserTest {
         EXPECTED_MODEL.addPaper(PAPER_FOUR);
         EXPECTED_MODEL.addPaper(PAPER_FIVE);
 
-        EXPECTED_MODEL.addCitation(PAPER_TWO, PAPER_ONE);
-        EXPECTED_MODEL.addCitation(PAPER_THREE, PAPER_ONE);
-        EXPECTED_MODEL.addCitation(PAPER_ONE, PAPER_FOUR);
+        PAPER_TWO.addCitation(PAPER_ONE);
+        PAPER_THREE.addCitation(PAPER_ONE);
+        PAPER_ONE.addCitation(PAPER_FOUR);
     }
 
     @Test
