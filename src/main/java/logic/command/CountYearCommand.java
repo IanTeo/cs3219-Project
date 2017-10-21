@@ -11,17 +11,16 @@ public class CountYearCommand implements Command{
     public static final String HELP = "Error: %s\nUsage: countyear [start year]-[end year] [venue]\n" +
             "This command returns a JSON file representing the number of papers per year for the specified venue";
     private Model model;
-    private String startYear, endYear, venue;
+    private int startYear, endYear;
+    private String venue;
 
     public String execute() {
         try {
-            int start = Integer.parseInt(startYear);
-            int end = Integer.parseInt(endYear);
-            int[] yearCounts = countCitationsByYear(start, end);
+            int[] yearCounts = countCitationsByYear(startYear, endYear);
             JSONArray array = new JSONArray();
             for (int i = 0; i < yearCounts.length; i++) {
                 JSONObject object = new JSONObject();
-                object.put("year", start + i);
+                object.put("year", startYear + i);
                 object.put("count", yearCounts[i]);
                 array.add(object);
             }
@@ -36,8 +35,8 @@ public class CountYearCommand implements Command{
             this.model = model;
             String[] args = arguments.split(" ");
             String years[] = args[0].split("-");
-            this.startYear = years[0];
-            this.endYear = years[1];
+            this.startYear = Integer.parseInt(years[0]);
+            this.endYear = Integer.parseInt(years[1]);
             this.venue = StringUtil.parseString(args[1]);
         } catch (Exception e) {
             throw new Exception(String.format(HELP, "Error parsing parameters"));
