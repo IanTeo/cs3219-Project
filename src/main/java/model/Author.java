@@ -16,8 +16,7 @@ public class Author {
     private final Set<Paper> papers = new HashSet<>();
 
     public Author(String name) {
-        this.id = name;
-        this.name = name;
+        this.id = this.name = name;
     }
 
     public Author(String id, String name) {
