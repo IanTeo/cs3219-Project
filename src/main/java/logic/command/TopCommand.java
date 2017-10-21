@@ -49,7 +49,7 @@ public class TopCommand implements Command{
         authors.sort((Author a1, Author a2) -> {
             int countA1 = getPaperCount(a1);
             int countA2 = getPaperCount(a2);
-            return countA1 == countA2 ? a2.getName().compareTo(a1.getName()) : countA2 - countA1;
+            return countA1 == countA2 ? a1.getName().compareTo(a2.getName()) : countA2 - countA1;
         });
 
         JSONArray array = new JSONArray();
