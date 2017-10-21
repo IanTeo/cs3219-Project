@@ -6,6 +6,8 @@ import model.Model;
 public class LoadCommand implements Command{
     public static final String COMMAND_WORD = "load";
     public static final String BASE_URL = "Data/%s";
+    public static final String HELP = "Error: %s\nUsage: load [folder...]\n" +
+            "This command loads all datasets in the specified folder(s)";
     private Model model;
     private String[] directoryNames;
 
@@ -22,7 +24,7 @@ public class LoadCommand implements Command{
         } catch (Exception e) {
             model.clear();
             e.printStackTrace();
-            return "Error parsing file";
+            return String.format(HELP, "Error parsing file");
         }
         return builder.toString();
     }

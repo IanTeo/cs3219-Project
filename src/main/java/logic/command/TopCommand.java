@@ -11,6 +11,8 @@ import java.util.*;
 
 public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
+    public static final String HELP = "Error: %s\nUsage: top [#] [author/paper] [venue]\n" +
+            "This command returns a JSON file representing the top # of authors/papers for the specified venue";
     private Model model;
     private int count;
     private String type;
@@ -25,16 +27,20 @@ public class TopCommand implements Command{
                 return getTopPaperIds();
 
             default :
-                return "Invalid type";
+                return String.format(HELP, "Invalid type");
         }
     }
 
-    public void setParameters(Model model, String arguments) {
-        this.model = model;
-        String[] args = arguments.split(" ");
-        this.count = Integer.parseInt(args[0]);
-        this.type = StringUtil.parseString(args[1]);
-        this.venue = StringUtil.parseString(args[2]);
+    public void setParameters(Model model, String arguments) throws Exception {
+        try {
+            this.model = model;
+            String[] args = arguments.split(" ");
+            this.count = Integer.parseInt(args[0]);
+            this.type = StringUtil.parseString(args[1]);
+            this.venue = StringUtil.parseString(args[2]);
+        } catch (Exception e) {
+            throw new Exception(String.format(HELP, "Error parsing parameters"));
+        }
     }
 
     private String getTopAuthorIds() {
@@ -43,7 +49,7 @@ public class TopCommand implements Command{
         authors.sort((Author a1, Author a2) -> {
             int countA1 = getPaperCount(a1);
             int countA2 = getPaperCount(a2);
-            return countA1 == countA2 ? a2.getName().compareTo(a1.getName()) : countA2 - countA1;
+            return countA1 == countA2 ? a1.getName().compareTo(a2.getName()) : countA2 - countA1;
         });
 
         JSONArray array = new JSONArray();

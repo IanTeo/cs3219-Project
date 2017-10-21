@@ -63,10 +63,6 @@ public class Model {
         return paper;
     }
 
-    public void addCitation(Paper paper, Paper citation) {
-        paper.addCitation(citation);
-    }
-
     public Collection<Paper> getPapers() {
         return papers.values();
     }

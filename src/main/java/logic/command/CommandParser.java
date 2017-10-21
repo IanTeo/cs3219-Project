@@ -24,10 +24,6 @@ public class CommandParser {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
                 break;
-                
-            case CountConferenceCommand.COMMAND_WORD :
-                command = new CountConferenceCommand();
-                break;
 
             case DetailCommand.COMMAND_WORD :
                 command = new DetailCommand();
@@ -41,12 +37,8 @@ public class CommandParser {
                 command = new TopCommand();
                 break;
 
-            case AuthorCommand.COMMAND_WORD :
-                command = new AuthorCommand();
-                break;
-
-            case CitationCommand.COMMAND_WORD :
-                command = new CitationCommand();
+            case VenueCommand.COMMAND_WORD :
+                command = new VenueCommand();
                 break;
 
             case WebCommand.COMMAND_WORD :
@@ -54,11 +46,14 @@ public class CommandParser {
                 break;
 
             default :
-                command = new InvalidCommand();
+                command = new InvalidCommand("Invalid command");
                 break;
         }
-
-        command.setParameters(model, arguments);
+        try {
+            command.setParameters(model, arguments);
+        } catch (Exception e) {
+            command = new InvalidCommand(e.getMessage());
+        }
         return command;
     }
 }
