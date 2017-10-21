@@ -21,7 +21,6 @@ public class JsonFileParser extends FileParser {
     }
 
     protected void parse(File file) {
-        int count = 0;
         try {
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new FileReader(file));
