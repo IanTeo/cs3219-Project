@@ -10,4 +10,10 @@ public class StringUtil {
                 .replace("\n", " ")
                 .replaceAll("\\s+", " ");
     }
+
+    public static String sanitise(String sanitise) {
+        return sanitise.trim()
+                .replace("\n", " ")
+                .replaceAll("\\s+", " ");
+    }
 }
