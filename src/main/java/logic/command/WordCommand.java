@@ -75,7 +75,7 @@ public class WordCommand implements Command{
     public void setParameters(Model model, String arguments) throws Exception {
         try {
             this.model = model;
-            String[] args = StringUtil.parseString(arguments).split(" ");
+            String[] args = arguments.split(" ");
             this.count = Integer.parseInt(args[0].trim());
             this.type = args[1].trim();
         } catch (Exception e) {
