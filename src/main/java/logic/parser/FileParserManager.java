@@ -5,11 +5,9 @@ import java.io.File;
 import model.Model;
 
 public class FileParserManager {
-    private Model model;
     private FileParser jsonParser;
 
     public FileParserManager(Model model) {
-        this.model = model;
         jsonParser = new JsonFileParser(model);
     }
     public void parseFilesInDirectory(String directoryName) {
@@ -18,13 +16,11 @@ public class FileParserManager {
     }
 
     private void parseFilesInDirectory(File folder) {
-        int numFiles = 0;
         for (File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
                 parseFilesInDirectory(fileEntry);
             } else {
                 if (!isHiddenFile(fileEntry)) {
-                    numFiles++;
                     jsonParser.parse(fileEntry);
                 }
             }

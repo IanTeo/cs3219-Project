@@ -17,11 +17,11 @@ public class JsonFileParserTest {
 
     private static final Model EXPECTED_MODEL = new Model();
 
-    private static final Author AUTHOR_ONE = new Author("1", "alice a. alex");
-    private static final Author AUTHOR_TWO = new Author("alice a. alex");
-    private static final Author AUTHOR_THREE = new Author("2", "benny bob");
-    private static final Author AUTHOR_FOUR = new Author("3", "charlie cassell");
-    private static final Author AUTHOR_FIVE = new Author("4", "elephante");
+    private static final Author AUTHOR_ONE = new Author("1", "Alice A. Alex");
+    private static final Author AUTHOR_TWO = new Author("Alice A. Alex");
+    private static final Author AUTHOR_THREE = new Author("2", "Benny Bob");
+    private static final Author AUTHOR_FOUR = new Author("3", "Charlie Cassell");
+    private static final Author AUTHOR_FIVE = new Author("4", "Elephante");
 
     private static final Paper PAPER_ONE = new Paper.PaperBuilder().withTitle("Overloading").withVenue("Inf. Lett.")
             .withYear(2001).withId("1").withAuthors(new Author[]{AUTHOR_ONE}).build();

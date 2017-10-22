@@ -21,7 +21,6 @@ public class JsonFileParser extends FileParser {
     }
 
     protected void parse(File file) {
-        int count = 0;
         try {
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -73,7 +72,7 @@ public class JsonFileParser extends FileParser {
         for (int i = 0; i < authorsJSON.size(); i++) {
             JSONObject authorJSON = (JSONObject) authorsJSON.get(i);
             JSONArray ids = (JSONArray) authorJSON.get("ids");
-            String name = StringUtil.parseString(authorJSON.get("name").toString());
+            String name = StringUtil.sanitise(authorJSON.get("name").toString());
             authors[i] = (ids.size() == 0) ? new Author(name) : new Author(ids.get(0).toString(), name);
         }
         return authors;
