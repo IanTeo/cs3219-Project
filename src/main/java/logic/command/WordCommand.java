@@ -95,6 +95,6 @@ public class WordCommand implements Command{
     }
 
     private int getPercentageInt(int numerator, int demoninator) {
-        return (int) (numerator / (demoninator / 100.0));
+        return (int) ((numerator * 100.0) / demoninator);
     }
 }
