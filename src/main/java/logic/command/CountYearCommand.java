@@ -1,9 +1,11 @@
 package logic.command;
 
+import model.Paper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import model.Model;
+import util.StringUtil;
 
 public class CountYearCommand implements Command{
     public static final String COMMAND_WORD = "countyear";
@@ -15,7 +17,7 @@ public class CountYearCommand implements Command{
 
     public String execute() {
         try {
-            int[] yearCounts = countCitationsByYear(startYear, endYear);
+            int[] yearCounts = countCitationsByYear();
             JSONArray array = new JSONArray();
             for (int i = 0; i < yearCounts.length; i++) {
                 JSONObject object = new JSONObject();
@@ -42,13 +44,18 @@ public class CountYearCommand implements Command{
         }
     }
 
-    private int[] countCitationsByYear(int start, int end) {
-        int[] citationCounts = new int[end - start + 1];
+    private int[] countCitationsByYear() {
+        int[] citationCounts = new int[endYear - startYear + 1];
 
         model.getPapers().stream()
-                .filter(paper -> paper.getVenue().equalsIgnoreCase(venue) && paper.getYear() >= start && paper.getYear() <= end)
-                .forEach(paper -> citationCounts[paper.getYear() - start] += 1);
+                .filter(paper -> matchVenueAndYear(paper))
+                .forEach(paper -> citationCounts[paper.getYear() - startYear] += 1);
 
         return citationCounts;
+    }
+
+    private boolean matchVenueAndYear(Paper paper) {
+        return StringUtil.containsIgnoreCase(paper.getVenue(), venue)
+                && paper.getYear() >= startYear && paper.getYear() <= endYear;
     }
 }

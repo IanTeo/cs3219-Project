@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import model.Author;
 import model.Model;
 import model.Paper;
+import util.StringUtil;
 
 public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
@@ -69,7 +70,7 @@ public class TopCommand implements Command{
         Collection<Paper> papers = author.getPapers();
         if (venue.isEmpty()) return papers.size();
 
-        return (int) papers.stream().filter(paper -> paper.getVenue().equalsIgnoreCase(venue)).count();
+        return (int) papers.stream().filter(paper -> StringUtil.containsIgnoreCase(paper.getVenue(), venue)).count();
     }
 
     private String getTopPaperIds() {
@@ -78,7 +79,7 @@ public class TopCommand implements Command{
 
         List<Paper> filteredPapers = new ArrayList<>();
         for (Paper p : model.getPapers()) {
-            if (p.getVenue().equalsIgnoreCase(venue)) {
+            if (StringUtil.containsIgnoreCase(p.getVenue(), venue)) {
                 filteredPapers.add(p);
             }
         }

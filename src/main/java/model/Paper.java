@@ -148,7 +148,7 @@ public class Paper {
         }
 
         public PaperBuilder withId(String id) {
-            this.id = id;
+            this.id = StringUtil.parseString(id);
             return this;
         }
 
