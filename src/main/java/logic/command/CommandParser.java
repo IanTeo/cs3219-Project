@@ -45,6 +45,10 @@ public class CommandParser {
                 command = new WebCommand();
                 break;
 
+            case WordCommand.COMMAND_WORD :
+                command = new WordCommand();
+                break;
+
             default :
                 command = new InvalidCommand("Invalid command");
                 break;
