@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
+
 import util.StringUtil;
 
 public class Paper {
