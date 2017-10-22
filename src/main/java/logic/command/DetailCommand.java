@@ -2,7 +2,6 @@ package logic.command;
 
 import model.Model;
 import model.Paper;
-import util.StringUtil;
 
 public class DetailCommand implements Command{
     public static final String COMMAND_WORD = "detail";
@@ -32,6 +31,6 @@ public class DetailCommand implements Command{
 
     public void setParameters(Model model, String arguments) {
         this.model = model;
-        this.paperName = StringUtil.parseString(arguments);
+        this.paperName = arguments;
     }
 }

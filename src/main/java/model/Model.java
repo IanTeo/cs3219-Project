@@ -26,7 +26,7 @@ public class Model {
      * Adds {@code author} if it does not exist.
      */
     public void addAuthor(Author author) {
-        String uniqueIdentifier = author.getId();
+        String uniqueIdentifier = author.getId().toLowerCase();
         if (authors.containsKey(uniqueIdentifier)) {
             return;
         }
@@ -42,18 +42,19 @@ public class Model {
      * Returns true if this model contains an author that can be uniquely identified with {@code uniqueIdentifier}.
      */
     public boolean hasAuthor(String id) {
-        return authors.containsKey(id);
+        return authors.containsKey(id.toLowerCase());
     }
 
     /**
      * Returns the author stored in this model that is uniquely identified as {@code uniqueIdentifier}.
      */
     public Author getAuthor(String id) {
-        if (!hasAuthor(id)) {
+        String lowerCaseId = id.toLowerCase();
+        if (!hasAuthor(lowerCaseId)) {
             throw new IllegalArgumentException("No such author exists.");
         }
 
-        return authors.get(id);
+        return authors.get(lowerCaseId);
     }
 
     public Paper getPaper(String id) {

@@ -1,13 +1,16 @@
 package logic.command;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import model.Author;
 import model.Model;
 import model.Paper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import util.StringUtil;
-
-import java.util.*;
 
 public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
@@ -36,8 +39,8 @@ public class TopCommand implements Command{
             this.model = model;
             String[] args = arguments.split(" ");
             this.count = Integer.parseInt(args[0]);
-            this.type = StringUtil.parseString(args[1]);
-            this.venue = StringUtil.parseString(args[2]);
+            this.type = args[1];
+            this.venue = args[2];
         } catch (Exception e) {
             throw new Exception(String.format(HELP, "Error parsing parameters"));
         }
@@ -66,7 +69,7 @@ public class TopCommand implements Command{
         Collection<Paper> papers = author.getPapers();
         if (venue.isEmpty()) return papers.size();
 
-        return (int) papers.stream().filter(paper -> paper.getVenue().contains(venue)).count();
+        return (int) papers.stream().filter(paper -> paper.getVenue().equalsIgnoreCase(venue)).count();
     }
 
     private String getTopPaperIds() {
@@ -75,7 +78,7 @@ public class TopCommand implements Command{
 
         List<Paper> filteredPapers = new ArrayList<>();
         for (Paper p : model.getPapers()) {
-            if (p.getVenue().contains(venue)) {
+            if (p.getVenue().equalsIgnoreCase(venue)) {
                 filteredPapers.add(p);
             }
         }

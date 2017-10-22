@@ -1,13 +1,13 @@
 package logic.command;
 
-import model.Model;
-import model.Paper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import util.StringUtil;
-
 import java.util.LinkedList;
 import java.util.Queue;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import model.Model;
+import model.Paper;
 
 public class WebCommand implements Command{
     public static final String COMMAND_WORD = "web";
@@ -32,7 +32,7 @@ public class WebCommand implements Command{
             this.model = model;
             int levelEndIndex = arguments.indexOf(" ");
             level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
-            paperId = StringUtil.parseString(arguments.substring(levelEndIndex));
+            paperId = arguments.substring(levelEndIndex);
         } catch (Exception e) {
             throw new Exception(String.format(HELP, "Error parsing parameters"));
         }
