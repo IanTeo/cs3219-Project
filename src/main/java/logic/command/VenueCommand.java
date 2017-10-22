@@ -1,11 +1,9 @@
 package logic.command;
 
-import model.Author;
+import org.json.simple.JSONArray;
+
 import model.Model;
 import model.Paper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import util.StringUtil;
 
 public class VenueCommand implements Command{
     public static final String COMMAND_WORD = "venue";
@@ -17,7 +15,7 @@ public class VenueCommand implements Command{
     public String execute() {
         JSONArray array = new JSONArray();
         for (Paper paper : model.getPapers()) {
-            if (paper.getVenue().contains(venue)) {
+            if (paper.getVenue().equalsIgnoreCase(venue)) {
                 array.add(paper.toJson());
             }
         }
@@ -27,6 +25,6 @@ public class VenueCommand implements Command{
 
     public void setParameters(Model model, String arguments) {
         this.model = model;
-        this.venue = StringUtil.parseString(arguments);
+        this.venue = arguments;
     }
 }

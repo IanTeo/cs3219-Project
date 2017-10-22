@@ -153,7 +153,7 @@ public class Paper {
         }
 
         public PaperBuilder withTitle(String title) {
-            this.title = StringUtil.parseString(title);
+            this.title = StringUtil.sanitise(title);
             return this;
         }
 
@@ -168,7 +168,7 @@ public class Paper {
         }
 
         public PaperBuilder withVenue(String venue) {
-            this.venue = StringUtil.parseString(venue);
+            this.venue = StringUtil.sanitise(venue);
             return this;
         }
 

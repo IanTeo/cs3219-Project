@@ -4,7 +4,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import model.Model;
-import util.StringUtil;
 
 public class CountYearCommand implements Command{
     public static final String COMMAND_WORD = "countyear";
@@ -37,7 +36,7 @@ public class CountYearCommand implements Command{
             String years[] = args[0].split("-");
             this.startYear = Integer.parseInt(years[0]);
             this.endYear = Integer.parseInt(years[1]);
-            this.venue = StringUtil.parseString(args[1]);
+            this.venue = args[1];
         } catch (Exception e) {
             throw new Exception(String.format(HELP, "Error parsing parameters"));
         }
@@ -47,7 +46,7 @@ public class CountYearCommand implements Command{
         int[] citationCounts = new int[end - start + 1];
 
         model.getPapers().stream()
-                .filter(paper -> paper.getVenue().contains(venue) && paper.getYear() >= start && paper.getYear() <= end)
+                .filter(paper -> paper.getVenue().equalsIgnoreCase(venue) && paper.getYear() >= start && paper.getYear() <= end)
                 .forEach(paper -> citationCounts[paper.getYear() - start] += 1);
 
         return citationCounts;
