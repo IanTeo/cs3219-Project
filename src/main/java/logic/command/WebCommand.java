@@ -12,6 +12,7 @@ import java.util.Queue;
 
 import model.Model;
 import model.Paper;
+import util.StringUtil;
 
 
 public class WebCommand implements Command{
@@ -37,7 +38,7 @@ public class WebCommand implements Command{
             this.model = model;
             int levelEndIndex = arguments.indexOf(" ");
             level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
-            paperId = arguments.substring(levelEndIndex);
+            paperId = StringUtil.sanitise(arguments.substring(levelEndIndex));
         } catch (Exception e) {
             throw new Exception(String.format(HELP, "Error parsing parameters"));
         }

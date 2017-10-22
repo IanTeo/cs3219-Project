@@ -38,7 +38,8 @@ public class WordCommand implements Command{
         JSONArray array = new JSONArray();
         for (Paper paper : model.getPapers()) {
             String[] words = getWord(paper).split("[\\s\\p{Punct}]+");
-            for (String word : words) {
+            for (int i = 0; i < words.length; i++) {
+                String word = words[i].toLowerCase();
                 if (word.length() < 2) continue;
                 if (stopWords.contains(word)) continue;
 
