@@ -1,5 +1,8 @@
 package util;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class StringUtil {
     /**
      * Takes a String, turn it to lower case and replaces all '\n' and spaces with a single space
@@ -15,6 +18,14 @@ public class StringUtil {
         return sanitise.trim()
                 .replace("\n", " ")
                 .replaceAll("\\s+", " ");
+    }
+
+    public static boolean containsIgnoreCaseVenue(String str, String searchStr) {
+        if(str == null || searchStr == null) return false;
+        Collection<String> splitStrs = Arrays.asList(str.split("[\\s\\p{Punct}]+"));
+
+        return searchStr.length() == 0 ||
+                splitStrs.stream().anyMatch(splitStr -> splitStr.equalsIgnoreCase(searchStr));
     }
 
     public static boolean containsIgnoreCase(String str, String searchStr)     {

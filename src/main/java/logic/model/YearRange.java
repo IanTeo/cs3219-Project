@@ -1,5 +1,8 @@
 package logic.model;
 
+import java.time.Year;
+import java.util.stream.IntStream;
+
 import logic.Precondition;
 
 public class YearRange {
@@ -12,15 +15,25 @@ public class YearRange {
     }
 
     public YearRange(int startYear) {
-        Precondition.checkArgument(startYear >= 0);
+        Precondition.checkArgument(startYear >= 0 && startYear <= Year.now().getValue());
         this.startYear = startYear;
         this.endYear = -1;
     }
 
     public YearRange(int startYear, int endYear) {
-        Precondition.checkArgument(startYear >= 0 && endYear >= 0 && startYear < endYear);
+        Precondition.checkArgument(startYear >= 0 && startYear <= endYear && endYear <= Year.now().getValue());
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    public IntStream stream() {
+        if (startYear != -1 && endYear != -1) {
+            return IntStream.rangeClosed(startYear, endYear);
+        } else if (startYear != -1) {
+            return IntStream.rangeClosed(startYear, Year.now().getValue());
+        } else {
+            return IntStream.empty();
+        }
     }
 
     public boolean hasStartYear() {
