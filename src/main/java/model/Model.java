@@ -18,7 +18,7 @@ public class Model {
     public void addPaper(Paper paper) {
         if (papers.containsKey(paper.getId())) return;
 
-        titleToIdMap.put(paper.getTitle(), paper.getId());
+        titleToIdMap.put(paper.getTitle().toLowerCase(), paper.getId());
         papers.put(paper.getId(), paper);
     }
 
@@ -60,7 +60,7 @@ public class Model {
     public Paper getPaper(String id) {
         Paper paper = papers.get(id);
         if (paper == null) {
-            paper = papers.get(titleToIdMap.get(id));
+            paper = papers.get(titleToIdMap.get(id.toLowerCase()));
         }
         return paper;
     }

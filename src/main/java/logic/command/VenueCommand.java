@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 
 import model.Model;
 import model.Paper;
+import util.StringUtil;
 
 public class VenueCommand implements Command{
     public static final String COMMAND_WORD = "venue";
@@ -15,7 +16,7 @@ public class VenueCommand implements Command{
     public String execute() {
         JSONArray array = new JSONArray();
         for (Paper paper : model.getPapers()) {
-            if (paper.getVenue().equalsIgnoreCase(venue)) {
+            if (StringUtil.containsIgnoreCase(paper.getVenue(), venue)) {
                 array.add(paper.toJson());
             }
         }
