@@ -1,14 +1,11 @@
 package logic.command;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import model.Model;
 import model.Paper;
