@@ -1,5 +1,7 @@
 package logic.command;
 
+import logic.exception.ParseException;
+import logic.parser.TrendCommandParser;
 import model.Model;
 
 public class CommandParser {
@@ -20,6 +22,22 @@ public class CommandParser {
             arguments = query.substring(commandWordLastIndex).trim();
         }
 
+        try {
+            command = parseCommand(commandWord, arguments);
+        } catch (ParseException pe) {
+            command = new InvalidCommand(pe.getMessage());
+        }
+
+        try {
+            command.setParameters(model, arguments);
+        } catch (Exception e) {
+            command = new InvalidCommand(e.getMessage());
+        }
+        return command;
+    }
+
+    private Command parseCommand(String commandWord, String arguments) throws ParseException {
+        Command command;
         switch (commandWord) {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
@@ -49,14 +67,13 @@ public class CommandParser {
                 command = new WordCommand();
                 break;
 
+            case TrendCommand.COMMAND_WORD:
+                command = new TrendCommandParser().parse(arguments);
+                break;
+
             default :
                 command = new InvalidCommand("Invalid command");
                 break;
-        }
-        try {
-            command.setParameters(model, arguments);
-        } catch (Exception e) {
-            command = new InvalidCommand(e.getMessage());
         }
         return command;
     }
