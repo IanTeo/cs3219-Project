@@ -60,7 +60,7 @@ public class Model {
     public Paper getPaper(String id) {
         Paper paper = papers.get(id);
         if (paper == null) {
-            paper = papers.get(titleToIdMap.get(id));
+            paper = papers.get(titleToIdMap.get(id.toLowerCase()));
         }
         return paper;
     }

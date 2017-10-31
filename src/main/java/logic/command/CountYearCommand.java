@@ -48,7 +48,7 @@ public class CountYearCommand implements Command{
         int[] citationCounts = new int[endYear - startYear + 1];
 
         model.getPapers().stream()
-                .filter(paper -> matchVenueAndYear(paper))
+                .filter(this::matchVenueAndYear)
                 .forEach(paper -> citationCounts[paper.getYear() - startYear] += 1);
 
         return citationCounts;
