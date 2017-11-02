@@ -7,6 +7,8 @@ import org.junit.Test;
 import model.Model;
 import model.Paper;
 
+import java.util.HashMap;
+
 public class WebCommandTest {
     private final WebCommand command = new WebCommand();
     private final Model model = new Model();
@@ -35,7 +37,10 @@ public class WebCommandTest {
         For a visual of the nodes and links, see under test/res/webcommand.png
          */
         setUp();
-        command.setParameters(model, "3 1");
+        HashMap<String, String> argumentMap = new HashMap<>();
+        argumentMap.put("count", "3");
+        argumentMap.put("paper", "1");
+        command.setParameters(model, argumentMap);
         assertEquals("{\"nodes\":[{\"citationCount\":2,\"venue\":\"\",\"year\":0,\"id\":\"1\",\"title\":\"One\",\"authors\":\"\",\"group\":1}," +
                 "{\"citationCount\":1,\"venue\":\"\",\"year\":0,\"id\":\"2\",\"title\":\"Two\",\"authors\":\"\",\"group\":2}," +
                 "{\"citationCount\":1,\"venue\":\"\",\"year\":0,\"id\":\"3\",\"title\":\"Three\",\"authors\":\"\",\"group\":2}," +
