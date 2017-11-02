@@ -2,6 +2,7 @@ package logic.command;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 import org.json.simple.JSONArray;
@@ -30,15 +31,19 @@ public class WebCommand implements Command{
         return createCitationWeb(paper, level).toString();
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
-        try {
-            this.model = model;
-            int levelEndIndex = arguments.indexOf(" ");
-            level = Integer.parseInt(arguments.substring(0, levelEndIndex).trim());
-            paperId = StringUtil.sanitise(arguments.substring(levelEndIndex));
-        } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+    public void setParameters(Model model, Map<String, String> argumentMap) throws Exception {
+        if (!containExpectedArguments(argumentMap)) {
+            throw new Exception(String.format(HELP, "Invalid Arguments"));
         }
+        this.model = model;
+        level = Integer.parseInt(argumentMap.get("count"));
+        paperId = StringUtil.sanitise(argumentMap.get("paper"));
+    }
+
+    private boolean containExpectedArguments(Map<String, String> argumentMap) {
+        return argumentMap.containsKey("count")
+                && argumentMap.get("count").matches("[0-9]+")
+                && argumentMap.containsKey("paper");
     }
 
     private JSONObject createCitationWeb(Paper basePaper, int level) {

@@ -1,9 +1,6 @@
 package logic.command;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,16 +32,22 @@ public class TopCommand implements Command{
         }
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
-        try {
-            this.model = model;
-            String[] args = arguments.split(" ");
-            this.count = Integer.parseInt(args[0]);
-            this.type = args[1];
-            this.venue = args[2];
-        } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+    public void setParameters(Model model, Map<String, String> argumentMap) throws Exception {
+        if (!containExpectedArguments(argumentMap)) {
+            throw new Exception(String.format(HELP, "Invalid Arguments"));
         }
+
+        this.model = model;
+        this.count = Integer.parseInt(argumentMap.get("count"));
+        this.type = argumentMap.get("type");
+        this.venue = argumentMap.get("venue");
+    }
+
+    private boolean containExpectedArguments(Map<String, String> argumentMap) {
+        return argumentMap.containsKey("count")
+                && argumentMap.get("count").matches("[0-9]+")
+                && argumentMap.containsKey("type")
+                && argumentMap.containsKey("venue");
     }
 
     private String getTopAuthorIds() {

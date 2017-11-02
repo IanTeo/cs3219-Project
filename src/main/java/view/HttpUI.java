@@ -13,6 +13,11 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class HttpUI implements UserInterface {
+    public static final int HTTP_OK = 200;
+    public static final int HTTP_BAD_REQUEST = 400;
+
+
+    private static final int port = 8000;
     private Controller controller;
 
     public HttpUI(Controller controller) {
@@ -20,46 +25,56 @@ public class HttpUI implements UserInterface {
     }
 
     public void start() {
-        System.out.println("Loading data in JSON folder");
-        System.out.println(controller.executeQuery("load json"));
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-            server.createContext("/top", new TopHandler());
-            server.setExecutor(null);
+            controller.loadData("/");
+
+            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+            server.createContext("/top", new HttpRequestHandler("top"));
             server.start();
+            System.out.println("Server is running on port " + port);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Map<String, String> queryToMap(String query) {
-        Map<String, String> queryMap = new HashMap<>();
-        for (String param : query.split("&")) {
-            String[] pair = param.split("=");
-            // We want to ensure the pair has both key and value, seperated by "="
-            if (pair.length > 1) {
-                queryMap.put(pair[0], pair[1]);
-            }
-        }
-        return queryMap;
-    }
+    class HttpRequestHandler implements HttpHandler {
+        String query;
 
-    class TopHandler implements HttpHandler {
+        public HttpRequestHandler(String query) {
+            this.query = query;
+        }
+
         @Override
-        public void handle(HttpExchange t) throws IOException {
-            Map<String, String> queryMap = queryToMap(t.getRequestURI().getQuery());
-            System.out.println("venue=" + queryMap.get("venue"));
-            String response = "Invalid Parameters";
-            if (queryMap.containsKey("count") && queryMap.containsKey("venue") && queryMap.containsKey("type")) {
-                response = controller.executeQuery(String.format("top %s %s %s",
-                        queryMap.get("count"), queryMap.get("type"), queryMap.get("venue")));
-                t.sendResponseHeaders(200, response.getBytes().length);
-            } else {
-                t.sendResponseHeaders(400, response.length());
+        public void handle(HttpExchange exchange) throws IOException {
+            Map<String, String> queryMap = queryToMap(exchange.getRequestURI().getQuery());
+            queryMap.put("query", query);
+
+            String response;
+            int responseType;
+            try {
+                response = controller.executeQuery(queryMap);
+                responseType = HTTP_OK;
+            } catch (Exception e) {
+                response = e.getMessage();
+                responseType = HTTP_BAD_REQUEST;
             }
-            OutputStream os = t.getResponseBody();
+
+            exchange.sendResponseHeaders(responseType, response.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
             os.close();
+        }
+
+        private Map<String, String> queryToMap(String query) {
+            Map<String, String> queryMap = new HashMap<>();
+            for (String param : query.split("&")) {
+                String[] pair = param.split("=");
+                // We want to ensure the pair has both key and value, seperated by "="
+                if (pair.length > 1) {
+                    queryMap.put(pair[0], pair[1]);
+                }
+            }
+            return queryMap;
         }
     }
 }

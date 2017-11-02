@@ -2,6 +2,8 @@ package logic.command;
 
 import model.Model;
 
+import java.util.Map;
+
 public class CommandParser {
     private Model model;
 
@@ -9,18 +11,10 @@ public class CommandParser {
         this.model = model;
     }
 
-    public Command parseCommand(String query) {
+    public Command parseCommand(Map<String, String> queryMap) throws Exception {
         Command command;
-        int commandWordLastIndex = query.indexOf(' ');
-        String commandWord = query;
-        String arguments = "";
 
-        if (commandWordLastIndex != -1) {
-            commandWord = query.substring(0, commandWordLastIndex).trim();
-            arguments = query.substring(commandWordLastIndex).trim();
-        }
-
-        switch (commandWord) {
+        switch (queryMap.get("query")) {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
                 break;
@@ -53,11 +47,8 @@ public class CommandParser {
                 command = new InvalidCommand("Invalid command");
                 break;
         }
-        try {
-            command.setParameters(model, arguments);
-        } catch (Exception e) {
-            command = new InvalidCommand(e.getMessage());
-        }
+        command.setParameters(model, queryMap);
+
         return command;
     }
 }

@@ -1,5 +1,4 @@
 import logic.Controller;
-import view.CommandLineUI;
 import view.HttpUI;
 import view.UserInterface;
 import model.Model;

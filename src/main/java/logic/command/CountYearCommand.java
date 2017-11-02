@@ -7,6 +7,8 @@ import org.json.simple.JSONObject;
 import model.Model;
 import util.StringUtil;
 
+import java.util.Map;
+
 public class CountYearCommand implements Command{
     public static final String COMMAND_WORD = "countyear";
     public static final String HELP = "Error: %s\nUsage: countyear [start year]-[end year] [venue]\n" +
@@ -31,17 +33,21 @@ public class CountYearCommand implements Command{
         }
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
-        try {
-            this.model = model;
-            String[] args = arguments.split(" ");
-            String years[] = args[0].split("-");
-            this.startYear = Integer.parseInt(years[0]);
-            this.endYear = Integer.parseInt(years[1]);
-            this.venue = args[1];
-        } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+    public void setParameters(Model model, Map<String, String> argumentMap) throws Exception {
+        if (!containExpectedArguments(argumentMap)) {
+            throw new Exception(String.format(HELP, "Invalid Arguments"));
         }
+
+        this.model = model;
+        String years[] = argumentMap.get("year").split("-");
+        this.startYear = Integer.parseInt(years[0]);
+        this.endYear = Integer.parseInt(years[1]);
+        this.venue = argumentMap.get("venue");
+    }
+
+    private boolean containExpectedArguments(Map<String, String> argumentMap) {
+        return argumentMap.containsKey("year")
+                && argumentMap.containsKey("venue");
     }
 
     private int[] countCitationsByYear() {
