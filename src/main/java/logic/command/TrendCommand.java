@@ -70,34 +70,12 @@ public class TrendCommand implements Command {
     private Map<String, Map<Integer, Integer>> processAuthor() {
         Map<String, Collection<Paper>> authorToPaper = search.getSearchKeywords().stream().map(model::getAuthor)
                 .collect(Collectors.toMap(Author::getName, Author::getPapers));
+
         removeUnwantedValues(authorToPaper, AUTHOR);
-
-        /*
-        Map<String, Map<Integer, Collection<Paper>>> result = foo(authorNameToPaper);
-        Map<String, Map<Integer, Integer>> result2 = new HashMap<>();
-        for (Map.Entry<String, Map<Integer, Collection<Paper>>> entry : result.entrySet()) {
-            for (Map.Entry<Integer, Collection<Paper>> entry2 : entry.getValue().entrySet()) {
-                int num = RemapperUtility.sum(entry2.getValue(), ordering);
-                Map<Integer, Integer> newMap = new HashMap<>();
-                newMap.put(entry2.getKey(), num);
-                result2.put(entry.getKey(), newMap);
-            }
-        }*/
-
         Map<String, Map<Integer, Integer>> authorToYearToCount = Remapper.sum(Remapper.groupPaper(authorToPaper, PAPER_YEAR), ordering);
         populateEmptyYears(authorToYearToCount);
         return authorToYearToCount;
     }
-
-    /*
-    private Map<String, Map<Integer, Collection<Paper>>> foo(Map<String, Collection<Paper>> authors) {
-        Map<String, Map<Integer, Collection<Paper>>> remapResult = new HashMap<>();
-        for (Map.Entry<String, Collection<Paper>> entry : authors.entrySet()) {
-            Map<Integer, Collection<Paper>> mapByYears = RemapperUtility.groupPaperByYears(entry.getValue());
-            remapResult.put(entry.getKey(), mapByYears);
-        }
-        return remapResult;
-    }*/
 
     private Map<String, Map<Integer, Integer>> processVenue() {
         Map<String, Collection<Paper>> venueToPaper = model.getPapers().stream()

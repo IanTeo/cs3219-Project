@@ -14,26 +14,6 @@ import logic.model.QueryKeyword;
 import model.Paper;
 
 public class Remapper {
-    /*
-    public static Map<Integer, Collection<Paper>> groupPaperByYears(Collection<Paper> papers) {
-        return papers.stream().collect(Collectors.groupingBy(Paper::getYear, Collectors.toCollection(ArrayList::new)));
-    }
-
-    public static int sum(Collection<Paper> papers, QueryKeyword ordering) {
-        switch (ordering) {
-            case AUTHOR:
-                return (int) papers.stream()
-                        .map(Paper::getAuthors)
-                        .flatMap(Set::stream)
-                        .distinct()
-                        .count();
-            case PAPER:
-                return papers.size();
-            default:
-                throw new AssertionError("ordering key is invalid; should have been verified in construction");
-        }
-    }*/
-
     /**
      * Remaps {@code Collection<Paper>} in {@code papers} by grouping them with {@code groupBy}.
      * E.g. If {@code groupBy == PAPER_YEAR}, the papers will be grouped according years.
