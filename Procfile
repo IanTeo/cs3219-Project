@@ -1,1 +1,1 @@
-web: java -jar CIR.jar
+web: java -jar build/libs/CIR.jar

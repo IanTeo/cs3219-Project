@@ -25,7 +25,7 @@ dependencies {
 }
 
 task stage {
-    dependsOn build
+    dependsOn shadowJar
 }
 
 shadowJar {
