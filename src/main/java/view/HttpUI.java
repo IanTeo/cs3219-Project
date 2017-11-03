@@ -26,10 +26,18 @@ public class HttpUI implements UserInterface {
 
     public void start() {
         try {
+            System.out.println("Loading data...");
             controller.loadData("/");
 
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/top", new HttpRequestHandler("top"));
+            server.createContext("/test", (exchange) -> {
+                    String response = "HELLO!";
+                    exchange.sendResponseHeaders(200, response.getBytes().length);
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+            });
             server.start();
             System.out.println("Server is running on port " + port);
         } catch (Exception e) {
