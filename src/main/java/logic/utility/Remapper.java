@@ -19,7 +19,7 @@ public class Remapper {
      * E.g. If {@code groupBy == PAPER_YEAR}, the papers will be grouped according years.
      */
     public static <T> Map<T, Map<Integer, Collection<Paper>>> groupPaper(Map<T, Collection<Paper>> papers, MapEnum groupBy) {
-        return papers.entrySet().stream().collect(Collectors.toMap(getKeyFunction(SELF), getValueFunction(groupBy)));
+        return papers.entrySet().stream().collect(Collectors.toMap(getKeyFunction(SELF), getGroupFunction(groupBy)));
     }
 
     /**
@@ -49,7 +49,7 @@ public class Remapper {
     /**
      * Returns a {@code Function} that groups the {@code Collection<Paper>} by {@code groupBy}.
      */
-    private static <T> Function<Map.Entry<T, Collection<Paper>>, Map<Integer, Collection<Paper>>> getValueFunction(
+    private static <T> Function<Map.Entry<T, Collection<Paper>>, Map<Integer, Collection<Paper>>> getGroupFunction(
             MapEnum groupBy) {
         switch (groupBy) {
             case PAPER_YEAR:
