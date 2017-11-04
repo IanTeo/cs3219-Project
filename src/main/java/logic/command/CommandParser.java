@@ -4,6 +4,8 @@ import logic.exception.ParseException;
 import logic.parser.TrendCommandParser;
 import model.Model;
 
+import java.util.Map;
+
 public class CommandParser {
     private Model model;
 
@@ -11,34 +13,10 @@ public class CommandParser {
         this.model = model;
     }
 
-    public Command parseCommand(String query) {
+    public Command parseCommand(Map<String, String> queryMap) throws Exception {
         Command command;
-        int commandWordLastIndex = query.indexOf(' ');
-        String commandWord = query;
-        String arguments = "";
 
-        if (commandWordLastIndex != -1) {
-            commandWord = query.substring(0, commandWordLastIndex).trim();
-            arguments = query.substring(commandWordLastIndex).trim();
-        }
-
-        try {
-            command = parseCommand(commandWord, arguments);
-        } catch (ParseException pe) {
-            command = new InvalidCommand(pe.getMessage());
-        }
-
-        try {
-            command.setParameters(model, arguments);
-        } catch (Exception e) {
-            command = new InvalidCommand(e.getMessage());
-        }
-        return command;
-    }
-
-    private Command parseCommand(String commandWord, String arguments) throws ParseException {
-        Command command;
-        switch (commandWord) {
+        switch (queryMap.get("query")) {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
                 break;
@@ -68,13 +46,15 @@ public class CommandParser {
                 break;
 
             case TrendCommand.COMMAND_WORD:
-                command = new TrendCommandParser().parse(arguments);
+                command = new TrendCommandParser().parse(queryMap);
                 break;
 
             default :
                 command = new InvalidCommand("Invalid command");
                 break;
         }
+        command.setParameters(model, queryMap);
+
         return command;
     }
 }

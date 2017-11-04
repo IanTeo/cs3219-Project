@@ -2,6 +2,8 @@ package logic.command;
 
 import model.Model;
 
+import java.util.Map;
+
 public class InvalidCommand implements Command {
     private String message;
 
@@ -12,7 +14,7 @@ public class InvalidCommand implements Command {
         return message;
     }
 
-    public void setParameters(Model mode, String arguments) {
+    public void setParameters(Model mode, Map<String, String> argumentMap) {
         // Am I breaking LSP?
     }
 }

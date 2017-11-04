@@ -156,7 +156,7 @@ public class TrendCommand implements Command {
         map.values().forEach(toPopulate -> yearRange.stream().forEach(value -> toPopulate.putIfAbsent(value, 0)));
     }
 
-    public void setParameters(Model model, String arguments) {
+    public void setParameters(Model model, Map<String, String> argumentMap) {
         this.model = model;
     }
 

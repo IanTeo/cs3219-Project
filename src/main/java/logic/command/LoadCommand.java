@@ -3,6 +3,8 @@ package logic.command;
 import logic.parser.FileParserManager;
 import model.Model;
 
+import java.util.Map;
+
 public class LoadCommand implements Command{
     public static final String COMMAND_WORD = "load";
     public static final String BASE_URL = "Data/%s";
@@ -29,8 +31,16 @@ public class LoadCommand implements Command{
         return builder.toString();
     }
 
-    public void setParameters(Model model, String arguments) {
+    public void setParameters(Model model, Map<String, String> argumentMap) throws Exception {
+        if (!containExpectedArguments(argumentMap)) {
+            throw new Exception(String.format(HELP, "Invalid Arguments"));
+        }
+
         this.model = model;
-        this.directoryNames = arguments.split("\\s+");
+        this.directoryNames = argumentMap.get("directory").split("\\s+");
+    }
+
+    private boolean containExpectedArguments(Map<String, String> argumentMap) {
+        return argumentMap.containsKey("directory");
     }
 }

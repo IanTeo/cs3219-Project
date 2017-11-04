@@ -73,15 +73,20 @@ public class WordCommand implements Command{
         return array.toString();
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
-        try {
-            this.model = model;
-            String[] args = arguments.split(" ");
-            this.count = Integer.parseInt(args[0].trim());
-            this.type = args[1].trim();
-        } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+    public void setParameters(Model model, Map<String, String> argumentMap) throws Exception {
+        if (!containExpectedArguments(argumentMap)) {
+            throw new Exception(String.format(HELP, "Invalid Arguments"));
         }
+
+        this.model = model;
+        this.count = Integer.parseInt(argumentMap.get("count"));
+        this.type = StringUtil.parseString(argumentMap.get("type"));
+    }
+
+    private boolean containExpectedArguments(Map<String, String> argumentMap) {
+        return argumentMap.containsKey("count")
+                && argumentMap.get("count").matches("[0-9]+")
+                && argumentMap.containsKey("type");
     }
 
     private String getWord(Paper paper) {

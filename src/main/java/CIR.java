@@ -1,5 +1,5 @@
 import logic.Controller;
-import view.CommandLineUI;
+import view.HttpUI;
 import view.UserInterface;
 import model.Model;
 
@@ -8,7 +8,7 @@ public class CIR {
     public void run() {
         Model model = new Model();
         Controller controller = new Controller(model);
-        UserInterface ui = new CommandLineUI(controller);
+        UserInterface ui = new HttpUI(controller);
         ui.start();
     }
 

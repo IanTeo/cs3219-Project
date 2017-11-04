@@ -2,6 +2,7 @@ package logic.parser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,7 +25,11 @@ public class TrendCommandParser implements CommandParser {
             "for the corresponding \"searchKeyword\"";
 
     @Override
-    public TrendCommand parse(String arguments) throws ParseException {
+    public TrendCommand parse(Map<String, String> argumentMap) throws ParseException {
+        // lousy patch to solve merge conflicts (For now)
+        String arguments = String.format("%s %s NUM %s FROM %s",
+                argumentMap.get("searchTerm"), argumentMap.get("searchValues"),
+                argumentMap.get("ordering"), argumentMap.get("yearRange"));
         Matcher matcher = PATTERN.matcher(arguments);
         if (!matcher.matches()) {
             throw new ParseException(String.format(HELP, "Invalid argument"));

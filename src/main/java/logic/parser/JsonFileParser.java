@@ -54,7 +54,7 @@ public class JsonFileParser extends FileParser {
         try {
             year = Integer.parseInt(object.get("year").toString());
         } catch (Exception e) {
-            System.out.println("Date in invalid format: " + e.getMessage());
+            // System.out.println("Date in invalid format: " + e.getMessage());
         }
         String venue = object.get("venue").toString();
         Author[] authors = parseAuthors(object);
