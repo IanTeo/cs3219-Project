@@ -1,5 +1,7 @@
 package logic.command;
 
+import logic.exception.ParseException;
+import logic.parser.TrendCommandParser;
 import model.Model;
 
 import java.util.Map;
@@ -41,6 +43,10 @@ public class CommandParser {
 
             case WordCommand.COMMAND_WORD :
                 command = new WordCommand();
+                break;
+
+            case TrendCommand.COMMAND_WORD:
+                command = new TrendCommandParser().parse(queryMap);
                 break;
 
             default :
