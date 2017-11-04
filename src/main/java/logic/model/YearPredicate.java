@@ -2,12 +2,10 @@ package logic.model;
 
 import java.util.function.Predicate;
 
-import model.Paper;
-
 /**
  * Tests that a {@code Paper}'s {@code year} falls within the range of {@code startYear} and {@code endYear}.
  */
-public class YearPredicate implements Predicate<Paper> {
+public class YearPredicate implements Predicate<Integer> {
     private final YearRange yearRange;
 
     public YearPredicate(YearRange yearRange) {
@@ -15,11 +13,11 @@ public class YearPredicate implements Predicate<Paper> {
     }
 
     @Override
-    public boolean test(Paper paper) {
+    public boolean test(Integer num) {
         if (yearRange.hasStartYear() && yearRange.hasEndYear()) {
-            return paper.getYear() >= yearRange.getStartYear() && paper.getYear() <= yearRange.getEndYear();
+            return num >= yearRange.getStartYear() && num <= yearRange.getEndYear();
         } else if (yearRange.hasStartYear()) {
-            return paper.getYear() >= yearRange.getStartYear();
+            return num >= yearRange.getStartYear();
         } else {
             return true;
         }
