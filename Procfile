@@ -1,1 +1,1 @@
-web: java -jar build/libs/CIR.jar
+web: java -Dserver.port=$PORT -jar app.jar

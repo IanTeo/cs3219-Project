@@ -15,9 +15,7 @@ import com.sun.net.httpserver.HttpServer;
 public class HttpUI implements UserInterface {
     public static final int HTTP_OK = 200;
     public static final int HTTP_BAD_REQUEST = 400;
-
-
-    private static final int port = 8000;
+    
     private Controller controller;
 
     public HttpUI(Controller controller) {
@@ -28,6 +26,9 @@ public class HttpUI implements UserInterface {
         try {
             System.out.println("Loading data...");
             controller.loadData("/");
+
+            int port = System.getenv().containsKey("PORT") ?
+                    Integer.parseInt(System.getenv().get("PORT")) : 8000;
 
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/top", new HttpRequestHandler("top"));
