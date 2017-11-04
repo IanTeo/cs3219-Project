@@ -1,7 +1,6 @@
 package view;
 
 import logic.Controller;
-import model.Model;
 
 import java.util.Scanner;
 

@@ -1,7 +1,6 @@
 package logic.command;
 
 import logic.exception.ParseException;
-import logic.parser.TrendCommandParser;
 import model.Model;
 
 public class CommandParser {
@@ -68,7 +67,7 @@ public class CommandParser {
                 break;
 
             case TrendCommand.COMMAND_WORD:
-                command = new TrendCommandParser().parse(arguments);
+                command = new TrendCommand();
                 break;
 
             default :
