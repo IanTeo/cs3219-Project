@@ -1,34 +1,38 @@
 package logic.command;
 
+import logic.exception.ParseException;
 import model.Author;
+import model.DataAttributes;
 import model.Model;
 import model.Paper;
 import util.JsonUtil;
 import util.StringUtil;
 
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
 public class TrendCommand implements Command{
     public static final String COMMAND_WORD = "trend";
-    public static final String HELP = "Error: %s\nUsage: trend [startYear]-[endYear] [type]\n" +
+    public static final String HELP = "Error: %s\nUsage: trend [startYear]-[endYear] [type] [measure]\n" +
             "This command returns a JSON file representing the venue/author trend for the specified year range";
     private Model model;
     private int startYear;
     private int endYear;
-    private String seriesType;
+    private DataAttributes series;
+    private DataAttributes measure;
 
     public String execute() {
         // Map of (Series -> Map of (Year -> Paper Count))
         Map<String, Map<Integer, Integer>> map;
 
-        switch (seriesType) {
-            case "venue" :
+        switch (series) {
+            case VENUE :
                 map = getVenueMap();
                 break;
 
-            case "author" :
+            case AUTHOR_NAME :
                 map = getAuthorMap();
                 break;
 
@@ -42,16 +46,17 @@ public class TrendCommand implements Command{
         return JsonUtil.toD3LineChartJson(map, getYearRange()).toString();
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
+    public void setParameters(Model model, String arguments) throws ParseException {
         try {
             this.model = model;
             String[] args = arguments.split(" ");
             String years[] = args[0].split("-");
             this.startYear = Integer.parseInt(years[0]);
             this.endYear = Integer.parseInt(years[1]);
-            this.seriesType = StringUtil.parseString(args[1]);
+            this.series = DataAttributes.getEnum(args[1]);
+            this.measure = DataAttributes.getEnum(StringUtil.parseString(args[2]));
         } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+            throw new ParseException(String.format(HELP, "Error parsing parameters"));
         }
     }
 
@@ -83,11 +88,11 @@ public class TrendCommand implements Command{
             Map<Integer, Integer> yearMap = map.get(paper.getVenue().toLowerCase());
             if (isYearInRange(paper.getYear())) {
                 int count = yearMap.containsKey(paper.getYear()) ? yearMap.get(paper.getYear()) : 0;
-                yearMap.put(paper.getYear(), count + 1);
+                yearMap.put(paper.getYear(), count + getMeasure(paper));
             }
         } else {
             Map<Integer, Integer> yearMap = new HashMap<>();
-            yearMap.put(paper.getYear(), 1);
+            yearMap.put(paper.getYear(), getMeasure(paper));
             map.put(paper.getVenue().toLowerCase(), yearMap);
         }
     }
@@ -97,7 +102,7 @@ public class TrendCommand implements Command{
         for (Paper paper : author.getPapers()) {
             if (isYearInRange(paper.getYear())) {
                 int count = yearMap.containsKey(paper.getYear()) ? yearMap.get(paper.getYear()) : 0;
-                yearMap.put(paper.getYear(), count + 1);
+                yearMap.put(paper.getYear(), count + getMeasure(paper));
             }
         }
         map.put(author.getName(), yearMap);
@@ -136,5 +141,25 @@ public class TrendCommand implements Command{
                 map.remove(name);
             }
         }
+    }
+
+    private int getMeasure(Paper paper) {
+        int count;
+
+        switch (measure) {
+            case IN_CITATION :
+                count = paper.getInCitationCount();
+                break;
+
+            case OUT_CITATION :
+                count = paper.getOutCitationCount();
+                break;
+
+            default :
+                // Any other attribute only accounts for 1 count
+                count = 1;
+                break;
+        }
+        return count;
     }
 }
