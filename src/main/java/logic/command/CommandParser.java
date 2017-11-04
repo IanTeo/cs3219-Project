@@ -67,7 +67,7 @@ public class CommandParser {
                 break;
 
             case TrendCommand.COMMAND_WORD:
-                command = new TrendCommandParser().parse(arguments);
+                command = new TrendCommand();
                 break;
 
             default :
