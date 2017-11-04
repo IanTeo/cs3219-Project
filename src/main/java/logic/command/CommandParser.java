@@ -1,7 +1,6 @@
 package logic.command;
 
 import logic.exception.ParseException;
-import logic.parser.TrendCommandParser;
 import model.Model;
 
 public class CommandParser {
