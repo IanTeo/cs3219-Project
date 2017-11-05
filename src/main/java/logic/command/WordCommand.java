@@ -1,5 +1,6 @@
 package logic.command;
 
+import logic.exception.ParseException;
 import model.Model;
 import model.Paper;
 import org.json.simple.JSONArray;
@@ -73,15 +74,20 @@ public class WordCommand implements Command{
         return array.toString();
     }
 
-    public void setParameters(Model model, String arguments) throws Exception {
-        try {
-            this.model = model;
-            String[] args = arguments.split(" ");
-            this.count = Integer.parseInt(args[0].trim());
-            this.type = args[1].trim();
-        } catch (Exception e) {
-            throw new Exception(String.format(HELP, "Error parsing parameters"));
+    public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
+        if (!containExpectedArguments(paramMap)) {
+            throw new ParseException(String.format(HELP, "Error parsing parameters"));
         }
+
+        this.model = model;
+        this.count = Integer.parseInt(paramMap.get("count"));
+        this.type = StringUtil.parseString(paramMap.get("type"));
+    }
+
+    private boolean containExpectedArguments(Map<String, String> paramMap) {
+        return paramMap.containsKey("count")
+                && paramMap.get("count").matches("[0-9]+")
+                && paramMap.containsKey("type");
     }
 
     private String getWord(Paper paper) {

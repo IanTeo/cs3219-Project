@@ -21,12 +21,12 @@ public class HttpUI implements UserInterface {
     public void start() {
         try {
             System.out.println("Starting server..");
-            controller.executeQuery("load");
+            controller.loadData("/");
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
             server.createContext("/top", new TopHandler());
             server.start();
             System.out.println("Server ready on port 8000");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -35,8 +35,8 @@ public class HttpUI implements UserInterface {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
             Map<String, String> queryMap = queryToMap(httpExchange.getRequestURI().getQuery());
-            String query = "top %s %s %s";
-            String response = controller.executeQuery(String.format(query, queryMap.get("count"), queryMap.get("type"), queryMap.get("venue")));
+            queryMap.put("command", "top");
+            String response = controller.executeQuery(queryMap);
             httpExchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = httpExchange.getResponseBody();
             os.write(response.getBytes());

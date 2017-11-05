@@ -1,10 +1,13 @@
 package logic.command;
 
+import logic.exception.ParseException;
 import org.json.simple.JSONArray;
 
 import model.Model;
 import model.Paper;
 import util.StringUtil;
+
+import java.util.Map;
 
 public class VenueCommand implements Command{
     public static final String COMMAND_WORD = "venue";
@@ -24,8 +27,16 @@ public class VenueCommand implements Command{
         return array.toString();
     }
 
-    public void setParameters(Model model, String arguments) {
+    public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
+        if (!containExpectedArguments(paramMap)) {
+            throw new ParseException(String.format(HELP, "Error parsing parameters"));
+        }
+
         this.model = model;
-        this.venue = arguments;
+        this.venue = paramMap.get("venue");
+    }
+
+    private boolean containExpectedArguments(Map<String, String> paramMap) {
+        return paramMap.containsKey("venue");
     }
 }

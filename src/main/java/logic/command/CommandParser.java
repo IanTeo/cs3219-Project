@@ -4,6 +4,8 @@ import logic.exception.ParseException;
 import logic.parser.TrendCommandParser;
 import model.Model;
 
+import java.util.Map;
+
 public class CommandParser {
     private Model model;
 
@@ -11,40 +13,29 @@ public class CommandParser {
         this.model = model;
     }
 
-    public Command parseCommand(String query) {
+    public Command parseCommand(Map<String, String> queryMap) {
         Command command;
-        int commandWordLastIndex = query.indexOf(' ');
-        String commandWord = query;
-        String arguments = "";
-
-        if (commandWordLastIndex != -1) {
-            commandWord = query.substring(0, commandWordLastIndex).trim();
-            arguments = query.substring(commandWordLastIndex).trim();
-        }
+        String commandWord = queryMap.get("command");
 
         try {
-            command = parseCommand(commandWord, arguments);
+            command = parseCommand(commandWord);
         } catch (ParseException pe) {
             command = new InvalidCommand(pe.getMessage());
         }
 
         try {
-            command.setParameters(model, arguments);
+            command.setParameters(model, queryMap);
         } catch (Exception e) {
             command = new InvalidCommand(e.getMessage());
         }
         return command;
     }
 
-    private Command parseCommand(String commandWord, String arguments) throws ParseException {
+    private Command parseCommand(String commandWord) throws ParseException {
         Command command;
         switch (commandWord) {
             case CountYearCommand.COMMAND_WORD :
                 command = new CountYearCommand();
-                break;
-
-            case DetailCommand.COMMAND_WORD :
-                command = new DetailCommand();
                 break;
 
             case LoadCommand.COMMAND_WORD :
@@ -67,9 +58,9 @@ public class CommandParser {
                 command = new WordCommand();
                 break;
 
-            case TrendCommand.COMMAND_WORD:
-                command = new TrendCommandParser().parse(arguments);
-                break;
+            /*case TrendCommand.COMMAND_WORD:
+                command = new TrendCommand();
+                break;*/
 
             default :
                 command = new InvalidCommand("Invalid command");

@@ -1,7 +1,13 @@
 package logic.command;
 
+import logic.exception.ParseException;
 import logic.parser.FileParserManager;
+import model.Author;
 import model.Model;
+import model.Paper;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LoadCommand implements Command{
     public static final String COMMAND_WORD = "load";
@@ -29,8 +35,16 @@ public class LoadCommand implements Command{
         return builder.toString();
     }
 
-    public void setParameters(Model model, String arguments) {
+    public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
+        if (!containExpectedArguments(paramMap)) {
+            throw new ParseException(String.format(HELP, "Error parsing parameters"));
+        }
+
         this.model = model;
-        this.directoryNames = arguments.split("\\s+");
+        this.directoryNames = paramMap.get("directory").split("\\s+");
+    }
+
+    private boolean containExpectedArguments(Map<String, String> paramMap) {
+        return paramMap.containsKey("directory");
     }
 }
