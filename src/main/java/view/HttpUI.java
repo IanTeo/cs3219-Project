@@ -22,10 +22,14 @@ public class HttpUI implements UserInterface {
         try {
             System.out.println("Starting server..");
             controller.loadData("/");
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
+            int port = System.getenv().containsKey("PORT") ?
+                    Integer.parseInt(System.getenv().get("PORT")) : 8000;
+
+            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/top", new TopHandler());
             server.start();
-            System.out.println("Server ready on port 8000");
+            System.out.println("Server ready on port " + port);
         } catch (Exception e) {
             e.printStackTrace();
         }
