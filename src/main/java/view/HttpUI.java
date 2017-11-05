@@ -8,6 +8,7 @@ import logic.Controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class HttpUI implements UserInterface {
                     Integer.parseInt(System.getenv().get("PORT")) : 8000;
 
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-            server.createContext("/top", new TopHandler());
+            server.createContext("/", new HttpRequestHandler());
             server.start();
             System.out.println("Server ready on port " + port);
         } catch (Exception e) {
@@ -35,11 +36,12 @@ public class HttpUI implements UserInterface {
         }
     }
 
-    class TopHandler implements HttpHandler {
+    class HttpRequestHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
-            Map<String, String> queryMap = queryToMap(httpExchange.getRequestURI().getQuery());
-            queryMap.put("command", "top");
+            URI uri = httpExchange.getRequestURI();
+            Map<String, String> queryMap = queryToMap(uri.getQuery());
+            queryMap.put("command", uri.getPath().substring(1));
             String response = controller.executeQuery(queryMap);
             httpExchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = httpExchange.getResponseBody();
