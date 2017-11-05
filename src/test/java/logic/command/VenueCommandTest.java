@@ -7,6 +7,9 @@ import org.junit.Test;
 import model.Model;
 import model.Paper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class VenueCommandTest {
     private final VenueCommand command = new VenueCommand();
     private final Model model = new Model();
@@ -24,11 +27,15 @@ public class VenueCommandTest {
         model.addPaper(PAPER_THREE);
         model.addPaper(PAPER_FOUR);
 
-        command.setParameters(model, "Malaysia");
+        Map<String, String> paramMalaysiaMap = new HashMap<>();
+        paramMalaysiaMap.put("venue", "Malaysia");
+        command.setParameters(model, paramMalaysiaMap);
         assertEquals("[{\"citationCount\":0,\"venue\":\"Malaysia\",\"year\":0,\"id\":\"3\",\"title\":\"\",\"authors\":\"\"}]",
                 command.execute());
 
-        command.setParameters(model, "Singapore");
+        Map<String, String> paramSingaporeMap = new HashMap<>();
+        paramSingaporeMap.put("venue", "Singapore");
+        command.setParameters(model, paramSingaporeMap);
         assertEquals("[{\"citationCount\":0,\"venue\":\"Singapore\",\"year\":0,\"id\":\"1\",\"title\":\"\",\"authors\":\"\"}," +
                 "{\"citationCount\":0,\"venue\":\"Singapore\",\"year\":2005,\"id\":\"4\",\"title\":\"Ian is a Scrub\"," +
                 "\"authors\":\"\"}]", command.execute());

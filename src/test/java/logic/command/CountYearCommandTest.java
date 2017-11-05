@@ -7,6 +7,9 @@ import org.junit.Test;
 import model.Model;
 import model.Paper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CountYearCommandTest {
     private final CountYearCommand command = new CountYearCommand();
     private final Model model = new Model();
@@ -27,7 +30,10 @@ public class CountYearCommandTest {
         model.addPaper(PAPER_FIVE);
         model.addPaper(PAPER_SIX);
 
-        command.setParameters(model, "1999-2004 Singapore");
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("year", "1999-2004");
+        paramMap.put("venue", "Singapore");
+        command.setParameters(model, paramMap);
         assertEquals("[{\"year\":1999,\"count\":0},{\"year\":2000,\"count\":1},{\"year\":2001,\"count\":0}" +
                 ",{\"year\":2002,\"count\":0},{\"year\":2003,\"count\":0},{\"year\":2004,\"count\":1}]", command.execute());
     }
