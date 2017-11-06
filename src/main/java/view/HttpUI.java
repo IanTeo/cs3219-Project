@@ -49,14 +49,16 @@ public class HttpUI implements UserInterface {
     }
 
     private Map<String, String> queryToMap(String query) {
+        if (query == null || query.isEmpty()) {
+            return new HashMap<>();
+        }
+
         Map<String, String> queryMap = new HashMap<>();
-        if (query != null && !query.isEmpty()) {
-            for (String param : query.split("&")) {
-                String[] pair = param.split("=");
-                // We want to ensure the pair has both key and value, seperated by "="
-                if (pair.length > 1) {
-                    queryMap.put(pair[0], pair[1]);
-                }
+        for (String param : query.split("&")) {
+            String[] pair = param.split("=");
+            // We want to ensure the pair has both key and value, seperated by "="
+            if (pair.length > 1) {
+                queryMap.put(pair[0], pair[1]);
             }
         }
         return queryMap;
