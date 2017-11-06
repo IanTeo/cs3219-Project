@@ -3,31 +3,25 @@ package logic.model;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+import model.Paper;
 import util.StringUtil;
 
-public class PaperTitlePredicate implements Predicate<String> {
+/**
+ * Tests that a {@code Paper}'s title matches any of the keywords given.
+ */
+public class PaperTitlePredicate implements Predicate<Paper> {
     private final Collection<String> searchTitles;
 
     public PaperTitlePredicate(Collection<String> searchTitles) {
         this.searchTitles = searchTitles;
     }
 
-    @Override
-    public boolean test(String title) {
-        return searchTitles.stream().anyMatch(searchTitle -> StringUtil.containsIgnoreCase(title, searchTitle));
+    public Collection<String> getSearchTitles() {
+        return searchTitles;
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        if (!(other instanceof PaperTitlePredicate)) {
-            return false;
-        }
-
-        PaperTitlePredicate otherPredicate = (PaperTitlePredicate) other;
-        return this.searchTitles.equals(otherPredicate.searchTitles);
+    public boolean test(Paper paper) {
+        return searchTitles.stream().anyMatch(searchTitle -> StringUtil.containsIgnoreCase(paper.getTitle(), searchTitle));
     }
 }

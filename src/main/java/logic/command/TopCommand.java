@@ -1,11 +1,15 @@
 package logic.command;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-import logic.exception.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import logic.exception.ParseException;
 import model.Author;
 import model.Model;
 import model.Paper;

@@ -1,5 +1,8 @@
 package logic.model;
 
+/**
+ * Represents the values that can be queried from the {@code Model}.
+ */
 public enum QueryKeyword {
-    AUTHOR, PAPER, TITLE, VENUE
+    TOTAL, AUTHOR, PAPER, TITLE, VENUE, INCITATION, OUTCITATION
 }

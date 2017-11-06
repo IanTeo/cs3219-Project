@@ -1,6 +1,8 @@
 package logic.model;
 
+import java.util.Collection;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import model.Paper;
 
@@ -14,28 +16,14 @@ public class YearPredicate implements Predicate<Paper> {
         this.yearRange = yearRange;
     }
 
-    @Override
-    public boolean test(Paper paper) {
-        if (yearRange.hasStartYear() && yearRange.hasEndYear()) {
-            return paper.getYear() >= yearRange.getStartYear() && paper.getYear() <= yearRange.getEndYear();
-        } else if (yearRange.hasStartYear()) {
-            return paper.getYear() >= yearRange.getStartYear();
-        } else {
-            return true;
-        }
+    public Collection<String> getSearchYears() {
+        return yearRange.stream().boxed()
+                .map(String::valueOf)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        if (!(other instanceof YearPredicate)) {
-            return false;
-        }
-
-        YearPredicate otherPredicate = (YearPredicate) other;
-        return this.yearRange == otherPredicate.yearRange;
+    public boolean test(Paper paper) {
+        return paper.getYear() >= yearRange.getStartYear() && paper.getYear() <= yearRange.getEndYear();
     }
 }

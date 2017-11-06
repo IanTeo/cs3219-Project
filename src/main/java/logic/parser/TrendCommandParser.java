@@ -1,21 +1,24 @@
 package logic.parser;
 
+import static logic.model.QueryKeyword.TOTAL;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import logic.command.Command;
 import logic.command.TrendCommand;
 import logic.exception.ParseException;
+import logic.model.AuthorFilter;
+import logic.model.Filter;
+import logic.model.PaperTitleFilter;
+import logic.model.PaperVenueFilter;
 import logic.model.QueryKeyword;
-import logic.model.Search;
+import logic.model.YearFilter;
 import logic.model.YearRange;
 
-public class TrendCommandParser implements CommandParser {
-    private static final Pattern PATTERN = Pattern.compile("(?<searchCategory>[a-zA-Z]+) (?<searchKeyword>.+) " +
-            "NUM (?<ordering>[a-zA-Z]+)( FROM (?<yearRange>[0-9-]+))?");
+public class TrendCommandParser {
     private static final String HELP = "Error: %s\nUsage: trend [search term] [search values] NUM [ordering] " +
             "FROM [start year]-[end year]\n" +
             "E.g. Author Joshua, Ian NUM Paper FROM 2000-2012\n" +
@@ -23,38 +26,38 @@ public class TrendCommandParser implements CommandParser {
             "This command returns a JSON file representing the trend of the search over the period of \"years\"" +
             "for the corresponding \"searchKeyword\"";
 
-    @Override
-    public TrendCommand parse(String arguments) throws ParseException {
-        Matcher matcher = PATTERN.matcher(arguments);
-        if (!matcher.matches()) {
-            throw new ParseException(String.format(HELP, "Invalid argument"));
-        }
+    public TrendCommand parse(Map<String, String> arguments) throws ParseException {
+        QueryKeyword category = getCategory(arguments);
+        List<Filter> filters = getFilters(arguments);
+        QueryKeyword measure = getQueryKeyword(arguments.get("measure"));
 
-        Search toSearch = getSearchTerms(matcher.group("searchCategory"), matcher.group("searchKeyword"));
-        QueryKeyword ordering = getOrdering(matcher.group("ordering"));
-        YearRange yearRange = getYearRange(matcher.group("yearRange"));
-
-        return new TrendCommand(toSearch, ordering, yearRange);
+        return new TrendCommand(category, filters, measure);
     }
 
-    private Search getSearchTerms(String key, String value) throws ParseException {
-        QueryKeyword searchKey = getQueryKeyword(key);
-        if (!Command.isValidSearchCategory(searchKey)) {
-            throw new ParseException(String.format(HELP, "Invalid search key"));
+    private QueryKeyword getCategory(Map<String, String> arguments) {
+        if (!arguments.containsKey("category")) {
+            return TOTAL;
         }
 
-        List<String> searchValues = getValues(value);
-        return new Search(searchKey, searchValues);
+        return getQueryKeyword(arguments.get("category"));
     }
 
-    private QueryKeyword getOrdering(String ordering) throws ParseException {
-        QueryKeyword key = getQueryKeyword(ordering);
-
-        if (!Command.isValidOrdering(key)) {
-            throw new ParseException(String.format(HELP, "Invalid ordering"));
+    private List<Filter> getFilters(Map<String, String> arguments) throws ParseException {
+        List<Filter> filters = new ArrayList<>();
+        if (arguments.containsKey("venue")) {
+            filters.add(new PaperVenueFilter(getValues(arguments.get("venue"))));
+        }
+        if (arguments.containsKey("paper")) {
+            filters.add(new PaperTitleFilter(getValues(arguments.get("title"))));
+        }
+        if (arguments.containsKey("author")) {
+            filters.add(new AuthorFilter(getValues(arguments.get("author"))));
+        }
+        if (arguments.containsKey("year")) {
+            filters.add(new YearFilter(getYearRange(arguments.get("year"))));
         }
 
-        return key;
+        return filters;
     }
 
     /**
@@ -68,15 +71,17 @@ public class TrendCommandParser implements CommandParser {
         return Arrays.stream(values.split(",")).map(String::trim).collect(Collectors.toList());
     }
 
-    private YearRange getYearRange(String yearRange) throws ParseException {
-        List<Integer> years = Arrays.stream(yearRange.split("-")).map(Integer::getInteger).collect(Collectors.toList());
-        if (years.contains(null) || years.size() > 2) {
-            throw new ParseException("Invalid year range");
+    private YearRange getYearRange(String year) throws ParseException {
+        List<Integer> years;
+        try {
+            years = Arrays.stream(year.split("-"))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+        } catch (NumberFormatException nfe) {
+            throw new ParseException("Invalid year value.");
         }
 
-        if (years.size() == 0) {
-            return new YearRange();
-        } else if (years.size() == 1) {
+        if (years.size() == 1) {
             return new YearRange(years.get(0));
         } else {
             return new YearRange(years.get(0), years.get(1));
