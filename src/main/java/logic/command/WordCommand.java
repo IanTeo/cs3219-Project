@@ -22,9 +22,10 @@ import util.StringUtil;
 
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";
-    public static final String HELP = "Error: %s\nUsage: word [#] [title/venue]" +
-            "This command returns a JSON file representing the top # words from paper title/venue and their respective counts";
-
+    public static final String HELP = "Error: %s\n" + COMMAND_WORD + "\n" +
+            "This command returns a JSON file representing the top # words from paper title/venue and their respective counts" +
+            "Required fields: count, type\n" +
+            "Example: count=100&type=title";
     private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList(
             // Common stop words with more than 1 character
             "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",

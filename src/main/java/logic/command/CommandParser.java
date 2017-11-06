@@ -34,10 +34,6 @@ public class CommandParser {
     private Command parseCommand(String commandWord) throws ParseException {
         Command command;
         switch (commandWord) {
-            case CountYearCommand.COMMAND_WORD :
-                command = new CountYearCommand();
-                break;
-
             case TopCommand.COMMAND_WORD :
                 command = new TopCommand();
                 break;

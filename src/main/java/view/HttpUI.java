@@ -28,7 +28,7 @@ public class HttpUI implements UserInterface {
             server.createContext("/", new HttpRequestHandler());
             server.start();
             System.out.println("Server ready on port " + port);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -49,6 +49,10 @@ public class HttpUI implements UserInterface {
     }
 
     private Map<String, String> queryToMap(String query) {
+        if (query == null || query.isEmpty()) {
+            return new HashMap<>();
+        }
+
         Map<String, String> queryMap = new HashMap<>();
         for (String param : query.split("&")) {
             String[] pair = param.split("=");
