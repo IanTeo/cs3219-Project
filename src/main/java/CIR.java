@@ -6,6 +6,7 @@ import model.Model;
 public class CIR {
 
     public void run() {
+        System.out.println("Initializing..");
         Model model = new Model();
         Controller controller = new Controller(model);
         UserInterface ui = new HttpUI(controller);

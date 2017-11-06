@@ -21,9 +21,6 @@ public class HttpUI implements UserInterface {
 
     public void start() {
         try {
-            System.out.println("Starting server..");
-            controller.loadData("/");
-
             int port = System.getenv().containsKey("PORT") ?
                     Integer.parseInt(System.getenv().get("PORT")) : 8000;
 
@@ -43,6 +40,7 @@ public class HttpUI implements UserInterface {
             Map<String, String> queryMap = queryToMap(uri.getQuery());
             queryMap.put("command", uri.getPath().substring(1));
             String response = controller.executeQuery(queryMap);
+
             httpExchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = httpExchange.getResponseBody();
             os.write(response.getBytes());

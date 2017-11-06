@@ -38,10 +38,6 @@ public class CommandParser {
                 command = new CountYearCommand();
                 break;
 
-            case LoadCommand.COMMAND_WORD :
-                command = new LoadCommand();
-                break;
-
             case TopCommand.COMMAND_WORD :
                 command = new TopCommand();
                 break;
