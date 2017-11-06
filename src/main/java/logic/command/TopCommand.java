@@ -13,8 +13,10 @@ import util.StringUtil;
 
 public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
-    public static final String HELP = "Error: %s\nUsage: top [#] [author/paper] [venue]\n" +
-            "This command returns a JSON file representing the top # of authors/papers for the specified venue";
+    public static final String HELP = "Error: %s\n" + COMMAND_WORD + "\n" +
+            "This command returns a JSON file representing the top # of authors/papers for the specified venue" +
+            "Required fields: count, type, venue\n" +
+            "Example: count=5&type=paper&venue=arXiv";
     private Model model;
     private int count;
     private String type;
