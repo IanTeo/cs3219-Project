@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import model.Model;
 import model.Paper;
+import util.StringUtil;
 
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";

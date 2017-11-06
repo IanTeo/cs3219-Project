@@ -7,6 +7,9 @@ import org.junit.Test;
 import model.Model;
 import model.Paper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WordCommandTest {
     private final Model model = new Model();
     private final WordCommand wordCommand = new WordCommand();
@@ -19,13 +22,18 @@ public class WordCommandTest {
     @Test
     public void test() throws Exception {
         setUp();
-        wordCommand.setParameters(model, "2 title");
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("count", "2");
+        paramMap.put("type", "title");
+        wordCommand.setParameters(model, paramMap);
         assertEquals("[{\"size\":100,\"count\":4,\"word\":\"ian\"},{\"size\":75,\"count\":3,\"word\":\"caps\"}]", wordCommand.execute());
 
-        wordCommand.setParameters(model, "1 title");
+        paramMap.put("count", "1");
+        wordCommand.setParameters(model, paramMap);
         assertEquals("[{\"size\":100,\"count\":4,\"word\":\"ian\"}]", wordCommand.execute());
 
-        wordCommand.setParameters(model, "0 title");
+        paramMap.put("count", "0");
+        wordCommand.setParameters(model, paramMap);
         assertEquals("[]", wordCommand.execute());
     }
 
