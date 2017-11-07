@@ -13,15 +13,17 @@ import java.util.stream.Collectors;
 public class Author {
     private final String id;
     private final String name;
-    private final Set<Paper> papers = new HashSet<>();
+    private final Set<Paper> papers;
 
     public Author(String name) {
         this.id = this.name = name;
+        this.papers = new HashSet<>();
     }
 
     public Author(String id, String name) {
         this.id = id;
         this.name = name;
+        this.papers = new HashSet<>();
     }
 
     public void addPaper(Paper paper) {

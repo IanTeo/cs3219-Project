@@ -6,14 +6,18 @@ import model.Paper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModelStub implements Model {
-    private Collection<Paper> papers;
-    private Collection<Author> authors;
+    private Map<String, Paper> papers;
+    private Map<String, Author> authors;
 
     public ModelStub() {
-        papers = new ArrayList<>();
-        authors = new ArrayList<>();
+        papers = new HashMap<>();
+        authors = new HashMap<>();
+
+        papers.put("", new Paper.PaperBuilder().withId());
     }
 
     @Override

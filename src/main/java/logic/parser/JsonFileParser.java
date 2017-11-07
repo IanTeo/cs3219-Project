@@ -12,7 +12,6 @@ import org.json.simple.parser.JSONParser;
 import model.Model;
 import model.Author;
 import model.Paper;
-import model.Paper.PaperBuilder;
 import util.StringUtil;
 
 public class JsonFileParser extends FileParser {
@@ -60,7 +59,7 @@ public class JsonFileParser extends FileParser {
         Author[] authors = parseAuthors(object);
         processAuthors(authors);
 
-        return new PaperBuilder().withId(id).withTitle(title).withYear(year).withVenue(venue).withAuthors(authors).build();
+        return new Paper(id, title, year, authors, venue);
     }
 
     /**

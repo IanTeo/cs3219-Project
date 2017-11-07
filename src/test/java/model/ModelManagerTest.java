@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import util.PaperBuilder;
 
 public class ModelManagerTest {
     private final ModelManager model = new ModelManager();
@@ -12,7 +13,7 @@ public class ModelManagerTest {
     private static final Author bar = new Author("BaR");
     private static final Author barWithId = new Author("2", "bar");
     private static final Author barWithPaper = new Author("BaR");
-    private static final Paper paper = new Paper.PaperBuilder().withId("1").withAuthors(new Author[]{barWithPaper}).build();
+    private static final Paper paper = new PaperBuilder().withId("1").withAuthors(barWithPaper).build();
 
     static {
         barWithPaper.addPaper(paper);

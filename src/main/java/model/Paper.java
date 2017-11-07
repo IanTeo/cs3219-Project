@@ -21,15 +21,14 @@ public class Paper {
     // List of papers that are cited in this paper
     private Set<Paper> outCitation;
 
-    private Paper(String id, String title, int year, Set<Author> authors, String venue, Set<Paper> inCitation,
-            Set<Paper> outCitation) {
+    public Paper(String id, String title, int year, Author[] authors, String venue) {
         this.id = id;
         this.title = title;
         this.year = year;
-        this.authors = authors;
+        this.authors = new HashSet<>(Arrays.asList(authors));
         this.venue = venue;
-        this.inCitation = inCitation;
-        this.outCitation = outCitation;
+        this.inCitation = new HashSet<>();
+        this.outCitation = new HashSet<>();
     }
 
     public void addCitation(Paper citation) {
@@ -126,58 +125,5 @@ public class Paper {
         String authorString = authors.stream().map(Author::getName).collect(Collectors.joining(", "));
         object.put("authors", authorString);
         return object;
-    }
-
-    public static class PaperBuilder {
-        // copy of attributes used by Paper
-        private String id;
-        private String title;
-        private int year;
-        private Set<Author> authors;
-        private String venue;
-        private Set<Paper> inCitation;
-        private Set<Paper> outCitation;
-
-        public PaperBuilder() {
-            id = "";
-            title = "";
-            year = 0;
-            authors = new HashSet<>();
-            venue = "";
-            inCitation = new HashSet<>();
-            outCitation = new HashSet<>();
-        }
-
-        public PaperBuilder withId(String id) {
-            this.id = StringUtil.sanitise(id);
-            return this;
-        }
-
-        public PaperBuilder withTitle(String title) {
-            this.title = StringUtil.sanitise(title);
-            return this;
-        }
-
-        public PaperBuilder withYear(int year) {
-            this.year = year;
-            return this;
-        }
-
-        public PaperBuilder withAuthors(Author[] authors) {
-            this.authors = new HashSet<>(Arrays.asList(authors));
-            return this;
-        }
-
-        public PaperBuilder withVenue(String venue) {
-            this.venue = StringUtil.sanitise(venue);
-            return this;
-        }
-
-        public Paper build() {
-            if (id.isEmpty()) {
-                throw new RuntimeException("Paper's id is empty.");
-            }
-            return new Paper(id, title, year, authors, venue, inCitation, outCitation);
-        }
     }
 }

@@ -7,9 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+import util.PaperBuilder;
 
 public class AuthorTest {
-    private static final Paper PAPER = new Paper.PaperBuilder().withId("123").build();
+    private static final Paper PAPER = new PaperBuilder().withId("123").build();
 
     @Test
     public void hashcode() {
