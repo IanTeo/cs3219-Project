@@ -9,8 +9,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import model.Author;
 import model.Model;
+import model.Author;
 import model.Paper;
 import model.Paper.PaperBuilder;
 import util.StringUtil;

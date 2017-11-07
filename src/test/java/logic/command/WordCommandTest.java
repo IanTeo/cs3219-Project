@@ -4,14 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import model.Model;
+import model.ModelManager;
 import model.Paper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class WordCommandTest {
-    private final Model model = new Model();
+    private final ModelManager model = new ModelManager();
     private final WordCommand wordCommand = new WordCommand();
 
     private static final Paper PAPER_ONE = new Paper.PaperBuilder().withTitle("ian@ian/ian ian CAPS caps caps").withId("1").build();

@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ModelTest {
-    private final Model model = new Model();
+public class ModelManagerTest {
+    private final ModelManager model = new ModelManager();
     private static final Author foo = new Author("1", "foo");
     private static final Author bar = new Author("BaR");
     private static final Author barWithId = new Author("2", "bar");

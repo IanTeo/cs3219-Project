@@ -16,8 +16,6 @@ import java.util.Set;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import model.Model;
-import model.Paper;
 import util.StringUtil;
 
 public class WordCommand implements Command{

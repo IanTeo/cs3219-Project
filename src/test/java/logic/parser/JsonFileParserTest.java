@@ -7,15 +7,15 @@ import java.io.File;
 import org.junit.Test;
 
 import model.Author;
-import model.Model;
+import model.ModelManager;
 import model.Paper;
 
 public class JsonFileParserTest {
-    private final Model model = new Model();
+    private final ModelManager model = new ModelManager();
     private final JsonFileParser parser = new JsonFileParser(model);
     private final File parser_test = new File("src/test/res/parser_test.json");
 
-    private static final Model EXPECTED_MODEL = new Model();
+    private static final ModelManager EXPECTED_MODEL = new ModelManager();
 
     private static final Author AUTHOR_ONE = new Author("1", "Alice A. Alex");
     private static final Author AUTHOR_TWO = new Author("Alice A. Alex");
