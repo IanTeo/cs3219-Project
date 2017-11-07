@@ -2,6 +2,7 @@ package logic.command;
 
 import static org.junit.Assert.assertEquals;
 
+import model.Model;
 import org.junit.Test;
 
 import model.ModelManager;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordCommandTest {
-    private final ModelManager model = new ModelManager();
+    private final Model model = new ModelManager();
     private final WordCommand wordCommand = new WordCommand();
 
     private static final Paper PAPER_ONE = new PaperBuilder().withTitle("ian@ian/ian ian CAPS caps caps").withId("1").build();

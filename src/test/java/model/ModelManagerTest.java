@@ -8,7 +8,7 @@ import org.junit.Test;
 import util.PaperBuilder;
 
 public class ModelManagerTest {
-    private final ModelManager model = new ModelManager();
+    private final Model model = new ModelManager();
     private static final Author foo = new Author("1", "foo");
     private static final Author bar = new Author("BaR");
     private static final Author barWithId = new Author("2", "bar");

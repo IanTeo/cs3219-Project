@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
+import model.Model;
 import org.junit.Test;
 
 import model.Author;
@@ -12,7 +13,7 @@ import model.Paper;
 import util.PaperBuilder;
 
 public class JsonFileParserTest {
-    private final ModelManager model = new ModelManager();
+    private final Model model = new ModelManager();
     private final JsonFileParser parser = new JsonFileParser(model);
     private final File parser_test = new File("src/test/res/parser_test.json");
 
