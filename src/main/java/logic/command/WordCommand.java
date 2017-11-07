@@ -66,7 +66,6 @@ public class WordCommand implements Command{
             if (array.size() >= count) break;
             String key = entry.getKey();
             int count = entry.getValue();
-            if (count <= 2) break;
 
             JSONObject object = new JSONObject();
             object.put("word", key);

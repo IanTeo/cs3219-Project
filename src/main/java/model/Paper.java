@@ -2,13 +2,11 @@ package model;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
-
-import util.StringUtil;
 
 public class Paper {
     private String id;
@@ -25,10 +23,10 @@ public class Paper {
         this.id = id;
         this.title = title;
         this.year = year;
-        this.authors = new HashSet<>(Arrays.asList(authors));
+        this.authors = new LinkedHashSet<>(Arrays.asList(authors));
         this.venue = venue;
-        this.inCitation = new HashSet<>();
-        this.outCitation = new HashSet<>();
+        this.inCitation = new LinkedHashSet<>();
+        this.outCitation = new LinkedHashSet<>();
     }
 
     public void addCitation(Paper citation) {

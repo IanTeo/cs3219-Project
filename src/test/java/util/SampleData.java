@@ -26,6 +26,7 @@ public class SampleData {
             .withTitle("venue ICSE with authors A1 A3 cite P3")
             .withAuthors(AUTHOR_1, AUTHOR_3)
             .withVenue("ICSE")
+            .withYear(2011)
             .build();
 
     public static final Paper PAPER_2 = new PaperBuilder()
@@ -33,6 +34,7 @@ public class SampleData {
             .withTitle("venue ICSE with authors A1 A2 cite P1 P3")
             .withAuthors(AUTHOR_1, AUTHOR_2)
             .withVenue("ICSE")
+            .withYear(2011)
             .build();
 
     public static final Paper PAPER_3 = new PaperBuilder()
@@ -40,6 +42,7 @@ public class SampleData {
             .withTitle("venue arXiv with authors A2 A3")
             .withAuthors(AUTHOR_2, AUTHOR_3)
             .withVenue("arXiv")
+            .withYear(2009)
             .build();
 
     public static final Paper PAPER_4 = new PaperBuilder()
@@ -47,6 +50,7 @@ public class SampleData {
             .withTitle("venue singapore with author A2 cite P2")
             .withAuthors(AUTHOR_2)
             .withVenue("singapore")
+            .withYear(2015)
             .build();
 
     static {

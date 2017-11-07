@@ -5,7 +5,7 @@ import model.Model;
 import model.Paper;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static util.SampleData.*;
@@ -15,21 +15,23 @@ public class ModelStub implements Model {
     private Map<String, Author> authors;
 
     public ModelStub() {
-        papers = new HashMap<>();
-        authors = new HashMap<>();
+        papers = new LinkedHashMap<>();
+        authors = new LinkedHashMap<>();
 
-        papers.put(PAPER_1.getId(), PAPER_1);
-        papers.put(PAPER_2.getId(), PAPER_2);
-        papers.put(PAPER_3.getId(), PAPER_3);
-        papers.put(PAPER_4.getId(), PAPER_4);
+        addPaper(PAPER_1);
+        addPaper(PAPER_2);
+        addPaper(PAPER_3);
+        addPaper(PAPER_4);
 
-        authors.put(AUTHOR_1.getId(), AUTHOR_1);
-        authors.put(AUTHOR_2.getId(), AUTHOR_2);
-        authors.put(AUTHOR_3.getId(), AUTHOR_3);
+        addAuthor(AUTHOR_1);
+        addAuthor(AUTHOR_2);
+        addAuthor(AUTHOR_3);
     }
 
     @Override
-    public void addPaper(Paper paper) { }
+    public void addPaper(Paper paper) {
+        papers.put(paper.getId(), paper);
+    }
 
     @Override
     public boolean hasPaper(String paper) {
@@ -47,7 +49,9 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public void addAuthor(Author author) { }
+    public void addAuthor(Author author) {
+        authors.put(author.getId(), author);
+    }
 
     @Override
     public boolean hasAuthor(String author) {
