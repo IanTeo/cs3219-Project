@@ -51,9 +51,9 @@ public class WordCommandTest {
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Word_ValidTitleResult.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -65,9 +65,9 @@ public class WordCommandTest {
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Word_ValidTitleResultLarge.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -79,8 +79,8 @@ public class WordCommandTest {
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Word_ValidVenueResult.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 }

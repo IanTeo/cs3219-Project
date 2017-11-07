@@ -60,9 +60,9 @@ public class TopCommandTest {
         TopCommand command = new TopCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = String.format(command.HELP, "Invalid type");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -75,9 +75,9 @@ public class TopCommandTest {
         TopCommand command = new TopCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = "[]";
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -90,9 +90,9 @@ public class TopCommandTest {
         TopCommand command = new TopCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Top_ValidPaperResult.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -105,8 +105,8 @@ public class TopCommandTest {
         TopCommand command = new TopCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Top_ValidAuthorResult.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 }

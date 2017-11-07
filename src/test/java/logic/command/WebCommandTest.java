@@ -49,9 +49,9 @@ public class WebCommandTest {
         WebCommand command = new WebCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = String.format(command.HELP, "Paper not found");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 
     @Test
@@ -63,8 +63,8 @@ public class WebCommandTest {
         WebCommand command = new WebCommand();
         command.setParameters(model, paramMap);
 
-        String result = command.execute();
+        String actual = command.execute();
         String expected = FileReader.readFile("Web_ValidTestResult.json");
-        assertEquals(result, expected);
+        assertEquals(actual, expected);
     }
 }
