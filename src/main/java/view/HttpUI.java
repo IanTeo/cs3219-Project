@@ -41,6 +41,7 @@ public class HttpUI implements UserInterface {
             queryMap.put("command", uri.getPath().substring(1));
             String response = controller.executeQuery(queryMap);
 
+            httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             httpExchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = httpExchange.getResponseBody();
             os.write(response.getBytes());
