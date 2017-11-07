@@ -66,6 +66,5 @@ public class SampleData {
         PAPER_2.addCitation(PAPER_1);
         PAPER_2.addCitation(PAPER_3);
         PAPER_4.addCitation(PAPER_2);
-
     }
 }
