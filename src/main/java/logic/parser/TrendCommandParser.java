@@ -1,6 +1,6 @@
 package logic.parser;
 
-import static logic.model.QueryKeyword.TOTAL;
+import static logic.model.Category.TOTAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 
 import logic.command.TrendCommand;
 import logic.exception.ParseException;
-import logic.model.AuthorFilter;
-import logic.model.Filter;
-import logic.model.PaperTitleFilter;
-import logic.model.PaperVenueFilter;
-import logic.model.QueryKeyword;
-import logic.model.YearFilter;
+import logic.filter.AuthorFilter;
+import logic.filter.Filter;
+import logic.filter.PaperTitleFilter;
+import logic.filter.PaperVenueFilter;
+import logic.model.Measure;
+import logic.model.Category;
+import logic.filter.YearFilter;
 import logic.model.YearRange;
 
 public class TrendCommandParser {
@@ -27,19 +28,23 @@ public class TrendCommandParser {
             "for the corresponding \"searchKeyword\"";
 
     public TrendCommand parse(Map<String, String> arguments) throws ParseException {
-        QueryKeyword category = getCategory(arguments);
-        List<Filter> filters = getFilters(arguments);
-        QueryKeyword measure = getQueryKeyword(arguments.get("measure"));
+        try {
+            Category category = getCategory(arguments);
+            List<Filter> filters = getFilters(arguments);
+            Measure measure = Measure.valueOf(arguments.get("measure").toUpperCase());
 
-        return new TrendCommand(category, filters, measure);
+            return new TrendCommand(category, filters, measure);
+        } catch (Exception e) {
+            throw new ParseException("Illegal values.");
+        }
     }
 
-    private QueryKeyword getCategory(Map<String, String> arguments) {
+    private Category getCategory(Map<String, String> arguments) {
         if (!arguments.containsKey("category")) {
             return TOTAL;
         }
 
-        return getQueryKeyword(arguments.get("category"));
+        return Category.valueOf(arguments.get("category").toUpperCase());
     }
 
     private List<Filter> getFilters(Map<String, String> arguments) throws ParseException {
@@ -48,7 +53,7 @@ public class TrendCommandParser {
             filters.add(new PaperVenueFilter(getValues(arguments.get("venue"))));
         }
         if (arguments.containsKey("paper")) {
-            filters.add(new PaperTitleFilter(getValues(arguments.get("title"))));
+            filters.add(new PaperTitleFilter(getValues(arguments.get("paper"))));
         }
         if (arguments.containsKey("author")) {
             filters.add(new AuthorFilter(getValues(arguments.get("author"))));
@@ -60,26 +65,17 @@ public class TrendCommandParser {
         return filters;
     }
 
-    /**
-     * Parses {@code queryKeyword} into a {@code QueryKeyword}.
-     */
-    private QueryKeyword getQueryKeyword(String queryKeyword) {
-        return QueryKeyword.valueOf(queryKeyword.toUpperCase());
-    }
-
     private List<String> getValues(String values) {
-        return Arrays.stream(values.split(",")).map(String::trim).collect(Collectors.toList());
+        return Arrays.stream(values.split(","))
+                .map(String::trim)
+                .map(string -> string.replaceAll("%", " "))
+                .collect(Collectors.toList());
     }
 
     private YearRange getYearRange(String year) throws ParseException {
-        List<Integer> years;
-        try {
-            years = Arrays.stream(year.split("-"))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-        } catch (NumberFormatException nfe) {
-            throw new ParseException("Invalid year value.");
-        }
+        List<Integer> years = Arrays.stream(year.split("-"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
 
         if (years.size() == 1) {
             return new YearRange(years.get(0));

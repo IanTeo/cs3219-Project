@@ -1,6 +1,6 @@
 package logic.utility;
 
-import static logic.model.QueryKeyword.TOTAL;
+import static logic.model.Category.TOTAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +11,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import logic.model.Filter;
-import logic.model.PaperTitleFilter;
-import logic.model.PaperVenueFilter;
-import logic.model.QueryKeyword;
+import logic.filter.Filter;
+import logic.model.Measure;
+import logic.model.Category;
 import model.Paper;
 import util.StringUtil;
 
@@ -28,7 +26,7 @@ public class MapUtility {
     /**
      * Groups the {@code Collection<Paper>} in {@code map} according to years.
      */
-    public static <T> Map<T, Map<Integer, Collection<Paper>>> groupPaper(Map<T, Collection<Paper>> map) {
+    public static <T> Map<T, Map<Integer, Collection<Paper>>> groupPaperByYear(Map<T, Collection<Paper>> map) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
                 entry -> entry.getValue().stream().collect(Collectors.groupingBy(Paper::getYear, // group by years
                         Collectors.toCollection(ArrayList::new)))));
@@ -38,7 +36,7 @@ public class MapUtility {
      * Groups {@code papers} according to {@code groupBy}.
      * E.g. If {@code groupBy == VENUE}, groups papers according to their venue names.
      */
-    public static Map<String, Collection<Paper>> groupPaper(Collection<Paper> papers, QueryKeyword groupBy) {
+    public static Map<String, Collection<Paper>> groupPaper(Collection<Paper> papers, Category groupBy) {
         return papers.stream()
                 .collect(Collectors.groupingBy(getMappingFunction(groupBy), Collectors.toCollection(ArrayList::new)));
     }
@@ -48,25 +46,25 @@ public class MapUtility {
      * E.g. If {@code sumBy == PAPER}, the value will be the sum of papers.
      * If {@code sumBy == AUTHOR}, the value will be the sum of unique authors.
      */
-    public static <T> Map<T, Map<Integer, Integer>> sumMaps(Map<T, Map<Integer, Collection<Paper>>> map, QueryKeyword sumBy) {
+    public static <T> Map<T, Map<Integer, Integer>> sumMaps(Map<T, Map<Integer, Collection<Paper>>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
-                entry -> sumMap(entry.getValue(), sumBy))); // map to sumMaps function
+                entry -> sumMap(entry.getValue(), measure))); // map to sumMaps function
     }
 
     /**
-     * Sums the {@code Collection<Paper>} in {@code map} into an integer value depending on {@code sumBy}.
-     * E.g. If {@code sumBy == PAPER}, the value will be the sum of papers.
-     * If {@code sumBy == AUTHOR}, the value will be the sum of unique authors.
+     * Sums the {@code Collection<Paper>} in {@code map} into an integer value depending on {@code measure}.
+     * E.g. If {@code measure == PAPER}, the value will be the sum of papers.
+     * If {@code measure == AUTHOR}, the value will be the sum of unique authors.
      */
-    public static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, QueryKeyword sumBy) {
+    public static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
-                getSumFunction(sumBy))); // map to sumMaps function
+                getSumFunction(measure))); // map to sumMaps function
     }
 
     /**
      * Returns a {@code Function} that returns the value of a field in {@code Paper} depending on {@code groupBy}.
      */
-    private static Function<Paper, String> getMappingFunction(QueryKeyword groupBy) {
+    private static Function<Paper, String> getMappingFunction(Category groupBy) {
         switch (groupBy) {
             case TITLE:
                 return Paper::getTitle;
@@ -75,7 +73,7 @@ public class MapUtility {
             case VENUE:
                 return Paper::getVenue;
             default:
-                throw new AssertionError("Not yet implemented.");
+                throw new AssertionError("Should not reach here; these are all the possible enums.");
         }
     }
 
@@ -84,7 +82,7 @@ public class MapUtility {
      * E.g. If {@code sumBy == PAPER}, the value will be the sum of papers.
      * If {@code sumBy == AUTHOR}, the value will be the sum of unique authors.
      */
-    private static <T> Function<Map.Entry<T, Collection<Paper>>, Integer> getSumFunction(QueryKeyword sumBy) {
+    private static <T> Function<Map.Entry<T, Collection<Paper>>, Integer> getSumFunction(Measure sumBy) {
         switch (sumBy) {
             case AUTHOR:
                 return entry -> (int) entry.getValue().stream()
@@ -112,7 +110,7 @@ public class MapUtility {
                         .distinct()
                         .count();
             default:
-                throw new AssertionError("Not yet implemented.");
+                throw new AssertionError("Should not reach here; these are all the possible enums.");
         }
     }
 
@@ -121,7 +119,7 @@ public class MapUtility {
      * are considered as equal, however they are mapped into different keys.
      */
     public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter,
-            QueryKeyword category) {
+            Category category) {
         if (filter == null) {
             return mergeAllWords(map, category);
         } else {
@@ -129,7 +127,7 @@ public class MapUtility {
         }
     }
 
-    private static Map<String, Collection<Paper>> mergeAllWords(Map<String, Collection<Paper>> map, QueryKeyword category) {
+    private static Map<String, Collection<Paper>> mergeAllWords(Map<String, Collection<Paper>> map, Category category) {
         Set<String> usedKeys = new HashSet<>();
         Map<String, Collection<Paper>> mergedMap = new HashMap<>();
         for (String key1 : map.keySet()) {
@@ -138,8 +136,7 @@ public class MapUtility {
                     continue;
                 }
 
-                Predicate<String> predicate = getPredicate(category, key2);
-                if (predicate.test(key1)) {
+                if (isKeywordEqual(category, key1, key2)) {
                     Collection<Paper> mergedPapers = CollectionUtility.mergeLists().apply(map.get(key1), map.get(key2));
                     mergedMap.put(key1, mergedPapers);
                     usedKeys.addAll(Arrays.asList(key1, key2));
@@ -154,37 +151,29 @@ public class MapUtility {
 
     private static Map<String, Collection<Paper>> mergeSelectedWords(Map<String, Collection<Paper>> map, Filter filter) {
         Map<String, Collection<Paper>> mergedMap = new HashMap<>();
-        for (String keyword : getKeywords(filter)) {
+        for (String keyword1 : filter.getValuesToFilter()) {
             map.keySet().stream()
-                    .filter(getPredicate(filter, keyword))
-                    .forEach(key -> mergedMap.merge(keyword, map.getOrDefault(key, Collections.emptyList()),
+                    .filter(keyword2 -> isKeywordEqual(filter, keyword1, keyword2))
+                    .forEach(key -> mergedMap.merge(keyword1, map.getOrDefault(key, Collections.emptyList()),
                             CollectionUtility.mergeLists()));
         }
         return mergedMap;
     }
 
-    private static Predicate<String> getPredicate(Filter filter, String searchKeyword) {
-        return getPredicate(filter.toQueryKeyword(), searchKeyword);
+    private static boolean isKeywordEqual(Filter filter, String str1, String str2) {
+        return isKeywordEqual(filter.toQueryKeyword(), str1, str2);
     }
 
-    private static Predicate<String> getPredicate(QueryKeyword category, String searchKeyword) {
+    private static boolean isKeywordEqual(Category category, String str1, String str2) {
         switch (category) {
             case TITLE:
-                return key -> StringUtil.containsIgnoreCase(key, searchKeyword);
+                return str1.equalsIgnoreCase(str2);
             case VENUE:
-                return key -> StringUtil.containsIgnoreCaseVenue(key, searchKeyword);
+                return StringUtil.containsIgnoreCaseVenue(str1, str2);
+            case TOTAL:
+                return true;
             default:
-                throw new AssertionError("Not yet implemented");
-        }
-    }
-
-    private static Collection<String> getKeywords(Filter filter) {
-        if (filter instanceof PaperTitleFilter) {
-            return filter.getValuesToFilter();
-        } else if (filter instanceof PaperVenueFilter) {
-            return filter.getValuesToFilter();
-        } else {
-            throw new AssertionError("Not yet implemented");
+                throw new AssertionError("Should not reach here; these are all the possible enums.");
         }
     }
 }
