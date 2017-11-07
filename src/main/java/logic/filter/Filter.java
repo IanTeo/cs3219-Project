@@ -14,7 +14,12 @@ public abstract class Filter {
 
     public abstract Category toQueryKeyword();
 
-    public void filter(Collection<Paper> papers) {
-        CollectionUtility.removeFromCollection(papers, predicate);
+    public Collection<Paper> filter(Collection<Paper> papers) {
+        return CollectionUtility.removeFromCollection(papers, predicate);
+    }
+
+    @Override
+    public String toString() {
+        return getValuesToFilter().toString();
     }
 }

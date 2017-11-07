@@ -10,11 +10,10 @@ import model.Paper;
 
 public class CollectionUtility {
     /**
-     * Removes from {@code collection} elements that do not match {@code predicate}.
+     * Returns the {@code collection} of elements that matches {@code predicate}.
      */
-    public static <T> void removeFromCollection(Collection<T> collection, Predicate<T> predicate) {
-        Collection<T> toRetain = collection.stream().filter(predicate).collect(Collectors.toList());
-        collection.retainAll(toRetain);
+    public static <T> Collection<T> removeFromCollection(Collection<T> collection, Predicate<T> predicate) {
+        return collection.stream().filter(predicate).collect(Collectors.toList());
     }
 
     /**

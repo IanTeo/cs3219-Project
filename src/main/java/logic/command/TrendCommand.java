@@ -67,8 +67,10 @@ public class TrendCommand implements Command {
     }
 
     private Collection<Paper> removeUnwantedValues(Collection<Paper> papers) {
-        filters.forEach(filter -> filter.filter(papers));
-        CollectionUtility.removeFromCollection(papers, paper -> paper.getYear() != 0);
+        for (Filter filter : filters) {
+            papers = filter.filter(papers);
+        }
+        papers = CollectionUtility.removeFromCollection(papers, paper -> paper.getYear() != 0);
         return papers;
     }
 
@@ -107,5 +109,10 @@ public class TrendCommand implements Command {
 
     public void setParameters(Model model, Map<String, String> paramMap) {
         this.model = model;
+    }
+
+    @Override
+    public String toString() {
+        return "category: " + category.toString() + "\nmeasure: " + measure.toString() + "\nfilters: " + filters.toString();
     }
 }

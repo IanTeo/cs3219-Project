@@ -28,23 +28,26 @@ public class TrendCommandParser {
             "for the corresponding \"searchKeyword\"";
 
     public TrendCommand parse(Map<String, String> arguments) throws ParseException {
+        Category category = getCategory(arguments);
+        List<Filter> filters = getFilters(arguments);
         try {
-            Category category = getCategory(arguments);
-            List<Filter> filters = getFilters(arguments);
             Measure measure = Measure.valueOf(arguments.get("measure").toUpperCase());
-
             return new TrendCommand(category, filters, measure);
         } catch (Exception e) {
-            throw new ParseException("Illegal values.");
+            throw new ParseException("Invalid measure.");
         }
     }
 
-    private Category getCategory(Map<String, String> arguments) {
+    private Category getCategory(Map<String, String> arguments) throws ParseException {
         if (!arguments.containsKey("category")) {
             return TOTAL;
         }
 
-        return Category.valueOf(arguments.get("category").toUpperCase());
+        try {
+            return Category.valueOf(arguments.get("category").toUpperCase());
+        } catch (Exception e) {
+            throw new ParseException("Invalid category");
+        }
     }
 
     private List<Filter> getFilters(Map<String, String> arguments) throws ParseException {
@@ -68,19 +71,23 @@ public class TrendCommandParser {
     private List<String> getValues(String values) {
         return Arrays.stream(values.split(","))
                 .map(String::trim)
-                .map(string -> string.replaceAll("%", " "))
                 .collect(Collectors.toList());
     }
 
     private YearRange getYearRange(String year) throws ParseException {
-        List<Integer> years = Arrays.stream(year.split("-"))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+        List<Integer> years;
+        try {
+            years = Arrays.stream(year.split("-"))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
 
-        if (years.size() == 1) {
-            return new YearRange(years.get(0));
-        } else {
-            return new YearRange(years.get(0), years.get(1));
+            if (years.size() == 1) {
+                return new YearRange(years.get(0));
+            } else {
+                return new YearRange(years.get(0), years.get(1));
+            }
+        } catch (Exception e) {
+            throw new ParseException("Invalid year");
         }
     }
 }
