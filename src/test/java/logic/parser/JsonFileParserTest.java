@@ -4,18 +4,20 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
+import model.Model;
 import org.junit.Test;
 
 import model.Author;
-import model.Model;
+import model.ModelManager;
 import model.Paper;
+import util.PaperBuilder;
 
 public class JsonFileParserTest {
-    private final Model model = new Model();
+    private final Model model = new ModelManager();
     private final JsonFileParser parser = new JsonFileParser(model);
     private final File parser_test = new File("src/test/res/parser_test.json");
 
-    private static final Model EXPECTED_MODEL = new Model();
+    private static final ModelManager EXPECTED_MODEL = new ModelManager();
 
     private static final Author AUTHOR_ONE = new Author("1", "Alice A. Alex");
     private static final Author AUTHOR_TWO = new Author("Alice A. Alex");
@@ -23,15 +25,15 @@ public class JsonFileParserTest {
     private static final Author AUTHOR_FOUR = new Author("3", "Charlie Cassell");
     private static final Author AUTHOR_FIVE = new Author("4", "Elephante");
 
-    private static final Paper PAPER_ONE = new Paper.PaperBuilder().withTitle("Overloading").withVenue("Inf. Lett.")
+    private static final Paper PAPER_ONE = new PaperBuilder().withTitle("Overloading").withVenue("Inf. Lett.")
             .withYear(2001).withId("1").withAuthors(new Author[]{AUTHOR_ONE}).build();
-    private static final Paper PAPER_TWO = new Paper.PaperBuilder().withTitle("Gluodynamics")
+    private static final Paper PAPER_TWO = new PaperBuilder().withTitle("Gluodynamics")
             .withYear(1997).withId("2").withAuthors(new Author[]{AUTHOR_TWO}).build();
-    private static final Paper PAPER_THREE = new Paper.PaperBuilder().withTitle("Convergence Processes")
+    private static final Paper PAPER_THREE = new PaperBuilder().withTitle("Convergence Processes")
             .withVenue("ICMI").withYear(2015).withId("3").withAuthors(new Author[]{AUTHOR_THREE, AUTHOR_FOUR}).build();
-    private static final Paper PAPER_FOUR = new Paper.PaperBuilder().withTitle("Solder fume")
+    private static final Paper PAPER_FOUR = new PaperBuilder().withTitle("Solder fume")
             .withVenue("Annals").withId("4").build();
-    private static final Paper PAPER_FIVE = new Paper.PaperBuilder().withTitle("Kimberlite").withVenue("PloS one")
+    private static final Paper PAPER_FIVE = new PaperBuilder().withTitle("Kimberlite").withVenue("PloS one")
             .withYear(2012).withId("5").withAuthors(new Author[]{AUTHOR_FIVE, AUTHOR_ONE}).build();
 
     static {

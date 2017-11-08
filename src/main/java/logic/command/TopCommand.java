@@ -66,7 +66,8 @@ public class TopCommand implements Command{
         });
 
         JSONArray array = new JSONArray();
-        for (int i = 0; i < count; i++) {
+        int bound = Integer.min(count, authors.size());
+        for (int i = 0; i < bound; i++) {
             Author author = authors.get(i);
             JSONObject object = author.toJson();
             object.put("paperCount", getPaperCount(author));
@@ -94,8 +95,9 @@ public class TopCommand implements Command{
         }
         filteredPapers.sort(Comparator.comparingInt(Paper::getInCitationCount).reversed());
 
+        int bound = Integer.min(count, filteredPapers.size());
         JSONArray array = new JSONArray();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < bound; i++) {
             Paper paper = filteredPapers.get(i);
             array.add(paper.toJson());
         }

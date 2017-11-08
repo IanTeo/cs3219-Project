@@ -14,7 +14,7 @@ public class InvalidCommand implements Command {
         return message;
     }
 
-    public void setParameters(Model mode, Map<String, String> paramMap) {
+    public void setParameters(Model model, Map<String, String> paramMap) {
         // Am I breaking LSP?
     }
 }
