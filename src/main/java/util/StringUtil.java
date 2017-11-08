@@ -30,8 +30,7 @@ public class StringUtil {
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
 
-        return str1.length() == 0 || str2.length() == 0 ||
-                splitStrs1.containsAll(splitStrs2) || splitStrs2.containsAll(splitStrs1);
+        return splitStrs1.containsAll(splitStrs2) || splitStrs2.containsAll(splitStrs1);
     }
 
     public static boolean containsIgnoreCase(String str, String searchStr)     {
