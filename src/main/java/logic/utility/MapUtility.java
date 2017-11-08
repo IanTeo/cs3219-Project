@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -59,6 +60,20 @@ public class MapUtility {
     public static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
                 getSumFunction(measure))); // map to sumMaps function
+    }
+
+    public static <T> Map<T, Map<Integer, Integer>> sortMapsByYear(Map<T, Map<Integer, Integer>> map) {
+        return map.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
+                        entry -> sortMapByYear(entry.getValue()))); // map to sortMapByYear function
+    }
+
+    private static Map<Integer, Integer> sortMapByYear(Map<Integer, Integer> map) {
+        return map.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey()) // sort in ascending year order
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, // key-value mappings remain the same
+                        (key1, key2) -> key1, // resolve duplicate keys (will not happen, but need to leave it here to map it to LinkedHashMap)
+                        LinkedHashMap::new)); // maintains order of the sort
     }
 
     /**

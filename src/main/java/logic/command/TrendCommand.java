@@ -43,7 +43,7 @@ public class TrendCommand implements Command {
         Map<String, Map<Integer, Collection<Paper>>> queryToYearToPaper = MapUtility.groupPaperByYear(queryToPaper);
         Map<String, Map<Integer, Integer>> queryToYearToCount = MapUtility.sumMaps(queryToYearToPaper, measure);
         populateEmptyYears(queryToYearToCount);
-
+        queryToYearToCount = MapUtility.sortMapsByYear(queryToYearToCount);
         return jsonConverter.mapsToJson(queryToYearToCount).toJSONString();
     }
 
