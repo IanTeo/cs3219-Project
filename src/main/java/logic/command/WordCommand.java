@@ -1,10 +1,6 @@
 package logic.command;
 
 
-import logic.exception.ParseException;
-import model.Model;
-import model.Paper;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,6 +11,10 @@ import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import logic.exception.ParseException;
+import model.Model;
+import model.Paper;
 
 import util.StringUtil;
 

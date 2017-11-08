@@ -9,17 +9,16 @@ import java.util.stream.Stream;
 import model.Paper;
 
 public class CollectionUtility {
-    public static <T> void removeFromCollection(Collection<T> collection, Predicate<T> predicate) {
-        Collection<T> toRetain = collection.stream().filter(predicate).collect(Collectors.toList());
-        collection.retainAll(toRetain);
+    /**
+     * Returns the {@code collection} of elements that matches {@code predicate}.
+     */
+    public static <T> Collection<T> removeFromCollection(Collection<T> collection, Predicate<T> predicate) {
+        return collection.stream().filter(predicate).collect(Collectors.toList());
     }
 
-    public static <T> void removeFromCollections(Collection<Collection<T>> outerCollection, Predicate<T> predicate) {
-        for (Collection<T> innerCollection : outerCollection) {
-            removeFromCollection(innerCollection, predicate);
-        }
-    }
-
+    /**
+     * Returns a function that accepts 2 collections and merges the contents of both collections.
+     */
     public static BiFunction<Collection<Paper>, Collection<Paper>, Collection<Paper>> mergeLists() {
         return (collectionOne, collectionTwo) -> Stream.of(collectionOne, collectionTwo)
                 .flatMap(Collection::stream)

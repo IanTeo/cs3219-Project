@@ -1,9 +1,9 @@
 package logic.command;
 
+import java.util.Map;
+
 import logic.exception.ParseException;
 import model.Model;
-
-import java.util.Map;
 
 public class CommandParser {
     private Model model;
@@ -17,12 +17,7 @@ public class CommandParser {
         String commandWord = queryMap.get("command");
 
         try {
-            command = parseCommand(commandWord);
-        } catch (ParseException pe) {
-            command = new InvalidCommand(pe.getMessage());
-        }
-
-        try {
+            command = parseCommand(commandWord, queryMap);
             command.setParameters(model, queryMap);
         } catch (Exception e) {
             command = new InvalidCommand(e.getMessage());
@@ -30,7 +25,7 @@ public class CommandParser {
         return command;
     }
 
-    private Command parseCommand(String commandWord) throws ParseException {
+    private Command parseCommand(String commandWord, Map<String, String> queryMap) throws ParseException {
         Command command;
         switch (commandWord) {
             case TopCommand.COMMAND_WORD :
@@ -45,9 +40,9 @@ public class CommandParser {
                 command = new WordCommand();
                 break;
 
-            /*case TrendCommand.COMMAND_WORD:
-                command = new TrendCommand();
-                break;*/
+            case TrendCommand.COMMAND_WORD:
+                command = new TrendCommandParser().parse(queryMap);
+                break;
 
             default :
                 command = new InvalidCommand("Invalid command");

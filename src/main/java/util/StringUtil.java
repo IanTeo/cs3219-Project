@@ -2,6 +2,7 @@ package util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class StringUtil {
     /**
@@ -20,12 +21,16 @@ public class StringUtil {
                 .replaceAll("\\s+", " ");
     }
 
-    public static boolean containsIgnoreCaseVenue(String str, String searchStr) {
-        if(str == null || searchStr == null) return false;
-        Collection<String> splitStrs = Arrays.asList(str.split("[\\s\\p{Punct}]+"));
+    public static boolean containsIgnoreCaseVenue(String str1, String str2) {
+        if(str1 == null || str2 == null) return false;
+        Collection<String> splitStrs1 = Arrays.stream(str1.split("[\\s\\p{Punct}]+"))
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+        Collection<String> splitStrs2 = Arrays.stream(str2.split("[\\s\\p{Punct}]+"))
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
 
-        return searchStr.length() == 0 ||
-                splitStrs.stream().anyMatch(splitStr -> splitStr.equalsIgnoreCase(searchStr));
+        return splitStrs1.containsAll(splitStrs2) || splitStrs2.containsAll(splitStrs1);
     }
 
     public static boolean containsIgnoreCase(String str, String searchStr)     {

@@ -24,7 +24,7 @@ public class Paper {
         this.title = title;
         this.year = year;
         this.authors = new LinkedHashSet<>(Arrays.asList(authors));
-        this.venue = venue;
+        this.venue = venue.equals("") ? "<venue unspecified>" : venue;
         this.inCitation = new LinkedHashSet<>();
         this.outCitation = new LinkedHashSet<>();
     }
