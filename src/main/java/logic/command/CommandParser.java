@@ -3,6 +3,7 @@ package logic.command;
 import java.util.Map;
 
 import logic.exception.ParseException;
+import logic.parser.TrendCommandParser;
 import model.Model;
 
 public class CommandParser {
