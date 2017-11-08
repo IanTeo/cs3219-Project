@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class Model {
     }
 
     public Collection<Paper> getPapers() {
-        return papers.values();
+        return new ArrayList<>(papers.values());
     }
 
     public Collection<Author> getAuthors() {

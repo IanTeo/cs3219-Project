@@ -5,43 +5,29 @@ import java.util.stream.IntStream;
 
 import logic.Precondition;
 
+/**
+ * Represents the range of years.
+ */
 public class YearRange {
+    private static final int EARLIEST_START_YEAR = 1991;
+
     private final int startYear;
     private final int endYear;
 
-    public YearRange() {
-        this.startYear = -1;
-        this.endYear = -1;
-    }
-
     public YearRange(int startYear) {
-        Precondition.checkArgument(startYear >= 0 && startYear <= Year.now().getValue());
+        Precondition.checkArgument(startYear >= EARLIEST_START_YEAR && startYear <= Year.now().getValue());
         this.startYear = startYear;
-        this.endYear = -1;
+        this.endYear = startYear;
     }
 
     public YearRange(int startYear, int endYear) {
-        Precondition.checkArgument(startYear >= 0 && startYear <= endYear && endYear <= Year.now().getValue());
+        Precondition.checkArgument(startYear >= EARLIEST_START_YEAR && startYear <= endYear && endYear <= Year.now().getValue());
         this.startYear = startYear;
         this.endYear = endYear;
     }
 
     public IntStream stream() {
-        if (startYear != -1 && endYear != -1) {
-            return IntStream.rangeClosed(startYear, endYear);
-        } else if (startYear != -1) {
-            return IntStream.rangeClosed(startYear, Year.now().getValue());
-        } else {
-            return IntStream.empty();
-        }
-    }
-
-    public boolean hasStartYear() {
-        return startYear != -1;
-    }
-
-    public boolean hasEndYear() {
-        return endYear != -1;
+        return IntStream.rangeClosed(startYear, endYear);
     }
 
     public int getStartYear() {

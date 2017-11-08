@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import logic.exception.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import logic.exception.ParseException;
 import model.Model;
 import model.Paper;
 import util.StringUtil;

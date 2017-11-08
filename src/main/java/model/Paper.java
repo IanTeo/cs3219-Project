@@ -27,7 +27,7 @@ public class Paper {
         this.title = title;
         this.year = year;
         this.authors = authors;
-        this.venue = venue;
+        this.venue = venue.equals("") ? "<venue unspecified>" : venue;
         this.inCitation = inCitation;
         this.outCitation = outCitation;
     }
