@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ public class MapUtility {
      */
     public static <T> Map<T, Map<Integer, Integer>> sumMaps(Map<T, Map<Integer, Collection<Paper>>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
-                entry -> sumMap(entry.getValue(), measure))); // map to sumMaps function
+                entry -> sumMap(entry.getValue(), measure))); // map to sumMap function
     }
 
     /**
@@ -56,9 +57,12 @@ public class MapUtility {
      * E.g. If {@code measure == PAPER}, the value will be the sum of papers.
      * If {@code measure == AUTHOR}, the value will be the sum of unique authors.
      */
-    public static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
+    private static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
-                getSumFunction(measure))); // map to sumMaps function
+                getSumFunction(measure), // map to getSumFunction
+                (value1, value2) -> value1, // resolve duplicate keys (will not happen, but need it to map it to TreeMap)
+                TreeMap::new)); // ensures that Map is ordered by key
+
     }
 
     /**

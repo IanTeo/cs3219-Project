@@ -43,7 +43,6 @@ public class TrendCommand implements Command {
         Map<String, Map<Integer, Collection<Paper>>> queryToYearToPaper = MapUtility.groupPaperByYear(queryToPaper);
         Map<String, Map<Integer, Integer>> queryToYearToCount = MapUtility.sumMaps(queryToYearToPaper, measure);
         populateEmptyYears(queryToYearToCount);
-
         return jsonConverter.mapsToJson(queryToYearToCount).toJSONString();
     }
 
@@ -114,5 +113,33 @@ public class TrendCommand implements Command {
     @Override
     public String toString() {
         return "category: " + category.toString() + "\nmeasure: " + measure.toString() + "\nfilters: " + filters.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof TrendCommand)) {
+            return false;
+        }
+
+        TrendCommand otherCommand = (TrendCommand) other;
+
+        Collection<String> thisFilterValues = this.filters.stream()
+                .map(Filter::getValuesToFilter)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        Collection<String> otherFilterValues = otherCommand.filters.stream()
+                .map(Filter::getValuesToFilter)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+
+        return this.category.equals(otherCommand.category)
+                && this.measure.equals(otherCommand.measure)
+                && thisFilterValues.equals(otherFilterValues);
     }
 }
