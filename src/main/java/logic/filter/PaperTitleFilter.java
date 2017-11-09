@@ -1,6 +1,6 @@
 package logic.filter;
 
-import static logic.model.Category.TITLE;
+import static logic.model.Category.PAPER;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -15,7 +15,7 @@ public class PaperTitleFilter extends Filter {
 
     @Override
     public Category toQueryKeyword() {
-        return TITLE;
+        return PAPER;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class TrendCommandTest {
         trendCommand.setParameters(MODEL, Collections.emptyMap());
         assertEquals(expected[0], trendCommand.execute());
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         measure = Measure.AUTHOR;
         trendCommand = new TrendCommand(category, Collections.emptyList(), measure);
         trendCommand.setParameters(MODEL, Collections.emptyMap());
@@ -68,7 +68,7 @@ public class TrendCommandTest {
         trendCommand.setParameters(MODEL, Collections.emptyMap());
         assertEquals(expected[1], trendCommand.execute());
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         filters = Collections.singletonList(new PaperVenueFilter(Collections.singletonList("iCsE")));
         measure = Measure.AUTHOR;
         trendCommand = new TrendCommand(category, filters, measure);
@@ -95,7 +95,7 @@ public class TrendCommandTest {
         trendCommand.setParameters(MODEL, Collections.emptyMap());
         assertEquals(expected[0], trendCommand.execute());
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter(Collections.singletonList("venue ICSE with authors A1 A2 cite P1 P3")),
                 new PaperVenueFilter(Collections.singletonList("icse")));
         measure = Measure.INCITATION;
@@ -124,7 +124,7 @@ public class TrendCommandTest {
     public void execute_threeFilters_returnsValidJson() {
         String[] expected = FileReader.readFile("Trend_ThreeFilters.json").split("\n");
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter(Collections.singletonList("venue ICSE with authors A1 A2 cite P1 P3")),
                 new PaperVenueFilter(Collections.singletonList("icse")),
                 new YearFilter(new YearRange(2009, 2011)));
@@ -151,7 +151,7 @@ public class TrendCommandTest {
         trendCommand.setParameters(MODEL, Collections.emptyMap());
         assertEquals(expected[2], trendCommand.execute());
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         filters = Arrays.asList(new AuthorFilter(Collections.singletonList("author with papers P2 P3 P4")),
                 new PaperTitleFilter(Collections.singletonList("venue ICSE with authors A1 A2 cite P1 P3")),
                 new PaperVenueFilter(Collections.singletonList("icse")));
@@ -165,7 +165,7 @@ public class TrendCommandTest {
     public void execute_allFilters_returnsValidJson() {
         String[] expected = FileReader.readFile("Trend_AllFilters.json").split("\n");
 
-        category = Category.TITLE;
+        category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter(Collections.singletonList("venue ICSE with authors A1 A2 cite P1 P3")),
                 new PaperVenueFilter(Collections.singletonList("icse")),
                 new YearFilter(new YearRange(2009, 2011)),

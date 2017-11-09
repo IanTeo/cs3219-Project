@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import logic.jsonconverter.TrendToJsonConverter;
+import logic.jsonconverter.JsonConverter;
 import logic.filter.Filter;
 import logic.filter.PaperTitleFilter;
 import logic.filter.PaperVenueFilter;
@@ -23,7 +23,6 @@ public class TrendCommand implements Command {
     public static final String COMMAND_WORD = "trend";
     private Model model;
 
-    private final TrendToJsonConverter jsonConverter = new TrendToJsonConverter();
     private final Category category;
     private final Collection<Filter> filters; // terms to filter by. e.g. {Venue, [x, y]}
     private final Measure measure;
@@ -43,25 +42,24 @@ public class TrendCommand implements Command {
         Map<String, Map<Integer, Collection<Paper>>> queryToYearToPaper = MapUtility.groupPaperByYear(queryToPaper);
         Map<String, Map<Integer, Integer>> queryToYearToCount = MapUtility.sumMaps(queryToYearToPaper, measure);
         populateEmptyYears(queryToYearToCount);
-        return jsonConverter.mapsToJson(queryToYearToCount).toJSONString();
+        return JsonConverter.mapsToJson(queryToYearToCount).toJSONString();
     }
 
     private Filter getFilterOfCategory() {
         switch (category) {
-            case TITLE:
+            case PAPER:
                 return filters.stream()
                         .filter(filter -> filter instanceof PaperTitleFilter)
                         .findFirst()
                         .orElse(null);
-            case TOTAL:
-                return null;
             case VENUE:
                 return filters.stream()
                         .filter(filter -> filter instanceof PaperVenueFilter)
                         .findFirst()
                         .orElse(null);
+            case TOTAL:
             default:
-                throw new AssertionError("Should not reach here; these are all the possible enums.");
+                return null;
         }
     }
 

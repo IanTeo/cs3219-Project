@@ -70,7 +70,7 @@ public class MapUtility {
      */
     private static Function<Paper, String> getMappingFunction(Category groupBy) {
         switch (groupBy) {
-            case TITLE:
+            case PAPER:
                 return Paper::getTitle;
             case TOTAL:
                 return paper -> TOTAL.toString().toLowerCase();
@@ -170,7 +170,7 @@ public class MapUtility {
 
     private static boolean isKeywordEqual(Category category, String str1, String str2) {
         switch (category) {
-            case TITLE:
+            case PAPER:
                 return str1.equalsIgnoreCase(str2);
             case VENUE:
                 return StringUtil.containsIgnoreCaseVenue(str1, str2);

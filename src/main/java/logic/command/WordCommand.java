@@ -8,23 +8,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import logic.jsonconverter.JsonConverter;
+import logic.model.Category;
 
 import logic.exception.ParseException;
+import model.Author;
 import model.Model;
 import model.Paper;
-
 import util.StringUtil;
 
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";
     public static final String HELP = "Error: %s\n" + COMMAND_WORD + "\n" +
             "This command returns a JSON file representing the top # words from paper title/venue and their respective counts" +
-            "Required fields: count, type\n" +
-            "Example: count=100&type=title";
-    private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList(
+            "Required fields: category\n" +
+            "Optional fields: ignore\n" +
+            "Example: category=paper&ignore=data,effects";
+    public static final int MAX_WORDS = 100;
+    private Set<String> stopWords = new HashSet<>(Arrays.asList(
             // Common stop words with more than 1 character
             "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",
             "be", "because", "been", "before", "being", "below", "between", "both", "but", "by",
@@ -37,44 +40,38 @@ public class WordCommand implements Command{
             "was", "we", "were", "what", "when", "where", "which", "while", "who", "whom", "why", "with", "would",
             "you", "your", "yours", "yourself", "yourselves",
             // Special stop words specific to problem domain
-            "journal", "research", "scientific", "using", "use", "system", "systems", "new", "based", "non", "via"));
+            "journal", "research", "scientific", "using", "use", "system", "systems", "new", "based", "non", "via",
+            "analysis", "study", "model"));
 
     private Model model;
-    private int count;
-    private String type;
+    private Category category;
 
     public String execute() {
         HashMap<String, Integer> wordMap = new HashMap<>();
 
         for (Paper paper : model.getPapers()) {
-            String[] words = getWord(paper).split("[\\s\\p{Punct}]+");
+            String wordByCategory = getWordByCategory(paper);
+            if (wordByCategory.equals("<venue unspecified>")) continue;
+
+            String[] words = wordByCategory.split("[\\s\\p{Punct}]+");
             for (String word : words) {
-                word = word.toLowerCase();
-                if (word.length() < 2 || STOP_WORDS.contains(word)) continue;
+                word = StringUtil.parseString(word);
+                if (word.length() < 2 || stopWords.contains(word)) continue;
 
                 int currentCount = wordMap.containsKey(word) ? wordMap.get(word) + 1 : 1;
                 wordMap.put(word, currentCount);
             }
         }
 
-        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(wordMap.entrySet());
-        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+        List<Map.Entry<String, Integer>> entryList = wordMap.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .collect(Collectors.toList());
 
-        JSONArray array = new JSONArray();
-        int maxCount = entryList.get(0).getValue();
-        for (Map.Entry<String, Integer> entry : entryList) {
-            if (array.size() >= count) break;
-            String key = entry.getKey();
-            int count = entry.getValue();
-
-            JSONObject object = new JSONObject();
-            object.put("word", key);
-            object.put("count", count);
-            object.put("size", getPercentageInt(count, maxCount));
-            array.add(object);
+        if (entryList.size() > MAX_WORDS) {
+            entryList = entryList.subList(0, MAX_WORDS);
         }
 
-        return array.toString();
+        return JsonConverter.entryListToJson(entryList).toString();
     }
 
     public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
@@ -83,28 +80,35 @@ public class WordCommand implements Command{
         }
 
         this.model = model;
-        this.count = Integer.parseInt(paramMap.get("count"));
-        this.type = StringUtil.parseString(paramMap.get("type"));
-    }
+        try {
+            this.category = Category.valueOf(paramMap.get("category").toUpperCase());
+        } catch (Exception e) {
+            throw new ParseException(String.format(HELP, "Category not found"));
+        }
 
-    private boolean containExpectedArguments(Map<String, String> paramMap) {
-        return paramMap.containsKey("count")
-                && paramMap.get("count").matches("[0-9]+")
-                && paramMap.containsKey("type");
-    }
-
-    private String getWord(Paper paper) {
-        switch (type) {
-            case "venue" :
-                return paper.getVenue();
-
-            case "title" :
-            default :
-                return paper.getTitle();
+        if (paramMap.containsKey("ignore")) {
+            String additionalStopWords = StringUtil.parseString(paramMap.get("ignore"));
+            this.stopWords.addAll(Arrays.asList(additionalStopWords.split(",")));
         }
     }
 
-    private int getPercentageInt(int numerator, int denominator) {
-        return (int) ((numerator * 100.0) / denominator);
+    private boolean containExpectedArguments(Map<String, String> paramMap) {
+        return paramMap.containsKey("category");
+    }
+
+    private String getWordByCategory(Paper paper) {
+        switch (category) {
+            case VENUE :
+                return paper.getVenue();
+
+            case AUTHOR :
+                return paper.getAuthors().stream()
+                        .map(Author::getName)
+                        .collect(Collectors.joining(","));
+
+            case PAPER:
+            default :
+                return paper.getTitle();
+        }
     }
 }

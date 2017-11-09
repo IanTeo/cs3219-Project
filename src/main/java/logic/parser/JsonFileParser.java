@@ -47,15 +47,15 @@ public class JsonFileParser extends FileParser {
      * Parses {@code object} into a {@code Paper}.
      */
     private Paper parsePaper(JSONObject object) {
-        String id = object.get("id").toString();
-        String title = object.get("title").toString();
+        String id = StringUtil.sanitise(object.get("id").toString());
+        String title = StringUtil.sanitise(object.get("title").toString());
         int year = 0;
         try {
             year = Integer.parseInt(object.get("year").toString());
         } catch (Exception e) {
             // System.out.println("Date in invalid format: " + e.getMessage());
         }
-        String venue = object.get("venue").toString();
+        String venue = StringUtil.sanitise(object.get("venue").toString());
         Author[] authors = parseAuthors(object);
         processAuthors(authors);
 

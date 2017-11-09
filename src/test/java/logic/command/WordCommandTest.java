@@ -17,70 +17,65 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WordCommandTest {
-    private Model model;
+    private Model model = new ModelStub();
+    private static String BASE_URL = "WordCommandTest/%s";
 
-    @Before
-    public void initModel() {
-        model = new ModelStub();
-    }
 
     @Test(expected = ParseException.class)
-    public void setParameter_missingTypeArgument_throwsParseException() throws Exception {
+    public void setParameter_noCategoryArgument_throwsParseException() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "3");
 
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
     }
 
     @Test(expected = ParseException.class)
-    public void setParameter_missingCountArgument_throwsParseException() throws Exception {
+    public void setParameter_invalidCategoryType_throwsParseException() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("type", "title");
-
-        WordCommand command = new WordCommand();
-        command.setParameters(model, paramMap);
-    }
-
-    @Test
-    public void execute_invalidTypeArgumentDefaultToTitle_printJsonCountTitle() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "4");
         paramMap.put("type", "invalid");
 
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
-
-        String actual = command.execute();
-        String expected = FileReader.readFile("Word_ValidTitleResult.json");
-        assertEquals(actual, expected);
     }
 
     @Test
-    public void execute_validTypeTitleAndLargetCount_printJsonCountTitle() throws Exception {
+    public void execute_validCategoryPaper_printJson() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "100");
-        paramMap.put("type", "title");
 
+        paramMap.put("category", "paper");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidPaperResult.json"));
+
+        paramMap.put("ignore", "VENUE");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidPaperWithFilterResult.json"));
+    }
+
+    @Test
+    public void execute_validCategoryVenue_printJson() throws Exception {
+        Map<String, String> paramMap = new HashMap<>();
+
+        paramMap.put("category", "venue");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidVenueResult.json"));
+
+        paramMap.put("ignore", "arXiv");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidVenueWithFilterResult.json"));
+    }
+
+    @Test
+    public void execute_validCategoryAuthor_printJson() throws Exception {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("category", "author");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidAuthorResult.json"));
+
+        paramMap.put("ignore", "author,PaperS");
+        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidAuthorWithFilterResult.json"));
+    }
+
+    private void assertCommand(Map<String, String> paramMap, String expectedOutputFileName) throws Exception {
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
 
         String actual = command.execute();
-        String expected = FileReader.readFile("Word_ValidTitleResultLarge.json");
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void execute_validTypeVenue_printJsonCountVenue() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "2");
-        paramMap.put("type", "venue");
-
-        WordCommand command = new WordCommand();
-        command.setParameters(model, paramMap);
-
-        String actual = command.execute();
-        String expected = FileReader.readFile("Word_ValidVenueResult.json");
-        assertEquals(actual, expected);
+        String expected = FileReader.readFile(expectedOutputFileName);
+        assertEquals(expected, actual);
     }
 }
