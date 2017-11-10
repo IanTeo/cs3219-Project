@@ -25,6 +25,12 @@ public class PaperVenueFilter extends Filter {
         return ((PaperVenuePredicate) predicate).getSearchVenues();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof PaperVenueFilter
+                && this.getValuesToFilter().equals(((PaperVenueFilter) other).getValuesToFilter());
+    }
+
     private class PaperVenuePredicate implements Predicate<Paper> {
         private final Collection<String> searchVenues;
 

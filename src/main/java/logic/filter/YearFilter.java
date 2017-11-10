@@ -23,6 +23,12 @@ public class YearFilter extends Filter {
         return ((YearPredicate) predicate).getSearchYears();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof YearFilter
+                && this.getValuesToFilter().equals(((YearFilter) other).getValuesToFilter());
+    }
+
     private class YearPredicate implements Predicate<Paper> {
         private final YearRange yearRange;
 

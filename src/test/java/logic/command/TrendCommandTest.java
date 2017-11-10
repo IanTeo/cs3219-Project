@@ -55,7 +55,7 @@ public class TrendCommandTest {
         String[] expected = FileReader.readFile("Trend_OneFilter.json").split("\n");
 
         category = Category.VENUE;
-        filters = Collections.singletonList(new AuthorFilter("AuThOR WiTh PaPeRs p2 P3 p"));
+        filters = Collections.singletonList(new AuthorFilter("AuThOR WiTh PaPeRs p2 P3 p4"));
         measure = Measure.INCITATION;
         TrendCommand trendCommand = new TrendCommand(category, filters, measure);
         trendCommand.setParameters(MODEL, Collections.emptyMap());
@@ -166,7 +166,8 @@ public class TrendCommandTest {
         String[] expected = FileReader.readFile("Trend_AllFilters.json").split("\n");
 
         category = Category.PAPER;
-        filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
+        filters = Arrays.asList(
+                new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
                 new PaperVenueFilter("icse"),
                 new YearFilter(new YearRange(2009, 2011)),
                 new AuthorFilter("author with papers P1 P2"));

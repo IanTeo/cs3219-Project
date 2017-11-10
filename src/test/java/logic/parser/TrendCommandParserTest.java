@@ -28,7 +28,7 @@ public class TrendCommandParserTest {
         arguments.put("measure", "paper");
 
         TrendCommand expected = new TrendCommand(Category.TOTAL, Collections.emptyList(), Measure.PAPER);
-        assertEquals(expected, new TrendCommandParser().parse(arguments));
+        assertTrendCommandEquals(expected, new TrendCommandParser().parse(arguments));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class TrendCommandParserTest {
                 new YearFilter(new YearRange(2000, 2001)));
 
         TrendCommand expected = new TrendCommand(Category.VENUE, expectedFilters, Measure.AUTHOR);
-        assertEquals(expected, new TrendCommandParser().parse(arguments));
+        assertTrendCommandEquals(expected, new TrendCommandParser().parse(arguments));
     }
 
     @Test(expected = ParseException.class)
@@ -84,5 +84,11 @@ public class TrendCommandParserTest {
         Map<String, String> arguments = new HashMap<>();
         arguments.put("year", "invalidYear");
         new TrendCommandParser().parse(arguments);
+    }
+
+    private void assertTrendCommandEquals(TrendCommand expected, TrendCommand actual) {
+        assertEquals(expected.category, actual.category);
+        assertEquals(expected.measure, actual.measure);
+        assertEquals(expected.filters, actual.filters);
     }
 }

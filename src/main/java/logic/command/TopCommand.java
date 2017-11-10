@@ -40,7 +40,11 @@ public class TopCommand implements Command{
         }
         Map<String, Integer> categoryToMeasure = MapUtility.sumMap(categoryToPaper, measure);
         List<Map.Entry<String, Integer>> entryList = categoryToMeasure.entrySet().stream()
-                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .sorted((e1, e2) -> {
+                    if (e2.getValue().equals(e1.getValue()))
+                        return e1.getKey().compareTo(e2.getKey()); // Ascending by group
+                    return e2.getValue().compareTo(e1.getValue()); // Descending by count
+                })
                 .collect(Collectors.toList());
 
         if (entryList.size() > count) {

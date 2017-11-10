@@ -59,7 +59,7 @@ public class TrendCommandParser {
             filters.add(new PaperTitleFilter(arguments.get("paper")));
         }
         if (arguments.containsKey("author")) {
-            filters.add(new AuthorFilter(arguments.get("author")));
+            filters.add(new AuthorFilter(arguments.get("author").split(",")));
         }
         if (arguments.containsKey("year")) {
             filters.add(new YearFilter(getYearRange(arguments.get("year"))));

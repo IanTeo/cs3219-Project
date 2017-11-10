@@ -24,6 +24,12 @@ public class PaperTitleFilter extends Filter {
         return ((PaperTitlePredicate) predicate).getSearchTitles();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof PaperTitleFilter
+                && this.getValuesToFilter().equals(((PaperTitleFilter) other).getValuesToFilter());
+    }
+
     private class PaperTitlePredicate implements Predicate<Paper> {
         private final Collection<String> searchTitles;
 

@@ -35,9 +35,4 @@ public abstract class Filter {
     public Collection<Paper> filter(Collection<Paper> papers) {
         return CollectionUtility.removeFromCollection(papers, predicate);
     }
-
-    @Override
-    public String toString() {
-        return getValuesToFilter().toString();
-    }
 }

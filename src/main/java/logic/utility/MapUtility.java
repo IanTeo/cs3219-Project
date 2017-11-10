@@ -145,10 +145,8 @@ public class MapUtility {
     public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter,
             Category category) {
         if (filter == null) {
-            System.out.println("null..");
             return mergeAllWords(map, category);
         } else {
-            System.out.println(filter.toQueryKeyword());
             return mergeSelectedWords(map, filter);
         }
     }

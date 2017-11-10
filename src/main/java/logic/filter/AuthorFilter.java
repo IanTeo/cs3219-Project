@@ -26,6 +26,12 @@ public class AuthorFilter extends Filter {
         return ((AuthorPredicate) predicate).getSearchNames();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof AuthorFilter
+                && this.getValuesToFilter().equals(((AuthorFilter) other).getValuesToFilter());
+    }
+
     private class AuthorPredicate implements Predicate<Paper> {
         private final Collection<String> searchNames;
 
