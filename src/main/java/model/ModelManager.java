@@ -35,7 +35,8 @@ public class ModelManager implements Model {
     }
 
     public boolean hasPaper(String paperId) {
-        return papers.containsKey(paperId);
+        return papers.containsKey(paperId)
+                || papers.containsKey(titleToIdMap.get(paperId.toLowerCase()));
     }
 
     /**
@@ -75,24 +76,5 @@ public class ModelManager implements Model {
 
     public void clear() {
         papers.clear();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (!(other instanceof ModelManager)) {
-            return false;
-        }
-
-        ModelManager otherModel = (ModelManager) other;
-        return papers.equals(otherModel.papers) && authors.equals(otherModel.authors);
-    }
-
-    @Override
-    public String toString() {
-        return papers.values().toString() + authors.values().toString();
     }
 }

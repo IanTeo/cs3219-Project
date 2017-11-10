@@ -70,49 +70,6 @@ public class Paper {
         return outCitation.size();
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (!(other instanceof Paper)) {
-            return false;
-        }
-
-        Paper otherPaper = (Paper) other;
-        // Calling paper or author equality will cause infinite recursion. See Author#equals(Object).
-        Set<String> thisInCitationId = inCitation.stream().map(Paper::getId).collect(Collectors.toSet());
-        Set<String> otherInCitationId = otherPaper.inCitation.stream().map(Paper::getId).collect(Collectors.toSet());
-        Set<String> thisOutCitationId = outCitation.stream().map(Paper::getId).collect(Collectors.toSet());
-        Set<String> otherOutCitationId = otherPaper.outCitation.stream().map(Paper::getId).collect(Collectors.toSet());
-        Set<String> thisAuthorId = authors.stream().map(Author::getId).collect(Collectors.toSet());
-        Set<String> otherAuthorId = otherPaper.authors.stream().map(Author::getId).collect(Collectors.toSet());
-
-        return id.equals(otherPaper.id)
-                && title.equals(otherPaper.title)
-                && year == otherPaper.year
-                && venue.equals(otherPaper.venue)
-                && thisAuthorId.equals(otherAuthorId)
-                && thisInCitationId.equals(otherInCitationId)
-                && thisOutCitationId.equals(otherOutCitationId);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        if (!id.equals("")) builder.append("ID: ").append(id).append("\n");
-        builder.append("Title: ").append(title).append("\n");
-        builder.append("Date: ").append(year).append("\n");
-        builder.append("Authors: ");
-        builder.append(authors.stream().map(Author::getName).collect(Collectors.joining(", ")));
-        builder.append("\n");
-        builder.append("In Citations: ").append(getInCitationCount()).append("\n");
-        builder.append("Out Citations: ").append(getOutCitationCount()).append("\n");
-
-        return builder.toString();
-    }
-
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
         object.put("id", id);

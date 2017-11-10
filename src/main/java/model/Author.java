@@ -42,30 +42,6 @@ public class Author {
         return papers;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (!(other instanceof Author)) {
-            return false;
-        }
-
-        Author otherAuthor = (Author) other;
-        // Calling papers.equals(otherAuthor.papers) will result in recursion as the papers equality will check for
-        // authors equality. Thus, a weaker check to avoid infinite recursion.
-        Set<String> thisPapersId = papers.stream().map(Paper::getId).collect(Collectors.toSet());
-        Set<String> otherPapersId = otherAuthor.papers.stream().map(Paper::getId).collect(Collectors.toSet());
-
-        return id.equals(otherAuthor.id) && name.equals(otherAuthor.name) && thisPapersId.equals(otherPapersId);
-    }
-
-    @Override
-    public String toString() {
-        return id + " " + name + " " + papers.stream().map(Paper::getId).collect(Collectors.toList());
-    }
-
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
         object.put("id", id);

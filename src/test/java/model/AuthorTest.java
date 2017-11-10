@@ -13,7 +13,7 @@ public class AuthorTest {
     private static final Paper PAPER = new PaperBuilder().withId("123").build();
 
     @Test
-    public void hashcode() {
+    public void test() {
         Set<Author> authors = new HashSet<>();
 
         // unique identifiers

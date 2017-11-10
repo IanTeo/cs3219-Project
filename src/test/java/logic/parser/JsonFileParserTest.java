@@ -3,6 +3,8 @@ package logic.parser;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import model.Model;
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import model.Author;
 import model.ModelManager;
 import model.Paper;
+import util.AssertUtil;
 import util.PaperBuilder;
 
 public class JsonFileParserTest {
@@ -64,6 +67,20 @@ public class JsonFileParserTest {
     @Test
     public void parse() {
         parser.parse(parser_test);
-        assertEquals(EXPECTED_MODEL, model);
+        assertModelEquals(EXPECTED_MODEL, model);
+    }
+
+    private void assertModelEquals(Model expected, Model actual) {
+        assertEquals(expected.getPapers().size(), actual.getPapers().size());
+        for (Paper paper : expected.getPapers()) {
+            Paper toCompare = actual.getPaper(paper.getId());
+            AssertUtil.assertPaperEquals(paper, toCompare);
+        }
+
+        assertEquals(expected.getAuthors().size(), actual.getAuthors().size());
+        for (Author author : expected.getAuthors()) {
+            Author toCompare = actual.getAuthor(author.getId());
+            AssertUtil.assertAuthorEquals(author, toCompare);
+        }
     }
 }
