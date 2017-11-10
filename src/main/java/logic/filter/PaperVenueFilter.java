@@ -2,6 +2,7 @@ package logic.filter;
 
 import static logic.model.Category.VENUE;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 
@@ -10,8 +11,8 @@ import model.Paper;
 import util.StringUtil;
 
 public class PaperVenueFilter extends Filter {
-    public PaperVenueFilter(Collection<String> keywords) {
-        this.predicate = new PaperVenuePredicate(keywords);
+    public PaperVenueFilter(String... keywords) {
+        this.predicate = new PaperVenuePredicate(Arrays.asList(keywords));
     }
 
     @Override

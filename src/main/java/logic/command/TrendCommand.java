@@ -36,31 +36,14 @@ public class TrendCommand implements Command {
     public String execute() {
         Collection<Paper> papers = removeUnwantedValues(model.getPapers());
         Map<String, Collection<Paper>> queryToPaper = MapUtility.groupPaper(papers, category);
-        if (!filters.isEmpty()) {
-            queryToPaper = MapUtility.mergeEqualKeys(queryToPaper, getFilterOfCategory(), category);
+        if (category == Category.VENUE) {
+            queryToPaper = MapUtility.mergeEqualKeys(queryToPaper,
+                    Filter.getFilterOfCategory(category, filters), category);
         }
         Map<String, Map<Integer, Collection<Paper>>> queryToYearToPaper = MapUtility.groupPaperByYear(queryToPaper);
         Map<String, Map<Integer, Integer>> queryToYearToCount = MapUtility.sumMaps(queryToYearToPaper, measure);
         populateEmptyYears(queryToYearToCount);
         return JsonConverter.mapsToJson(queryToYearToCount).toJSONString();
-    }
-
-    private Filter getFilterOfCategory() {
-        switch (category) {
-            case PAPER:
-                return filters.stream()
-                        .filter(filter -> filter instanceof PaperTitleFilter)
-                        .findFirst()
-                        .orElse(null);
-            case VENUE:
-                return filters.stream()
-                        .filter(filter -> filter instanceof PaperVenueFilter)
-                        .findFirst()
-                        .orElse(null);
-            case TOTAL:
-            default:
-                return null;
-        }
     }
 
     private Collection<Paper> removeUnwantedValues(Collection<Paper> papers) {

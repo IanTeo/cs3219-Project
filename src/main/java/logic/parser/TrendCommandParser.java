@@ -53,13 +53,13 @@ public class TrendCommandParser {
     private List<Filter> getFilters(Map<String, String> arguments) throws ParseException {
         List<Filter> filters = new ArrayList<>();
         if (arguments.containsKey("venue")) {
-            filters.add(new PaperVenueFilter(getValues(arguments.get("venue"))));
+            filters.add(new PaperVenueFilter(arguments.get("venue")));
         }
         if (arguments.containsKey("paper")) {
-            filters.add(new PaperTitleFilter(getValues(arguments.get("paper"))));
+            filters.add(new PaperTitleFilter(arguments.get("paper")));
         }
         if (arguments.containsKey("author")) {
-            filters.add(new AuthorFilter(getValues(arguments.get("author"))));
+            filters.add(new AuthorFilter(arguments.get("author")));
         }
         if (arguments.containsKey("year")) {
             filters.add(new YearFilter(getYearRange(arguments.get("year"))));
@@ -68,24 +68,9 @@ public class TrendCommandParser {
         return filters;
     }
 
-    private List<String> getValues(String values) {
-        return Arrays.stream(values.split(","))
-                .map(String::trim)
-                .collect(Collectors.toList());
-    }
-
     private YearRange getYearRange(String year) throws ParseException {
-        List<Integer> years;
         try {
-            years = Arrays.stream(year.split("-"))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-
-            if (years.size() == 1) {
-                return new YearRange(years.get(0));
-            } else {
-                return new YearRange(years.get(0), years.get(1));
-            }
+            return new YearRange(year);
         } catch (Exception e) {
             throw new ParseException("Invalid year");
         }

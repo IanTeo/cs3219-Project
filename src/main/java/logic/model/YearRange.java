@@ -9,19 +9,16 @@ import logic.Precondition;
  * Represents the range of years.
  */
 public class YearRange {
-    private static final int EARLIEST_START_YEAR = 1991;
-
     private final int startYear;
     private final int endYear;
 
-    public YearRange(int startYear) {
-        Precondition.checkArgument(startYear >= EARLIEST_START_YEAR && startYear <= Year.now().getValue());
-        this.startYear = startYear;
-        this.endYear = startYear;
+    public YearRange(String yearString) {
+        String[] years = yearString.split("-");
+        this.startYear = Integer.parseInt(years[0]);
+        this.endYear = Integer.parseInt(years[1]);
     }
 
     public YearRange(int startYear, int endYear) {
-        Precondition.checkArgument(startYear >= EARLIEST_START_YEAR && startYear <= endYear && endYear <= Year.now().getValue());
         this.startYear = startYear;
         this.endYear = endYear;
     }

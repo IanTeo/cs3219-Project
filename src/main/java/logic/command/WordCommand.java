@@ -1,7 +1,6 @@
 package logic.command;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,7 +70,7 @@ public class WordCommand implements Command{
             entryList = entryList.subList(0, MAX_WORDS);
         }
 
-        return JsonConverter.entryListToJson(entryList).toString();
+        return JsonConverter.entryListToWordCloudJson(entryList).toString();
     }
 
     public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {

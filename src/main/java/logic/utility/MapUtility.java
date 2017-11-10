@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import logic.filter.Filter;
 import logic.model.Measure;
 import logic.model.Category;
+import model.Author;
 import model.Paper;
 import util.StringUtil;
 
@@ -38,8 +39,19 @@ public class MapUtility {
      * E.g. If {@code groupBy == VENUE}, groups papers according to their venue names.
      */
     public static Map<String, Collection<Paper>> groupPaper(Collection<Paper> papers, Category groupBy) {
-        return papers.stream()
-                .collect(Collectors.groupingBy(getMappingFunction(groupBy), Collectors.toCollection(ArrayList::new)));
+        HashMap<String, Collection<Paper>> groupMap = new HashMap<>();
+        for (Paper paper : papers) {
+            for (String group : getGroupsFromPaper(groupBy, paper)) {
+                if (groupMap.containsKey(group)) {
+                    groupMap.get(group).add(paper);
+                } else {
+                    Collection<Paper> paperCollection = new ArrayList<>();
+                    paperCollection.add(paper);
+                    groupMap.put(group, paperCollection);
+                }
+            }
+        }
+        return groupMap;
     }
 
     /**
@@ -57,7 +69,7 @@ public class MapUtility {
      * E.g. If {@code measure == PAPER}, the value will be the sum of papers.
      * If {@code measure == AUTHOR}, the value will be the sum of unique authors.
      */
-    private static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
+    public static <T> Map<T, Integer> sumMap(Map<T, Collection<Paper>> map, Measure measure) {
         return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, // map to itself i.e. no change
                 getSumFunction(measure), // map to getSumFunction
                 (value1, value2) -> value1, // resolve duplicate keys (will not happen, but need it to map it to TreeMap)
@@ -68,17 +80,25 @@ public class MapUtility {
     /**
      * Returns a {@code Function} that returns the value of a field in {@code Paper} depending on {@code groupBy}.
      */
-    private static Function<Paper, String> getMappingFunction(Category groupBy) {
+    private static Collection<String> getGroupsFromPaper(Category groupBy, Paper paper) {
+        Collection<String> groups = new ArrayList<>();
         switch (groupBy) {
-            case PAPER:
-                return Paper::getTitle;
-            case TOTAL:
-                return paper -> TOTAL.toString().toLowerCase();
-            case VENUE:
-                return Paper::getVenue;
-            default:
+            case PAPER :
+                groups.add(paper.getTitle());
+                break;
+            case TOTAL :
+                groups.add(TOTAL.toString().toLowerCase());
+                break;
+            case VENUE :
+                groups.add(paper.getVenue());
+                break;
+            case AUTHOR :
+                groups = paper.getAuthors().stream().map(Author::getName).collect(Collectors.toList());
+                break;
+            default :
                 throw new AssertionError("Should not reach here; these are all the possible enums.");
         }
+        return groups;
     }
 
     /**
@@ -125,8 +145,10 @@ public class MapUtility {
     public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter,
             Category category) {
         if (filter == null) {
+            System.out.println("null..");
             return mergeAllWords(map, category);
         } else {
+            System.out.println(filter.toQueryKeyword());
             return mergeSelectedWords(map, filter);
         }
     }

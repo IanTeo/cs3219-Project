@@ -11,11 +11,32 @@ import org.json.simple.JSONObject;
  * Converts the data of {@code TrendCommand} into JSON format.
  */
 public class JsonConverter {
+    /**
+     * Converts {@code entryList} into a JSON.
+     */
+    public static JSONArray entryListToJson(List<Map.Entry<String, Integer>> entryList,
+                                            String keyName, String valueName) {
+        if (entryList.size() == 0) {
+            return new JSONArray();
+        }
+
+        JSONArray array = new JSONArray();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            String key = entry.getKey();
+            int value = entry.getValue();
+
+            JSONObject object = new JSONObject();
+            object.put(keyName, key);
+            object.put(valueName, value);
+            array.add(object);
+        }
+        return array;
+    }
 
     /**
-     * Converts {@code entryList} into JSON.
+     * Converts {@code entryList} into a specialized word cloud JSON.
      */
-    public static JSONArray entryListToJson(List<Map.Entry<String, Integer>> entryList) {
+    public static JSONArray entryListToWordCloudJson(List<Map.Entry<String, Integer>> entryList) {
         if (entryList.size() == 0) {
             return new JSONArray();
         }

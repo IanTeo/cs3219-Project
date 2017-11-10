@@ -2,6 +2,7 @@ package logic.filter;
 
 import static logic.model.Category.PAPER;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 
@@ -9,8 +10,8 @@ import logic.model.Category;
 import model.Paper;
 
 public class PaperTitleFilter extends Filter {
-    public PaperTitleFilter(Collection<String> keywords) {
-        this.predicate = new PaperTitlePredicate(keywords);
+    public PaperTitleFilter(String... keywords) {
+        this.predicate = new PaperTitlePredicate(Arrays.asList(keywords));
     }
 
     @Override

@@ -41,9 +41,10 @@ public class TrendCommandParserTest {
         arguments.put("author", "baz qux,qux bax");
         arguments.put("year", "2000-2001");
 
-        Collection<Filter> expectedFilters = Arrays.asList(new PaperVenueFilter(Collections.singletonList("foo")),
-                new PaperTitleFilter(Collections.singletonList("bar")),
-                new AuthorFilter(Arrays.asList("baz qux", "qux bax")),
+        Collection<Filter> expectedFilters = Arrays.asList(
+                new PaperVenueFilter("foo"),
+                new PaperTitleFilter("bar"),
+                new AuthorFilter("baz qux", "qux bax"),
                 new YearFilter(new YearRange(2000, 2001)));
 
         TrendCommand expected = new TrendCommand(Category.VENUE, expectedFilters, Measure.AUTHOR);

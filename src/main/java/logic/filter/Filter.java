@@ -10,6 +10,24 @@ import model.Paper;
 public abstract class Filter {
     protected Predicate<Paper> predicate;
 
+    public static Filter getFilterOfCategory(Category category, Collection<Filter> filters) {
+        switch (category) {
+            case PAPER:
+                return filters.stream()
+                        .filter(filter -> filter instanceof PaperTitleFilter)
+                        .findFirst()
+                        .orElse(null);
+            case VENUE:
+                return filters.stream()
+                        .filter(filter -> filter instanceof PaperVenueFilter)
+                        .findFirst()
+                        .orElse(null);
+            case TOTAL:
+            default:
+                return null;
+        }
+    }
+
     public abstract Collection<String> getValuesToFilter();
 
     public abstract Category toQueryKeyword();
