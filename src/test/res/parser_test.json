@@ -1,5 +1,6 @@
 {"authors":[{"ids":["1"],"name":"Alice A. Alex"}],"id":"1","inCitations":["2", "3"],"outCitations":["4"],"title":"Overloading","venue":"Inf. Lett.","year":2001}
 {"comment":"Same author name as previous, but without id","authors":[{"ids":[],"name":"Alice A. Alex"}],"id":"2","inCitations":[],"outCitations":["1"],"title":"Gluodynamics","venue":"","year":1997}
 {"comment":"inCitations and outCitations are not in this list.","authors":[{"ids":["2"],"name":"Benny Bob"},{"ids":["3"],"name":"Charlie Cassell"}],"id":"3","inCitations":[],"outCitations":["1", "7"],"title":"Convergence Processes","venue":"ICMI","year":2015}
-{"comment":"No authors, missing year","authors":[],"id":"4","inCitations":["1"],"outCitations":[],"title":"Solder fume","venue":"Annals"}
+{"comment":"No authors, missing year","authors":[],"id":"4","inCitations":["1"],"outCitations":[],"title":"Solder
+ fume","venue":"Annals"}
 {"comment":"Uncited, same author id different name","authors":[{"ids":["4"],"name":"Elephante"},{"ids":["1"],"name":"Alex"}],"id":"5","inCitations":[],"outCitations":[],"title":"Kimberlite","venue":"PloS one","year":2012}

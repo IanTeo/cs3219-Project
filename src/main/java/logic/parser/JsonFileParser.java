@@ -1,8 +1,6 @@
 package logic.parser;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Collection;
 
 import org.json.simple.JSONArray;
@@ -19,18 +17,21 @@ public class JsonFileParser extends FileParser {
         super(model);
     }
 
-    protected void parse(File file) {
+    public void parse(File file) {
         try {
             JSONParser parser = new JSONParser();
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(file), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(line);
                 // handle line breaks in between json data
-                while (line.charAt(line.length()-1) != '}') {
-                    line = line + reader.readLine();
+                while (builder.charAt(builder.length()-1) != '}') {
+                    builder.append(reader.readLine());
                 }
 
-                JSONObject object = (JSONObject) parser.parse(line);
+                JSONObject object = (JSONObject) parser.parse(builder.toString());
                 Paper paper = parsePaper(object);
                 parseInCitation(object, paper);
                 parseOutCitation(object, paper);
@@ -38,6 +39,7 @@ public class JsonFileParser extends FileParser {
                 addAuthor(paper.getAuthors(), paper);
                 model.addPaper(paper);
             }
+            reader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -20,10 +20,10 @@ import logic.filter.YearFilter;
 import logic.model.YearRange;
 
 public class TrendCommandParser {
-    private static final String HELP = "Error: %s\nUsage: trend [search term] [search values] NUM [ordering] " +
-            "FROM [start year]-[end year]\n" +
-            "E.g. Author Joshua, Ian NUM Paper FROM 2000-2012\n" +
-            "Venue ICSE, IAI NUM Paper FROM 2000\n" +
+    private static final String HELP = "Error: %s%nUsage: trend [search term] [search values] NUM [ordering] " +
+            "FROM [start year]-[end year]%n" +
+            "E.g. Author Joshua, Ian NUM Paper FROM 2000-2012%n" +
+            "Venue ICSE, IAI NUM Paper FROM 2000%n" +
             "This command returns a JSON file representing the trend of the search over the period of \"years\"" +
             "for the corresponding \"searchKeyword\"";
 

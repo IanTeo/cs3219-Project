@@ -33,7 +33,7 @@ public class SampleData {
             .withId("P2")
             .withTitle("venue ICSE with authors A1 A2 cite P1 P3")
             .withAuthors(AUTHOR_1, AUTHOR_2)
-            .withVenue("ICSE")
+            .withVenue("P2@ICSE")
             .withYear(2011)
             .build();
 

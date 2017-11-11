@@ -30,7 +30,12 @@ public class PaperTitleFilter extends Filter {
                 && this.getValuesToFilter().equals(((PaperTitleFilter) other).getValuesToFilter());
     }
 
-    private class PaperTitlePredicate implements Predicate<Paper> {
+    @Override
+    public int hashCode() {
+        return this.getValuesToFilter().hashCode();
+    }
+
+    private static class PaperTitlePredicate implements Predicate<Paper> {
         private final Collection<String> searchTitles;
 
         public PaperTitlePredicate(Collection<String> searchTitles) {

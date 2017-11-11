@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TopCommandTest {
     private Model model = new ModelStub();
-    private static String BASE_URL = "TopCommandTest/%s";
+    private static final String BASE_URL = "TopCommandTest/%s";
 
     @Test(expected = ParseException.class)
     public void setParameter_missingTypeArgument_throwsParseException() throws Exception {
@@ -40,6 +40,17 @@ public class TopCommandTest {
     public void setParameter_missingVenueArgument_throwsParseException() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("count", "2");
+        paramMap.put("measure", "incitation");
+
+        TopCommand command = new TopCommand();
+        command.setParameters(model, paramMap);
+    }
+
+    @Test(expected = ParseException.class)
+    public void setParameter_invalidCountArgument_throwsParseException() throws Exception {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("count", "invalid");
+        paramMap.put("category", "paper");
         paramMap.put("measure", "incitation");
 
         TopCommand command = new TopCommand();
@@ -90,6 +101,9 @@ public class TopCommandTest {
 
         paramMap.put("measure", "veNue");
         assertCommand(paramMap, String.format(BASE_URL, "Top_ValidAuthorVenueFilterResult.json"));
+
+        paramMap.put("paper", "venue ICSE with authors A1 A2 cite P1 P3");
+        assertCommand(paramMap, String.format(BASE_URL, "Top_ValidAuthorVenueFilterPaperResult.json"));
     }
 
     private void assertCommand(Map<String, String> paramMap, String expectedOutputFileName) throws Exception {

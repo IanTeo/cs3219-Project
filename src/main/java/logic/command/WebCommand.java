@@ -16,9 +16,9 @@ import util.StringUtil;
 
 public class WebCommand implements Command{
     public static final String COMMAND_WORD = "web";
-    public static final String HELP = "Error: %s\n" + COMMAND_WORD + "\n" +
-            "This command returns a JSON file representing a in-citation web with # levels, starting from the paper specified\n" +
-            "Required fields: level, paper\n" +
+    public static final String HELP = "Error: %s%n" + COMMAND_WORD + "%n" +
+            "This command returns a JSON file representing a in-citation web with # levels, starting from the paper specified%n" +
+            "Required fields: level, paper%n" +
             "Example: level=4&paper=Low-density parity check codes over GF(q)";
     private Model model;
     private int level;

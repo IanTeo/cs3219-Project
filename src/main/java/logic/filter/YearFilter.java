@@ -29,7 +29,12 @@ public class YearFilter extends Filter {
                 && this.getValuesToFilter().equals(((YearFilter) other).getValuesToFilter());
     }
 
-    private class YearPredicate implements Predicate<Paper> {
+    @Override
+    public int hashCode() {
+        return this.getValuesToFilter().hashCode();
+    }
+
+    private static class YearPredicate implements Predicate<Paper> {
         private final YearRange yearRange;
 
         public YearPredicate(YearRange yearRange) {

@@ -31,7 +31,12 @@ public class PaperVenueFilter extends Filter {
                 && this.getValuesToFilter().equals(((PaperVenueFilter) other).getValuesToFilter());
     }
 
-    private class PaperVenuePredicate implements Predicate<Paper> {
+    @Override
+    public int hashCode() {
+        return this.getValuesToFilter().hashCode();
+    }
+
+    private static class PaperVenuePredicate implements Predicate<Paper> {
         private final Collection<String> searchVenues;
 
         public PaperVenuePredicate(Collection<String> searchVenues) {

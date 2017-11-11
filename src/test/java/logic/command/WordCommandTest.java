@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class WordCommandTest {
     private Model model = new ModelStub();
-    private static String BASE_URL = "WordCommandTest/%s";
+    private static final String BASE_URL = "WordCommandTest/%s";
 
 
     @Test(expected = ParseException.class)
@@ -30,9 +30,9 @@ public class WordCommandTest {
     }
 
     @Test(expected = ParseException.class)
-    public void setParameter_invalidCategoryType_throwsParseException() throws Exception {
+    public void setParameter_invalidCategoryArgument_throwsParseException() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("type", "invalid");
+        paramMap.put("category", "invalid");
 
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);

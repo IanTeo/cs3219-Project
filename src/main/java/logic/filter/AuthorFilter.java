@@ -32,7 +32,12 @@ public class AuthorFilter extends Filter {
                 && this.getValuesToFilter().equals(((AuthorFilter) other).getValuesToFilter());
     }
 
-    private class AuthorPredicate implements Predicate<Paper> {
+    @Override
+    public int hashCode() {
+        return this.getValuesToFilter().hashCode();
+    }
+
+    private static class AuthorPredicate implements Predicate<Paper> {
         private final Collection<String> searchNames;
 
         public AuthorPredicate(Collection<String> searchNames) {

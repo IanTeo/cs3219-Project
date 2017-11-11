@@ -22,6 +22,7 @@ import util.ModelStub;
 
 public class TrendCommandTest {
     private static final Model MODEL = new ModelStub();
+    private static final String BASE_URL = "TrendCommandTest/%s";
 
     private Category category;
     private List<Filter> filters;
@@ -29,7 +30,7 @@ public class TrendCommandTest {
 
     @Test
     public void execute_noFilter_returnsValidJson() {
-        String[] expected = FileReader.readFile("Trend_NoFilter.json").split("\n");
+        String[] expected = FileReader.readFile(String.format(BASE_URL, "Trend_NoFilter.json")).split("\n");
 
         category = Category.VENUE;
         measure = Measure.PAPER;
@@ -52,7 +53,7 @@ public class TrendCommandTest {
 
     @Test
     public void execute_oneFilter_returnsValidJson() {
-        String[] expected = FileReader.readFile("Trend_OneFilter.json").split("\n");
+        String[] expected = FileReader.readFile(String.format(BASE_URL, "Trend_OneFilter.json")).split("\n");
 
         category = Category.VENUE;
         filters = Collections.singletonList(new AuthorFilter("AuThOR WiTh PaPeRs p2 P3 p4"));
@@ -85,7 +86,7 @@ public class TrendCommandTest {
 
     @Test
     public void execute_twoFilters_returnsValidJson() {
-        String[] expected = FileReader.readFile("Trend_TwoFilters.json").split("\n");
+        String[] expected = FileReader.readFile(String.format(BASE_URL, "Trend_TwoFilters.json")).split("\n");
 
         category = Category.TOTAL;
         filters = Arrays.asList(new AuthorFilter("author with papers P2 P3 P4"),
@@ -122,7 +123,7 @@ public class TrendCommandTest {
 
     @Test
     public void execute_threeFilters_returnsValidJson() {
-        String[] expected = FileReader.readFile("Trend_ThreeFilters.json").split("\n");
+        String[] expected = FileReader.readFile(String.format(BASE_URL, "Trend_ThreeFilters.json")).split("\n");
 
         category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
@@ -163,7 +164,7 @@ public class TrendCommandTest {
 
     @Test
     public void execute_allFilters_returnsValidJson() {
-        String[] expected = FileReader.readFile("Trend_AllFilters.json").split("\n");
+        String[] expected = FileReader.readFile(String.format(BASE_URL, "Trend_AllFilters.json")).split("\n");
 
         category = Category.PAPER;
         filters = Arrays.asList(

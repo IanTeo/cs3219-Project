@@ -16,13 +16,13 @@ public class FileParserManager {
     }
 
     private void parseFilesInDirectory(File folder) {
+        if (folder == null) return;
+        
         for (File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                parseFilesInDirectory(fileEntry);
-            } else {
-                if (!isHiddenFile(fileEntry)) {
-                    jsonParser.parse(fileEntry);
-                }
+            if (fileEntry == null) continue;
+
+            if (!fileEntry.isDirectory() && !isHiddenFile(fileEntry)) {
+                jsonParser.parse(fileEntry);
             }
         }
     }

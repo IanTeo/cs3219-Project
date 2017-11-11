@@ -13,7 +13,7 @@ public class FileReader {
             byte[] encodedFile = Files.readAllBytes(
                     Paths.get(String.format(BASE_URL, fileName)));
 
-            fileContents = new String(encodedFile);
+            fileContents = new String(encodedFile, "UTF-8");
         } catch (IOException e) {
             fileContents = "Error parsing file";
         }

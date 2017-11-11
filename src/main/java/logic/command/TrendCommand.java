@@ -36,7 +36,7 @@ public class TrendCommand implements Command {
     public String execute() {
         Collection<Paper> papers = removeUnwantedValues(model.getPapers());
         Map<String, Collection<Paper>> queryToPaper = MapUtility.groupPaper(papers, category);
-        if (category == Category.VENUE) {
+        if (!filters.isEmpty()) {
             queryToPaper = MapUtility.mergeEqualKeys(queryToPaper,
                     Filter.getFilterOfCategory(category, filters), category);
         }
@@ -89,10 +89,5 @@ public class TrendCommand implements Command {
 
     public void setParameters(Model model, Map<String, String> paramMap) {
         this.model = model;
-    }
-
-    @Override
-    public String toString() {
-        return "category: " + category.toString() + "\nmeasure: " + measure.toString() + "\nfilters: " + filters.toString();
     }
 }

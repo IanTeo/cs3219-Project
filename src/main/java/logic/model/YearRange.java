@@ -1,9 +1,6 @@
 package logic.model;
 
-import java.time.Year;
 import java.util.stream.IntStream;
-
-import logic.Precondition;
 
 /**
  * Represents the range of years.

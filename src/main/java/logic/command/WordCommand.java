@@ -20,10 +20,10 @@ import util.StringUtil;
 
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";
-    public static final String HELP = "Error: %s\n" + COMMAND_WORD + "\n" +
-            "This command returns a JSON file representing the top # words from paper title/venue and their respective counts" +
-            "Required fields: category\n" +
-            "Optional fields: ignore\n" +
+    public static final String HELP = "Error: %s%n" + COMMAND_WORD + "%n" +
+            "This command returns a JSON file representing the top # words from paper title/venue and their respective counts%n" +
+            "Required fields: category%n" +
+            "Optional fields: ignore%n" +
             "Example: category=paper&ignore=data,effects";
     public static final int MAX_WORDS = 100;
     private Set<String> stopWords = new HashSet<>(Arrays.asList(

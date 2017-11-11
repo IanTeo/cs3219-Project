@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.simple.JSONObject;
 import org.junit.Test;
 import util.PaperBuilder;
 
@@ -30,5 +31,12 @@ public class AuthorTest {
         authors.add(bazWithPaper);
         assertEquals("123", bazWithPaper.getId());
         assertEquals(new HashSet<>(Arrays.asList(bar, baz, bazWithPaper)), authors);
+
+        JSONObject expectedJson = new JSONObject();
+        expectedJson.put("id", "123");
+        expectedJson.put("name", "baz");
+        expectedJson.put("paperCount", 1);
+        JSONObject actualJson = bazWithPaper.toJson();
+        assertEquals(expectedJson, actualJson);
     }
 }
