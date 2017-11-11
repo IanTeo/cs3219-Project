@@ -15,10 +15,10 @@ import model.Paper;
 import util.AssertUtil;
 import util.PaperBuilder;
 
-public class JsonFileParserTest {
+public class FileParserManagerTest {
     private final Model model = new ModelManager();
-    private final JsonFileParser parser = new JsonFileParser(model);
-    private final File parser_test = new File("src/test/res/parser_test.json");
+    private final FileParserManager parser = new FileParserManager(model);
+    private final String directory = "src/test/res/ParserTest/";
 
     private static final ModelManager EXPECTED_MODEL = new ModelManager();
 
@@ -65,8 +65,8 @@ public class JsonFileParserTest {
     }
 
     @Test
-    public void parse() {
-        parser.parse(parser_test);
+    public void parseFilesInDirectory() {
+        parser.parseFilesInDirectory(directory);
         assertModelEquals(EXPECTED_MODEL, model);
     }
 

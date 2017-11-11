@@ -17,7 +17,7 @@ public class JsonFileParser extends FileParser {
         super(model);
     }
 
-    public void parse(File file) {
+    protected void parse(File file) {
         try {
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -51,11 +51,11 @@ public class JsonFileParser extends FileParser {
     private Paper parsePaper(JSONObject object) {
         String id = StringUtil.sanitise(object.get("id").toString());
         String title = StringUtil.sanitise(object.get("title").toString());
-        int year = 0;
+        int year;
         try {
             year = Integer.parseInt(object.get("year").toString());
         } catch (Exception e) {
-            // System.out.println("Date in invalid format: " + e.getMessage());
+            year = 0;
         }
         String venue = StringUtil.sanitise(object.get("venue").toString());
         Author[] authors = parseAuthors(object);
