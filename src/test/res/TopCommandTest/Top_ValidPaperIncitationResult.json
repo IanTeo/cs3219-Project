@@ -1,1 +1,1 @@
-[{"paper":"venue arXiv with authors A2 A3","incitation":2},{"paper":"venue ICSE with authors A1 A2 cite P1 P3","incitation":1},{"paper":"venue ICSE with authors A1 A3 cite P3","incitation":1},{"paper":"venue singapore with author A2 cite P2","incitation":0}]
+[{"series":"venue arXiv with authors A2 A3","count":2},{"series":"venue ICSE with authors A1 A2 cite P1 P3","count":1},{"series":"venue ICSE with authors A1 A3 cite P3","count":1},{"series":"venue singapore with author A2 cite P2","count":0}]

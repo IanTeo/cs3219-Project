@@ -52,8 +52,7 @@ public class TopCommand implements Command{
             entryList = entryList.subList(0, count);
         }
 
-        return JsonConverter.entryListToJson(entryList, category.toString().toLowerCase(),
-                measure.toString().toLowerCase()).toString();
+        return JsonConverter.entryListToJson(entryList).toString();
     }
 
     public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {

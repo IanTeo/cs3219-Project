@@ -14,8 +14,7 @@ public class JsonConverter {
     /**
      * Converts {@code entryList} into a JSON.
      */
-    public static JSONArray entryListToJson(List<Map.Entry<String, Integer>> entryList,
-                                            String keyName, String valueName) {
+    public static JSONArray entryListToJson(List<Map.Entry<String, Integer>> entryList) {
         if (entryList.size() == 0) {
             return new JSONArray();
         }
@@ -26,8 +25,8 @@ public class JsonConverter {
             int value = entry.getValue();
 
             JSONObject object = new JSONObject();
-            object.put(keyName, key);
-            object.put(valueName, value);
+            object.put("series", key);
+            object.put("count", value);
             array.add(object);
         }
         return array;
