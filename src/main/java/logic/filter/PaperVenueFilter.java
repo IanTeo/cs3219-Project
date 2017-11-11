@@ -49,7 +49,7 @@ public class PaperVenueFilter extends Filter {
 
         @Override
         public boolean test(Paper paper) {
-            return searchVenues.stream().anyMatch(searchVenue -> StringUtil.containsIgnoreCaseVenue(paper.getVenue(), searchVenue));
+            return searchVenues.stream().anyMatch(searchVenue -> StringUtil.containsIgnoreCase(paper.getVenue(), searchVenue));
         }
     }
 }

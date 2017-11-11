@@ -53,10 +53,10 @@ public class TrendCommandParser {
     private List<Filter> getFilters(Map<String, String> arguments) throws ParseException {
         List<Filter> filters = new ArrayList<>();
         if (arguments.containsKey("venue")) {
-            filters.add(new PaperVenueFilter(arguments.get("venue")));
+            filters.add(new PaperVenueFilter(arguments.get("venue").split(",")));
         }
         if (arguments.containsKey("paper")) {
-            filters.add(new PaperTitleFilter(arguments.get("paper")));
+            filters.add(new PaperTitleFilter(arguments.get("paper").split(",")));
         }
         if (arguments.containsKey("author")) {
             filters.add(new AuthorFilter(arguments.get("author").split(",")));

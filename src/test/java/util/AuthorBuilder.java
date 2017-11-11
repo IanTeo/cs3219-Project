@@ -11,12 +11,10 @@ import java.util.Set;
 public class AuthorBuilder {
     private String id;
     private String name;
-    private Set<Paper> papers = new HashSet<>();
 
     public AuthorBuilder() {
         this.id = "";
         this.name = "";
-        this.papers = new HashSet<>();
     }
 
     public AuthorBuilder withId(String id) {

@@ -145,39 +145,18 @@ public class MapUtility {
     public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter,
             Category category) {
         if (filter == null) {
-            return mergeAllWords(map, category);
+            // We should merge all if possible, but currently, no implementation is faster than O(n^2)
+            return map;
         } else {
             return mergeSelectedWords(map, filter);
         }
-    }
-
-    private static Map<String, Collection<Paper>> mergeAllWords(Map<String, Collection<Paper>> map, Category category) {
-        Set<String> usedKeys = new HashSet<>();
-        Map<String, Collection<Paper>> mergedMap = new HashMap<>();
-        for (String key1 : map.keySet()) {
-            for (String key2 : map.keySet()) {
-                if (usedKeys.contains(key1) || key1.equals(key2)) {
-                    continue;
-                }
-
-                if (isKeywordEqual(category, key1, key2)) {
-                    Collection<Paper> mergedPapers = CollectionUtility.mergeLists().apply(map.get(key1), map.get(key2));
-                    mergedMap.put(key1, mergedPapers);
-                    usedKeys.addAll(Arrays.asList(key1, key2));
-                }
-            }
-            if (!mergedMap.containsKey(key1) && !usedKeys.contains(key1)) {
-                mergedMap.put(key1, map.get(key1));
-            }
-        }
-        return mergedMap;
     }
 
     private static Map<String, Collection<Paper>> mergeSelectedWords(Map<String, Collection<Paper>> map, Filter filter) {
         Map<String, Collection<Paper>> mergedMap = new HashMap<>();
         for (String keyword1 : filter.getValuesToFilter()) {
             map.keySet().stream()
-                    .filter(keyword2 -> isKeywordEqual(filter, keyword1, keyword2))
+                    .filter(keyword2 -> isKeywordEqual(filter, keyword2, keyword1))
                     .forEach(key -> mergedMap.merge(keyword1, map.getOrDefault(key, Collections.emptyList()),
                             CollectionUtility.mergeLists()));
         }
@@ -193,7 +172,7 @@ public class MapUtility {
             case PAPER:
                 return str1.equalsIgnoreCase(str2);
             case VENUE:
-                return StringUtil.containsIgnoreCaseVenue(str1, str2);
+                return StringUtil.containsMatchIgnoreCaseAndPunctuation(str1, str2);
             case TOTAL:
                 return true;
             default:

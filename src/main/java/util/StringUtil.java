@@ -21,15 +21,33 @@ public class StringUtil {
                 .replaceAll("\\s+", " ");
     }
 
-    public static boolean containsIgnoreCaseVenue(String str1, String str2) {
-        if(str1 == null || str2 == null) return false;
-        Collection<String> splitStrs1 = Arrays.stream(str1.split("[\\s\\p{Punct}]+"))
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
-        Collection<String> splitStrs2 = Arrays.stream(str2.split("[\\s\\p{Punct}]+"))
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
+    // Check if exact match of searchStr is contained in str, ignoring case and punctuation
+    public static boolean containsMatchIgnoreCaseAndPunctuation(String str, String searchStr) {
+        if(str == null || searchStr == null) return false;
+        if (str.equalsIgnoreCase(searchStr)) return true;
 
-        return splitStrs1.containsAll(splitStrs2) || splitStrs2.containsAll(splitStrs1);
+        for (String split : str.split("[\\s\\p{Punct}]+")) {
+            if (split.equalsIgnoreCase(searchStr)) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    public static boolean containsIgnoreCase(String str, String searchStr)     {
+        if(str == null || searchStr == null) return false;
+
+        final int length = searchStr.length();
+        if (length == 0)
+            return true;
+
+        for (int i = str.length() - length; i >= 0; i--) {
+            if (str.regionMatches(true, i, searchStr, 0, length)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

@@ -42,7 +42,7 @@ public class HttpUI implements UserInterface {
 
         private String handleRequest(HttpExchange httpExchange) {
             URI uri = httpExchange.getRequestURI();
-            Map<String, String> queryMap = queryToMap(uri.getRawQuery());
+            Map<String, String> queryMap = queryToMap(uri.getQuery());
             queryMap.put("command", uri.getPath().substring(1));
             return controller.executeQuery(queryMap);
         }
