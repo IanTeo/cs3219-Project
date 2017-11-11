@@ -11,19 +11,27 @@ public abstract class Filter {
     protected Predicate<Paper> predicate;
 
     public static Filter getFilterOfCategory(Category category, Collection<Filter> filters) {
+
         switch (category) {
-            case PAPER:
+            case PAPER :
                 return filters.stream()
                         .filter(filter -> filter instanceof PaperTitleFilter)
                         .findFirst()
                         .orElse(null);
-            case VENUE:
+            case VENUE :
                 return filters.stream()
                         .filter(filter -> filter instanceof PaperVenueFilter)
                         .findFirst()
                         .orElse(null);
-            case TOTAL:
-            default:
+
+            case AUTHOR :
+                return filters.stream()
+                        .filter(filter -> filter instanceof AuthorFilter)
+                        .findFirst()
+                        .orElse(null);
+
+            case TOTAL :
+            default :
                 return null;
         }
     }

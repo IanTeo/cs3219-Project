@@ -38,7 +38,7 @@ public class TrendCommand implements Command {
         Map<String, Collection<Paper>> queryToPaper = MapUtility.groupPaper(papers, category);
         if (!filters.isEmpty()) {
             queryToPaper = MapUtility.mergeEqualKeys(queryToPaper,
-                    Filter.getFilterOfCategory(category, filters), category);
+                    Filter.getFilterOfCategory(category, filters));
         }
         Map<String, Map<Integer, Collection<Paper>>> queryToYearToPaper = MapUtility.groupPaperByYear(queryToPaper);
         Map<String, Map<Integer, Integer>> queryToYearToCount = MapUtility.sumMaps(queryToYearToPaper, measure);

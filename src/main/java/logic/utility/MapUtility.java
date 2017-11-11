@@ -142,12 +142,12 @@ public class MapUtility {
      * Merges keys in {@code map} that are considered as equal. E.g. {@code venue == "ICSE"} and {@code venue == "ICSE@ICSE"}
      * are considered as equal, however they are mapped into different keys.
      */
-    public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter,
-            Category category) {
+    public static Map<String, Collection<Paper>> mergeEqualKeys(Map<String, Collection<Paper>> map, Filter filter) {
         if (filter == null) {
             // We should merge all if possible, but currently, no implementation is faster than O(n^2)
             return map;
         } else {
+
             return mergeSelectedWords(map, filter);
         }
     }
@@ -169,13 +169,14 @@ public class MapUtility {
 
     private static boolean isKeywordEqual(Category category, String str1, String str2) {
         switch (category) {
-            case PAPER:
+            case PAPER :
+            case AUTHOR :
                 return str1.equalsIgnoreCase(str2);
-            case VENUE:
+            case VENUE :
                 return StringUtil.containsMatchIgnoreCaseAndPunctuation(str1, str2);
-            case TOTAL:
+            case TOTAL :
                 return true;
-            default:
+            default :
                 throw new AssertionError("Should not reach here; these are all the possible enums.");
         }
     }

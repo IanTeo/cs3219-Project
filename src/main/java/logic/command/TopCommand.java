@@ -35,9 +35,9 @@ public class TopCommand implements Command{
     public String execute() {
         Collection<Paper> papers = removeUnwantedValues(model.getPapers());
         Map<String, Collection<Paper>> categoryToPaper = MapUtility.groupPaper(papers, category);
-        if (category == Category.VENUE) {
+        if (!filters.isEmpty()) {
             categoryToPaper = MapUtility.mergeEqualKeys(categoryToPaper,
-                    Filter.getFilterOfCategory(category, filters), category);
+                    Filter.getFilterOfCategory(category, filters));
         }
         Map<String, Integer> categoryToMeasure = MapUtility.sumMap(categoryToPaper, measure);
         List<Map.Entry<String, Integer>> entryList = categoryToMeasure.entrySet().stream()
