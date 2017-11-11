@@ -20,6 +20,16 @@ public class CommandParserTest {
     }
 
     @Test
+    public void parseCommand_missingCommandArguments_returnInvalidCommand() {
+        HashMap<String, String> queryMap = new HashMap<>();
+        queryMap.put("command", "top");
+
+        Command command = commandParser.parseCommand(queryMap);
+        assertTrue(command instanceof InvalidCommand);
+    }
+
+
+    @Test
     public void parseCommand_TopCommandWord_returnTopCommand() {
         HashMap<String, String> queryMap = new HashMap<>();
         queryMap.put("command", "top");

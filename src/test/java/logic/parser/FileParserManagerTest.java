@@ -2,10 +2,6 @@ package logic.parser;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import model.Model;
 import org.junit.Test;
 
@@ -18,7 +14,7 @@ import util.PaperBuilder;
 public class FileParserManagerTest {
     private final Model model = new ModelManager();
     private final FileParserManager parser = new FileParserManager(model);
-    private final String directory = "src/test/res/ParserTest/";
+    private final static String DIRECTORY = "src/test/res/ParserTest/";
 
     private static final ModelManager EXPECTED_MODEL = new ModelManager();
 
@@ -66,7 +62,7 @@ public class FileParserManagerTest {
 
     @Test
     public void parseFilesInDirectory() {
-        parser.parseFilesInDirectory(directory);
+        parser.parseFilesInDirectory(DIRECTORY);
         assertModelEquals(EXPECTED_MODEL, model);
     }
 
