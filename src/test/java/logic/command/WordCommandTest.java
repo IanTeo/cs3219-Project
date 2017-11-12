@@ -28,24 +28,6 @@ public class WordCommandTest {
     public void init() {
         model = new ModelStub();
     }
-    
-    /* Should be in WordCommandTest
-    @Test(expected = ParseException.class)
-    public void setParameter_noCategoryArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-
-        WordCommand command = new WordCommand();
-        command.setParameters(model, paramMap);
-    }
-
-    @Test(expected = ParseException.class)
-    public void setParameter_invalidCategoryArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("category", "invalid");
-
-        WordCommand command = new WordCommand();
-        command.setParameters(model, paramMap);
-    }*/
 
     @Test
     public void execute_validCategoryPaper_printJson() throws Exception {

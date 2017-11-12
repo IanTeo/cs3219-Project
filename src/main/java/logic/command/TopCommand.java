@@ -17,12 +17,13 @@ public class TopCommand implements Command{
     public static final String COMMAND_WORD = "top";
     
     private Model model;
-    private int count;
-    private Measure measure;
-    private Category category;
-    private List<Filter> filters;
+    public final int count;
+    public final Measure measure;
+    public final Category category;
+    public final List<Filter> filters;
 
     public TopCommand(Model model, int count, Measure measure, Category category, List<Filter> filters) {
+        this.model = model;
         this.count = count;
         this.measure = measure;
         this.category = category;

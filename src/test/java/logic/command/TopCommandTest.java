@@ -28,48 +28,6 @@ public class TopCommandTest {
     
     private Model model = new ModelStub();
 
-    /* Move to TopCommandParserTest
-    @Test(expected = ParseException.class)
-    public void setParameter_missingTypeArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "2");
-        paramMap.put("category", "paper");
-
-        TopCommand command = new TopCommand();
-        command.setParameters(model, paramMap);
-    }
-
-    @Test(expected = ParseException.class)
-    public void setParameter_missingCountArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("category", "paper");
-        paramMap.put("measure", "incitation");
-
-        TopCommand command = new TopCommand();
-        command.setParameters(model, paramMap);
-    }
-
-    @Test(expected = ParseException.class)
-    public void setParameter_missingVenueArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "2");
-        paramMap.put("measure", "incitation");
-
-        TopCommand command = new TopCommand();
-        command.setParameters(model, paramMap);
-    }
-
-    @Test(expected = ParseException.class)
-    public void setParameter_invalidCountArgument_throwsParseException() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("count", "invalid");
-        paramMap.put("category", "paper");
-        paramMap.put("measure", "incitation");
-
-        TopCommand command = new TopCommand();
-        command.setParameters(model, paramMap);
-    }*/
-
     @Test
     public void execute_validCategoryPaperAndMeasureIncitation_printJson() throws Exception {
         int count = 100;

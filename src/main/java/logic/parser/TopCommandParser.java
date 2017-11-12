@@ -41,7 +41,7 @@ public class TopCommandParser {
         try {
             return Integer.parseInt(count);
         } catch (Exception e) {
-            throw new ParseException("Invalid Measure");
+            throw new ParseException("Invalid Count");
         }
     }
     

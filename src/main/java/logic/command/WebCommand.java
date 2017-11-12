@@ -13,8 +13,8 @@ import model.Paper;
 public class WebCommand implements Command{
     public static final String COMMAND_WORD = "web";
 
-    private int level;
-    private Paper paper;
+    public final int level;
+    public final Paper paper;
 
     public WebCommand(int level, Paper paper) {
         this.level = level;

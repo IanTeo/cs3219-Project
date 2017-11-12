@@ -19,8 +19,10 @@ import util.StringUtil;
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";
     public static final int MAX_WORDS = 100;
-    
-    private Set<String> stopWords = new HashSet<>(Arrays.asList(
+
+    private Model model;
+    public final Category category;
+    public final Set<String> stopWords = new HashSet<>(Arrays.asList(
             // Common stop words with more than 1 character
             "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",
             "be", "because", "been", "before", "being", "below", "between", "both", "but", "by",
@@ -35,9 +37,6 @@ public class WordCommand implements Command{
             // Special stop words specific to problem domain
             "journal", "research", "scientific", "using", "use", "system", "systems", "new", "based", "non", "via",
             "analysis", "study", "model"));
-
-    private Model model;
-    private Category category;
 
     public WordCommand(Model model, Category category, List<String> additionalStopWords) {
         this.model = model;

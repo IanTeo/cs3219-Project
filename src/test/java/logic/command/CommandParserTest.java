@@ -57,7 +57,7 @@ public class CommandParserTest {
         HashMap<String, String> queryMap = new HashMap<>();
         queryMap.put("command", "web");
         queryMap.put("level", "4");
-        queryMap.put("paper", "paper1");
+        queryMap.put("paper", "P1");
 
         Command command = commandParser.parseCommand(queryMap);
         assertTrue(command instanceof WebCommand);
