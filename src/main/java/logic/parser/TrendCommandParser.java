@@ -19,7 +19,7 @@ import logic.model.YearRange;
 import model.Model;
 
 public class TrendCommandParser {
-    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: measure";
+    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters, Required parameters: measure";
 
     public TrendCommand parse(Model model, Map<String, String> arguments) throws ParseException {
         if (!containExpectedArguments(arguments)) {

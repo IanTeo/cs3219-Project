@@ -12,7 +12,7 @@ import model.Model;
 import util.StringUtil;
 
 public class WordCommandParser {
-    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: category";
+    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters, Required parameters: category";
     
     public WordCommand parse(Model model, Map<String, String> arguments) throws ParseException {
         if (!containExpectedArguments(arguments)) {

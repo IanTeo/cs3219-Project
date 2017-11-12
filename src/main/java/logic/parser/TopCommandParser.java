@@ -17,7 +17,7 @@ import logic.model.YearRange;
 import model.Model;
 
 public class TopCommandParser {
-    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: count, measure, category";
+    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters, Required parameters: count, measure, category";
     
     public TopCommand parse(Model model, Map<String, String> arguments) throws ParseException {
         if (!containExpectedArguments(arguments)) {
@@ -37,9 +37,13 @@ public class TopCommandParser {
                 && paramMap.containsKey("category");
     }
 
-    private int getCount(String count) throws ParseException {
+    private int getCount(String countStr) throws ParseException {
         try {
-            return Integer.parseInt(count);
+            int count = Integer.parseInt(countStr);
+            if (count <= 0) {
+                throw new ParseException("Count must be larger than 0");
+            }
+            return count;
         } catch (Exception e) {
             throw new ParseException("Invalid Count");
         }

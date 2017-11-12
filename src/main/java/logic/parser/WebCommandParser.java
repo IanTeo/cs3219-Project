@@ -8,7 +8,7 @@ import model.Model;
 import model.Paper;
 
 public class WebCommandParser {
-    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: level, paper";
+    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters, Required parameters: level, paper";
     
     public WebCommand parse(Model model, Map<String, String> arguments) throws ParseException {
         if (!containExpectedArguments(arguments)) {
