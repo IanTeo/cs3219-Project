@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 import logic.jsonconverter.JsonConverter;
 import logic.filter.Filter;
-import logic.filter.PaperTitleFilter;
-import logic.filter.PaperVenueFilter;
 import logic.model.Measure;
 import logic.model.Category;
 import logic.filter.YearFilter;
@@ -21,16 +19,17 @@ import model.Paper;
 
 public class TrendCommand implements Command {
     public static final String COMMAND_WORD = "trend";
+    
     private Model model;
-
-    public final Category category;
-    public final Collection<Filter> filters; // terms to filter by. e.g. {Venue, [x, y]}
     public final Measure measure;
+    public final Category category;
+    public final Collection<Filter> filters;
 
-    public TrendCommand(Category category, Collection<Filter> filters, Measure measure) {
+    public TrendCommand(Model model, Measure measure, Category category, Collection<Filter> filters) {
+        this.model = model;
+        this.measure = measure;
         this.category = category;
         this.filters = filters;
-        this.measure = measure;
     }
 
     public String execute() {
@@ -85,9 +84,5 @@ public class TrendCommand implements Command {
                     .filter(filter -> filter instanceof YearFilter)
                     .map(filter -> (YearFilter) filter)
                     .findFirst().orElse(null);
-    }
-
-    public void setParameters(Model model, Map<String, String> paramMap) {
-        this.model = model;
     }
 }

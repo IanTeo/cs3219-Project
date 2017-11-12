@@ -21,8 +21,9 @@ import util.FileReader;
 import util.ModelStub;
 
 public class TrendCommandTest {
-    private static final Model MODEL = new ModelStub();
     private static final String BASE_URL = "TrendCommandTest/%s";
+    
+    private Model model = new ModelStub();
 
     private Category category;
     private List<Filter> filters;
@@ -34,20 +35,17 @@ public class TrendCommandTest {
 
         category = Category.VENUE;
         measure = Measure.PAPER;
-        TrendCommand trendCommand = new TrendCommand(category, Collections.emptyList(), measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        TrendCommand trendCommand = new TrendCommand(model, measure, category, Collections.emptyList());
         assertEquals(expected[0], trendCommand.execute());
 
         category = Category.PAPER;
         measure = Measure.AUTHOR;
-        trendCommand = new TrendCommand(category, Collections.emptyList(), measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure,category, Collections.emptyList());
         assertEquals(expected[1], trendCommand.execute());
 
         category = Category.TOTAL;
         measure = Measure.VENUE;
-        trendCommand = new TrendCommand(category, Collections.emptyList(), measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, Collections.emptyList());
         assertEquals(expected[2], trendCommand.execute());
     }
 
@@ -58,29 +56,25 @@ public class TrendCommandTest {
         category = Category.VENUE;
         filters = Collections.singletonList(new AuthorFilter("AuThOR WiTh PaPeRs p2 P3 p4"));
         measure = Measure.INCITATION;
-        TrendCommand trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        TrendCommand trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[0], trendCommand.execute());
 
         category = Category.TOTAL;
         filters = Collections.singletonList(new PaperTitleFilter("VeNuE SiNgApOrE wItH aUtHoR a2 CiTe P2"));
         measure = Measure.OUTCITATION;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[1], trendCommand.execute());
 
         category = Category.PAPER;
         filters = Collections.singletonList(new PaperVenueFilter("iCsE"));
         measure = Measure.AUTHOR;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[2], trendCommand.execute());
 
         category = Category.VENUE;
         filters = Collections.singletonList(new YearFilter(new YearRange(2009, 2011)));
         measure = Measure.PAPER;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[3], trendCommand.execute());
     }
 
@@ -92,32 +86,28 @@ public class TrendCommandTest {
         filters = Arrays.asList(new AuthorFilter("author with papers P2 P3 P4"),
                 new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"));
         measure = Measure.VENUE;
-        TrendCommand trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        TrendCommand trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[0], trendCommand.execute());
 
         category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
                 new PaperVenueFilter("icse"));
         measure = Measure.INCITATION;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[1], trendCommand.execute());
 
         category = Category.VENUE;
         filters = Arrays.asList(new PaperVenueFilter("icse"),
                 new YearFilter(new YearRange(2009, 2011)));
         measure = Measure.OUTCITATION;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[2], trendCommand.execute());
 
         category = Category.TOTAL;
         filters = Arrays.asList(new YearFilter(new YearRange(2009, 2011)),
                 new AuthorFilter("author with papers P1 P2"));
         measure = Measure.AUTHOR;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[3], trendCommand.execute());
     }
 
@@ -130,8 +120,7 @@ public class TrendCommandTest {
                 new PaperVenueFilter("icse"),
                 new YearFilter(new YearRange(2009, 2011)));
         measure = Measure.INCITATION;
-        TrendCommand trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        TrendCommand trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[0], trendCommand.execute());
 
         category = Category.VENUE;
@@ -139,8 +128,7 @@ public class TrendCommandTest {
                 new YearFilter(new YearRange(2009, 2011)),
                 new AuthorFilter("author with papers P1 P2"));
         measure = Measure.OUTCITATION;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[1], trendCommand.execute());
 
         category = Category.TOTAL;
@@ -148,8 +136,7 @@ public class TrendCommandTest {
                 new AuthorFilter("author with papers P1 P2"),
                 new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"));
         measure = Measure.AUTHOR;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[2], trendCommand.execute());
 
         category = Category.PAPER;
@@ -157,8 +144,7 @@ public class TrendCommandTest {
                 new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
                 new PaperVenueFilter("icse"));
         measure = Measure.VENUE;
-        trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[3], trendCommand.execute());
     }
 
@@ -173,8 +159,7 @@ public class TrendCommandTest {
                 new YearFilter(new YearRange(2009, 2011)),
                 new AuthorFilter("author with papers P1 P2"));
         measure = Measure.INCITATION;
-        TrendCommand trendCommand = new TrendCommand(category, filters, measure);
-        trendCommand.setParameters(MODEL, Collections.emptyMap());
+        TrendCommand trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[0], trendCommand.execute());
     }
 }

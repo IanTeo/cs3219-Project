@@ -1,6 +1,5 @@
 package logic.command;
 
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 import logic.jsonconverter.JsonConverter;
 import logic.model.Category;
 
-import logic.exception.ParseException;
 import model.Author;
 import model.Model;
 import model.Paper;
@@ -20,12 +18,8 @@ import util.StringUtil;
 
 public class WordCommand implements Command{
     public static final String COMMAND_WORD = "word";
-    public static final String HELP = "Error: %s%n" + COMMAND_WORD + "%n" +
-            "This command returns a JSON file representing the top # words from paper title/venue and their respective counts%n" +
-            "Required fields: category%n" +
-            "Optional fields: ignore%n" +
-            "Example: category=paper&ignore=data,effects";
     public static final int MAX_WORDS = 100;
+    
     private Set<String> stopWords = new HashSet<>(Arrays.asList(
             // Common stop words with more than 1 character
             "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",
@@ -45,6 +39,12 @@ public class WordCommand implements Command{
     private Model model;
     private Category category;
 
+    public WordCommand(Model model, Category category, List<String> additionalStopWords) {
+        this.model = model;
+        this.category = category;
+        this.stopWords.addAll(additionalStopWords);
+    }
+    
     public String execute() {
         HashMap<String, Integer> wordMap = new HashMap<>();
 
@@ -71,28 +71,6 @@ public class WordCommand implements Command{
         }
 
         return JsonConverter.entryListToWordCloudJson(entryList).toString();
-    }
-
-    public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
-        if (!containExpectedArguments(paramMap)) {
-            throw new ParseException(String.format(HELP, "Error parsing parameters"));
-        }
-
-        this.model = model;
-        try {
-            this.category = Category.valueOf(paramMap.get("category").toUpperCase());
-        } catch (Exception e) {
-            throw new ParseException(String.format(HELP, "Category not found"));
-        }
-
-        if (paramMap.containsKey("ignore")) {
-            String additionalStopWords = StringUtil.parseString(paramMap.get("ignore"));
-            this.stopWords.addAll(Arrays.asList(additionalStopWords.split(",")));
-        }
-    }
-
-    private boolean containExpectedArguments(Map<String, String> paramMap) {
-        return paramMap.containsKey("category");
     }
 
     private String getWordByCategory(Paper paper) {

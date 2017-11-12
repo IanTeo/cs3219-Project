@@ -3,6 +3,7 @@ package logic.command;
 import static org.junit.Assert.assertEquals;
 
 import logic.exception.ParseException;
+import logic.model.Category;
 import model.Model;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,9 @@ import util.FileReader;
 import util.ModelStub;
 import util.PaperBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WordCommandTest {
@@ -25,6 +28,8 @@ public class WordCommandTest {
     public void init() {
         model = new ModelStub();
     }
+    
+    /* Should be in WordCommandTest
     @Test(expected = ParseException.class)
     public void setParameter_noCategoryArgument_throwsParseException() throws Exception {
         Map<String, String> paramMap = new HashMap<>();
@@ -40,17 +45,16 @@ public class WordCommandTest {
 
         WordCommand command = new WordCommand();
         command.setParameters(model, paramMap);
-    }
+    }*/
 
     @Test
     public void execute_validCategoryPaper_printJson() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
+        Category category = Category.PAPER;
+        List<String> stopWords = new ArrayList<>();
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidPaperResult.json"));
 
-        paramMap.put("category", "paper");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidPaperResult.json"));
-
-        paramMap.put("ignore", "VENUE");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidPaperWithFilterResult.json"));
+        stopWords.add("venue");
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidPaperWithFilterResult.json"));
     }
 
     @Test
@@ -58,23 +62,23 @@ public class WordCommandTest {
         // Paper with no venue should not affect result when category=VENUE
         model.addPaper(new PaperBuilder().withId("t1").build());
 
-        Map<String, String> paramMap = new HashMap<>();
+        Category category = Category.VENUE;
+        List<String> stopWords = new ArrayList<>();
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidVenueResult.json"));
 
-        paramMap.put("category", "venue");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidVenueResult.json"));
-
-        paramMap.put("ignore", "arXiv");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidVenueWithFilterResult.json"));
+        stopWords.add("arxiv");
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidVenueWithFilterResult.json"));
     }
 
     @Test
     public void execute_validCategoryAuthor_printJson() throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("category", "author");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidAuthorResult.json"));
+        Category category = Category.AUTHOR;
+        List<String> stopWords = new ArrayList<>();
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidAuthorResult.json"));
 
-        paramMap.put("ignore", "author,PaperS");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidAuthorWithFilterResult.json"));
+        stopWords.add("author");
+        stopWords.add("papers");
+        assertCommand(category, stopWords, String.format(BASE_URL, "Word_ValidAuthorWithFilterResult.json"));
     }
 
     @Test
@@ -91,14 +95,11 @@ public class WordCommandTest {
         model.addPaper(new PaperBuilder().withId("t10").withTitle("LEMONS - A Tool for the Identification of Splice Junctions in Transcriptomes of Organisms Lacking Reference Genomes").build());
         model.addPaper(new PaperBuilder().withId("t11").withTitle("A Linear Dynamic Model for Microgrid Voltages in Presence of Distributed Generation").build());
 
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("category", "paper");
-        assertCommand(paramMap, String.format(BASE_URL, "Word_ValidPaperLargeResult.json"));
+        assertCommand(Category.PAPER, new ArrayList<>(), String.format(BASE_URL, "Word_ValidPaperLargeResult.json"));
     }
 
-    private void assertCommand(Map<String, String> paramMap, String expectedOutputFileName) throws Exception {
-        WordCommand command = new WordCommand();
-        command.setParameters(model, paramMap);
+    private void assertCommand(Category category, List<String> stopWords, String expectedOutputFileName) throws Exception {
+        WordCommand command = new WordCommand(model, category, stopWords);
 
         String actual = command.execute();
         String expected = FileReader.readFile(expectedOutputFileName);

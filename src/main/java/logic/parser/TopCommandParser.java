@@ -1,12 +1,10 @@
 package logic.parser;
 
-import static logic.model.Category.TOTAL;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import logic.command.TrendCommand;
+import logic.command.TopCommand;
 import logic.exception.ParseException;
 import logic.filter.AuthorFilter;
 import logic.filter.Filter;
@@ -18,37 +16,44 @@ import logic.filter.YearFilter;
 import logic.model.YearRange;
 import model.Model;
 
-public class TrendCommandParser {
-    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: measure";
-
-    public TrendCommand parse(Model model, Map<String, String> arguments) throws ParseException {
+public class TopCommandParser {
+    public static final String ERROR_MISSING_PARAMETERS = "Missing parameters:%nRequired parameters: count, measure, category";
+    
+    public TopCommand parse(Model model, Map<String, String> arguments) throws ParseException {
         if (!containExpectedArguments(arguments)) {
             throw new ParseException(ERROR_MISSING_PARAMETERS);
         }
         
+        int count = getCount(arguments.get("count"));
         Measure measure = getMeasure(arguments.get("measure"));
         Category category = getCategory(arguments.get("category"));
         List<Filter> filters = getFilters(arguments);
-        return new TrendCommand(model, measure, category, filters);
+        return new TopCommand(model, count, measure, category, filters);
     }
     
     private boolean containExpectedArguments(Map<String, String> paramMap) {
-        return paramMap.containsKey("measure");
+        return paramMap.containsKey("count")
+                && paramMap.containsKey("measure")
+                && paramMap.containsKey("category");
+    }
+
+    private int getCount(String count) throws ParseException {
+        try {
+            return Integer.parseInt(count);
+        } catch (Exception e) {
+            throw new ParseException("Invalid Measure");
+        }
     }
     
     private Measure getMeasure(String measure) throws ParseException {
         try {
             return Measure.valueOf(measure.toUpperCase());
         } catch (Exception e) {
-            throw new ParseException("Invalid measure");
+            throw new ParseException("Invalid Measure");
         }
     }
-
+    
     private Category getCategory(String category) throws ParseException {
-        if (category == null) {
-            return TOTAL;
-        }
-
         try {
             return Category.valueOf(category.toUpperCase());
         } catch (Exception e) {
