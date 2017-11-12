@@ -1,147 +1,86 @@
-# CS3219 Project (Assignment 4)
+# CIR
 
-Download data file from [here](https://www.dropbox.com/s/som8h00sq8fn9gd/papers.json?dl=0&m=)
-If you encounter GC overhead limit exceeded error while loading the dataset, append "-Xmx4096m" to your VM options.
+## 1. Introduction
 
-# CS3219 Project (Assignment 3)
+Name | Matriculation Number | Feature Implemented
+----|----|----|
+Ang Shi Ya | A0138601M | **Frontend Project Structure**, **UI/UX**, Visualization of **Time Series** & **Composition** & **Comparison** & **Relationship** Graphs
+Ian Teo | A0139930B | **Json Data Parsing**, Visualization of **Text Analysis** Graph, **Server** Set up for Frontend and Backend, **Backend Project Structure**, **Top** Command, **Web** Command, **Word** Command and all related **Tests**
+Yong Zhi Yuan | A0139655U | **Trend** Command, **Utility**, **Filters**, **Model** and all related **Tests**
 
-## Duplicate Papers 
-* Embedding NomLex-BR nominalizations into OpenWordnet-PT (W14-0152, W14-0156)
-* OpenWordNet-PT: A Project Report (W14-0153, W14-0157)
-* Issues in building English-Chinese parallel corpora with WordNets Francis Bond and Shan Wang (W14-0154, W14-0158)
-* Power of Confidence: How Poll Scores Impact Topic Dynamics in Political Debates [Very different] (W14-2514, W14-2710)
-* Extraction system for Personal Attributes Extraction of CLP2014 (W14-6829, W14-6830)
+This project comprises of 2 parts, a `RESTful Service` (Java) and `Website` (Javascript). The `RESTful Service` preprocesses the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `RESTful Service` and visualizes the data it recieves.
+
+## 2. Requirement Specification
+
+## 3. Design and Implementation
+
+### Architecture
+
+We decided to use a 3 tier architecture, so that we could seperate the **view** (Presentation Layer), **logic** (Application Layer) and **model** (Data Layer) into 3 distinct components.
+
+<p align="center">
+<img src="docs/Architecture.png" width="800"><br>
+
+<em>Figure 1: Architecture Overview Diagram</em>
+</p>
+
+This makes each of our layers independent, allowing us to work simulatanuously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintaince, as changes in 1 layer will rarely affect other layers.
+
+### Typical Flow of Application
+
+<p align="center">
+<img src="docs/Sequence.png" width="800"><br>
+
+<em>Figure 1: Sequence Diagram of a typical flow</em>
+</p>
+
+`View` recieves a request from the user as a HTTP GET request, which it processes and sends a request over to `Logic`. `Logic` then determines the appropriate actions to take, and gets the relevant details from `Model`. After which, `Logic` processes the data into a JSON representation which best suits the user's query, which `View` displays to the user via HTTP.
 
 
-## Changes to XML files:
+### Implementation of RESTful Service
 
-**D13-1138**
-Changed line 550, remove "\<surname>" tag
+We chose not to use `Spring`, even though provides an easy way to create a RESTful service on Java, for 2 reasons:
 
-**D14-1184**
-Changed line 561, remove "\<surname>" tag
+1. The size of the dependencies was bigger than the project. We only needed the basic RESTful functionalities, which would bloat our project with many files that we do not need.
+2. Developers do not need to learn an additional framework to maintain/improve the current code base.
 
-**W14-1115**
-Changed line 561, remove "<", ">" tag
+Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
-**W14-2609**
-Changed line 926, remove "\<firstName>.\<lastName>" tag
+## 4. Visualizations
 
-**W14-3317**
-Changed line 634, remove "\<surname>" tag
+### Time Series
 
-## Paper Counts
+### Composition
 
-D12: 135<br>
-D13: 201<br>
-D14: 220<br>
-D15: 308<br>
-J14: 35<br>
-Q14: 39<br>
-W14: 1023<br>
-Total: 1961
+### Comparison
 
-## Questions
+### Relationship
 
-### Global Statistics
+### Text Analysis
 
-CM: Counting Method (Count while parsing)<br>
-WIC: Without Invalid Citations<br>
-TLC: To Lower Case
 
-**1. How many document are there in all datasets put together?**<br>
-*COMMAND: count dataset*<br>
-1961
+## 5. Additional Information
 
-**2. How many citations are there in all datasets put together?**<br>
-*COMMAND: count citation*<br>
-46824 (CM, WIC)<br>
-48683 (CM)<br>
-46662 (WIC, Missing duplicate dataset citations [5 datasets])<br>
-48518 (Missing duplicate dataset citations [5 datasets])<br>
-46654 (TLC)
+### Server
+Initially, we intended to use `Heroku` to host both the website and the RESTful service, as it was free. However for Java, `Heroku` only catered towards deployment using `Spring` and `Ratpack`, and it was difficult to get the RESTful service using the built in `HttpServer` to work. In addition, the data file (500mb) was too big to be uploaded onto the **free** version.
 
-**3. How many unique citations are there in all datasets put together?**<br>
-*COMMAND: count unique citation*<br>
-30372 (CM, WIC)<br>
-31989 (CM)<br>
-26941 (TLC)
 
-**4. How many author are mentioned in the citations in all datasets put together?**<br>
-*COMMAND: count citation author*
-33986 (CM, WIC)<br>
-32546 (WIC)<br>
-33991 (WIC)<br>
-33991 (TLC)
+#### RESTful Service
+Eventually, we decided to use `DigitalOcean` to host the server. The steps to prepare the server to deploy the RESTful service are as follows:
 
-**5. What is the range of the years of the cited documents in all datasets put together?**<br>
-*COMMAND: count citation range*<br>
-137 (omitted year 1305)
+1. ssh into the server
+2. Create a `fat JAR`
+3. Upload the data file and `fat JAR` file
+4. Create a `service` in `/etc/systemd/system` to run the JAR file.
+5. Run the `service`
 
-### Transition over time
-**6. For the conference D12 give number of cited documents published in each of the years 2000 to 2015.**<br>
-*COMMAND: countyear 2000-2015*<br>
+For this project, all these steps are automated, and the project can be run by executing `javaserver.sh`, which pulls the changes from github and runs the `service`
 
-| WIC      | TLC      |
-| ---------|:---------|
-| 2000 91  | 2000 88  |
-| 2001 77  | 2001 75  |
-| 2002 130 | 2002 112 |
-| 2003 145 | 2003 132 |
-| 2004 184 | 2004 172 |
-| 2005 198 | 2005 183 |
-| 2006 249 | 2006 237 |
-| 2007 297 | 2007 270 |
-| 2008 300 | 2008 284 |
-| 2009 333 | 2009 308 |
-| 2010 391 | 2010 367 |
-| 2011 437 | 2011 406 |
-| 2012 82  | 2012 82  |
-| 2013 0   | 2013 0   |
-| 2014 0   | 2014 0   |
-| 2015 0   | 2015 0   |
+The RESTful service can be used at [128.199.249.171](http://128.199.249.171/)
 
-**7. Repeat the above step for conferences ‘EMNLP’ and ‘CoNLL’ (instead of years) for the con- ference D13.**<br>
-*COMMAND: countconference emnlp, empirical methods in natural language processing*<br>
-*COMMAND: countconference conll, computational natural language learning*<br>
-EMNLP 362<br>
-CoNLL 148
 
-**8. For an author ‘Yoshua Bengio’ (also check for Y. Bengio) the number of times he is cited for his work authored in each of the years 2000 to 2015.**<br>
-*COMMAND: countauthor 2000-2015 yoshua bengio, y bengio*<br>
+#### Website
 
-| TLC      |
-| ---------|
-| 2000 0   |
-| 2001 2   |
-| 2002 1   |
-| 2003 4   |
-| 2004 0   |
-| 2005 3   |
-| 2006 4   |
-| 2007 2   |
-| 2008 3   |
-| 2009 9   |
-| 2010 10  |
-| 2011 5   |
-| 2012 12  |
-| 2013 9   |
-| 2014 17  |
-| 2015 6   |
+For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
 
-**9. For the conference J14,W14 find number of cited documents published in each of the years from 2010 to 2015.**<br>
-*COMMAND: countyear 2010-2015*<br>
-
-| Year | J14  | W14  |
-| -----|:-----|:-----|
-| 2010 | 144  | 1137 |
-| 2011 | 111  | 1133 |
-| 2012 | 104  | 1407 |
-| 2013 | 40   | 1635 |
-| 2014 | 7    | 821  |
-| 2015 | 0    | 1    |
-
-**10. Repeat the above step for conference ‘NAACL’ for conference Q14,D14**<br>
-*COMMAND: countconference naacl, north american chapter of the association for computational linguistics*<br>
-D14 203<br>
-Q14 65
+The website can be viewed at [cir-group-7.herokuapp.com](http://cir-group-7.herokuapp.com/)
