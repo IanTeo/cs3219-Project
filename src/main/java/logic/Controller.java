@@ -2,6 +2,7 @@ package logic;
 
 import logic.command.Command;
 import logic.command.CommandParser;
+import logic.parser.FileParser;
 import logic.parser.FileParserManager;
 import model.Model;
 
@@ -12,9 +13,11 @@ public class Controller {
 
     private Model model;
     private CommandParser commandParser;
+    private FileParser fileParser;
 
-    public Controller(Model model) {
+    public Controller(Model model, FileParser fileParser) {
         this.model = model;
+        this.fileParser = fileParser;
         this.commandParser = new CommandParser(model);
 
         loadData();
@@ -27,7 +30,7 @@ public class Controller {
 
     private void loadData() {
         model.clear();
-        FileParserManager fileParserManager = new FileParserManager(model);
+        FileParserManager fileParserManager = new FileParserManager(fileParser);
         try {
             fileParserManager.parseFilesInDirectory(DATA_URL);
         } catch (Exception e) {

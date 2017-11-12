@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import logic.Controller;
 import logic.model.Category;
 import logic.utility.MapUtility;
 import model.Paper;

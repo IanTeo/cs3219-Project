@@ -1,4 +1,6 @@
 import logic.Controller;
+import logic.parser.FileParser;
+import logic.parser.JsonFileParser;
 import model.Model;
 import view.HttpUI;
 import view.UserInterface;
@@ -9,7 +11,8 @@ public class CIR {
     public void run() {
         System.out.println("Initializing..");
         Model model = new ModelManager();
-        Controller controller = new Controller(model);
+        FileParser fileParser = new JsonFileParser(model);
+        Controller controller = new Controller(model, fileParser);
         UserInterface ui = new HttpUI(controller);
         ui.start();
     }

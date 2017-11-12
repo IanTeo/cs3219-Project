@@ -13,7 +13,8 @@ import util.PaperBuilder;
 
 public class FileParserManagerTest {
     private final Model model = new ModelManager();
-    private final FileParserManager parser = new FileParserManager(model);
+    private final FileParser fileParser = new JsonFileParser(model);
+    private final FileParserManager parser = new FileParserManager(fileParser);
     private final static String DIRECTORY = "src/test/res/ParserTest/";
 
     private static final ModelManager EXPECTED_MODEL = new ModelManager();

@@ -1,17 +1,16 @@
 package logic.parser;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import model.Model;
 
 public class FileParserManager {
-    private FileParser jsonParser;
+    private FileParser fileParser;
 
-    public FileParserManager(Model model) {
-        jsonParser = new JsonFileParser(model);
+    public FileParserManager(FileParser fileParser) {
+        this.fileParser = fileParser;
     }
     public void parseFilesInDirectory(String directoryName) {
         File folder = new File(directoryName);
@@ -28,7 +27,7 @@ public class FileParserManager {
         List<File> fileNames = Arrays.asList(files);
         for (File fileEntry : fileNames) {
             if (!fileEntry.isDirectory() && !isHiddenFile(fileEntry)) {
-                jsonParser.parse(fileEntry);
+                fileParser.parse(fileEntry);
             }
         }
     }
