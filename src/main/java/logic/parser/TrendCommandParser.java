@@ -29,6 +29,15 @@ public class TrendCommandParser {
         Measure measure = getMeasure(arguments.get("measure"));
         Category category = getCategory(arguments.get("category"));
         List<Filter> filters = getFilters(arguments);
+
+        if (category != TOTAL) {
+            Filter filter = Filter.getFilterOfCategory(category, filters);
+            if (filter == null) {
+                throw new ParseException("Must specify " + category.toString().toLowerCase() + "(s)");
+            }
+
+        }
+
         return new TrendCommand(model, measure, category, filters);
     }
     
