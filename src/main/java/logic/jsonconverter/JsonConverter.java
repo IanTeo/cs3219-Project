@@ -11,6 +11,13 @@ import org.json.simple.JSONObject;
  * Converts the data of {@code TrendCommand} into JSON format.
  */
 public class JsonConverter {
+    
+    public static JSONObject errorMessageToJson(String message) {
+        JSONObject object = new JSONObject();
+        object.put("error", message);
+        
+        return object;
+    }
     /**
      * Converts {@code entryList} into a JSON.
      */

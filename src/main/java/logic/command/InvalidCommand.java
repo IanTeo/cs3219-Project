@@ -4,6 +4,8 @@ import model.Model;
 
 import java.util.Map;
 
+import logic.jsonconverter.JsonConverter;
+
 public class InvalidCommand implements Command {
     private String message;
 
@@ -11,7 +13,7 @@ public class InvalidCommand implements Command {
         this.message = message;
     }
     public String execute() {
-        return message;
+        return JsonConverter.errorMessageToJson(message).toString();
     }
 
     public void setParameters(Model model, Map<String, String> paramMap) {
