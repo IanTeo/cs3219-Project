@@ -2,52 +2,27 @@ package logic.command;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import logic.exception.ParseException;
-import model.Model;
 import model.Paper;
-import util.StringUtil;
 
 
 public class WebCommand implements Command{
     public static final String COMMAND_WORD = "web";
-    public static final String HELP = "Error: %s%n" + COMMAND_WORD + "%n" +
-            "This command returns a JSON file representing a in-citation web with # levels, starting from the paper specified%n" +
-            "Required fields: level, paper%n" +
-            "Example: level=4&paper=Low-density parity check codes over GF(q)";
-    private Model model;
-    private int level;
-    private String paperId;
 
+    public final int level;
+    public final Paper paper;
+
+    public WebCommand(int level, Paper paper) {
+        this.level = level;
+        this.paper = paper;
+    }
+    
     public String execute() {
-
-        Paper paper = model.getPaper(paperId);
-        if (paper == null) {
-            return String.format(HELP, "Paper not found");
-        }
-
         return createCitationWeb(paper, level).toString();
-    }
-
-    public void setParameters(Model model, Map<String, String> paramMap) throws ParseException {
-        if (!containExpectedArguments(paramMap)) {
-            throw new ParseException(String.format(HELP, "Error parsing parameters"));
-        }
-
-        this.model = model;
-        level = Integer.parseInt(paramMap.get("level"));
-        paperId = StringUtil.sanitise(paramMap.get("paper"));
-    }
-
-    private boolean containExpectedArguments(Map<String, String> paramMap) {
-        return paramMap.containsKey("level")
-                && paramMap.get("level").matches("[0-9]+")
-                && paramMap.containsKey("paper");
     }
 
     private JSONObject createCitationWeb(Paper basePaper, int level) {
