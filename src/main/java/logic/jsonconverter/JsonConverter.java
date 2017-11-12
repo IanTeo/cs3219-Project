@@ -77,11 +77,11 @@ public class JsonConverter {
     private static <T> JSONObject getResultElement(Map.Entry<T, Map<Integer, Integer>> entry) {
         JSONArray yearCountPairArray = new JSONArray();
         JSONObject resultElement = new JSONObject();
-        resultElement.put("category", entry.getKey());
+        resultElement.put("series", entry.getKey());
         for (Map.Entry<Integer, Integer> innerEntry : entry.getValue().entrySet()) {
             yearCountPairArray.add(getYearCountPair(innerEntry));
         }
-        resultElement.put("year-count-pair", yearCountPairArray);
+        resultElement.put("data", yearCountPairArray);
         return resultElement;
     }
 
