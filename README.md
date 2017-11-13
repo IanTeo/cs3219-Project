@@ -131,7 +131,7 @@ These tools help to ensure that the application is always in a state that is rea
 ### 4.5 Text Analysis
 
 <p align="center">
-<img src="docs/text_visual.png" width="750"><br>
+<img src="docs/text_visual.png" width="600"><br>
 
 <em>Figure 8: Text Analysis Visualization</em>
 </p>
