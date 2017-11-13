@@ -101,6 +101,7 @@ We decided to apply the `Command Pattern` as we have multiple Commands, and the 
 
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
+
 <em>Figure 2: Command Pattern Diagram</em>
 </p>
 
@@ -119,7 +120,7 @@ Also, we have included a filtering functionality to allow users to filter data. 
 <p align="center">
 <img src="docs/typical_sequence.png" width="550"><br>
 
-<em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
+<em>Figure 3: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
 
@@ -132,22 +133,22 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <p align="center">
 <img src="docs/rest_server_architecture.png" width="800"><br>
 
-<em>Figure 3: Architecture of REST Server</em>
+<em>Figure 4: Architecture of REST Server</em>
 </p>
 
 `REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. **Command Pattern** is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
 
-### 3.5 Typical flow of Logic Component
+### 3.4 Typical flow of Logic Component
 
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
 
-<em>Figure 4: Sequence Diagram of Trend Command</em>
+<em>Figure 5: Sequence Diagram of Trend Command</em>
 </p>
 
 When `Controller` recieves a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
 
-### 3.6 Implementation of RESTful Service
+### 3.5 Implementation of RESTful Service
 
 We chose not to use `Spring`, even though it provides an easy way to create a RESTful service on Java, for 2 reasons:
 
@@ -159,19 +160,19 @@ Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
 `HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
 
-### 3.7 Continuous Integration
+### 3.6 Continuous Integration
 
 We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report. In addition, we use the static analysis tool `FindBugs`, to help maintain a consistent level of code quality, reduce complexity and find common bugs and errors.
 
 <p align="center">
 <img src="docs/jacoco_test_results.png" width="800"><br>
 
-<em>Figure 5: Latest Test Code Coverage Results</em>
+<em>Figure 6: Latest Test Code Coverage Results</em>
 </p>
 
 These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository. We added `JaCoCo` on the deadline of the assignment, when we made the repository public.
 
-### 3.8 Error Handling
+### 3.7 Error Handling
 
 We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
 
@@ -208,7 +209,7 @@ The filters are optional, except for **4.1 Time Series** and **4.2 Composition**
 <p align="center">
 <img src="docs/series_visual.png" width="850"><br>
 
-<em>Figure 6: Time Series Visualization</em>
+<em>Figure 7: Time Series Visualization</em>
 </p>
 
 This chart shows the **transition over time** for any specified venues/authors/papers. Here, we count the **number of papers** per year, group by **venues (ICIP, Lancet, Neuroreport, NeuroImage)** over the years **1997 to 2016**.
@@ -216,7 +217,7 @@ This chart shows the **transition over time** for any specified venues/authors/p
 <p align="center">
 <img src="docs/series_visual_mouse.png" width="600"><br>
 
-<em>Figure 7: Mouse Over Lines</em>
+<em>Figure 8: Mouse Over Lines</em>
 </p>
 
 To get a clearer view of the number of papers for each venue for a particular year, we can mouse over the chart to see the details.
@@ -224,7 +225,7 @@ To get a clearer view of the number of papers for each venue for a particular ye
 <p align="center">
 <img src="docs/series_visual_after.png" width="600"><br>
 
-<em>Figure 8: Toggling Visibility of Lines</em>
+<em>Figure 9: Toggling Visibility of Lines</em>
 </p>
 
 The legend can be clicked to toggle visibility of the line with the clicked color, so that a better comparison can be made for the data of interest.
@@ -234,7 +235,7 @@ The legend can be clicked to toggle visibility of the line with the clicked colo
 <p align="center">
 <img src="docs/composition_visual.png" width="900"><br>
 
-<em>Figure 9: Composition Visualization</em>
+<em>Figure 10: Composition Visualization</em>
 </p>
 
 This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 5, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
@@ -242,7 +243,7 @@ This chart shows the **contemporary comparison** for any specified venues/author
 <p align="center">
 <img src="docs/composition_visual_mouse.png" width="600"><br>
 
-<em>Figure 10: Mouse Over on a Slice</em>
+<em>Figure 11: Mouse Over on a Slice</em>
 </p>
 
 You can **mouse over** any of the slices in the pie chart to see the exact count and percentage of the slice.
@@ -250,7 +251,7 @@ You can **mouse over** any of the slices in the pie chart to see the exact count
 <p align="center">
 <img src="docs/composition_visual_click.png" width="600"><br>
 
-<em>Figure 11: Mouse Click on Multiple Slices</em>
+<em>Figure 12: Mouse Click on Multiple Slices</em>
 </p>
 
 You can also click on each slice if you want to see the total count of multiple slices.
@@ -260,7 +261,7 @@ You can also click on each slice if you want to see the total count of multiple 
 <p align="center">
 <img src="docs/comparison_visual.png" width="900"><br>
 
-<em>Figure 12: Comparison Visualization</em>
+<em>Figure 13: Comparison Visualization</em>
 </p>
 
 This chart shows the **Top N X of Y** for any specified venues/authors/papers. Here, we want to see the top 5 papers based on in-citation.
@@ -270,7 +271,7 @@ This chart shows the **Top N X of Y** for any specified venues/authors/papers. H
 <p align="center">
 <img src="docs/relationship_visual.png" width="600"><br>
 
-<em>Figure 13: Relationship Visualization</em>
+<em>Figure 14: Relationship Visualization</em>
 </p>
 
 This chart shows the citation relationship between papers. Previously, in Figure 11, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
@@ -278,7 +279,7 @@ This chart shows the citation relationship between papers. Previously, in Figure
 <p align="center">
 <img src="docs/relationship_visual_mouse.png" width="600"><br>
 
-<em>Figure 14: Mouse Over Nodes</em>
+<em>Figure 15: Mouse Over Nodes</em>
 </p>
 
 We can mouse over any node to see more details about each individual paper in the relationship network
@@ -286,7 +287,7 @@ We can mouse over any node to see more details about each individual paper in th
 <p align="center">
 <img src="docs/relationship_visual_after.png" width="600"><br>
 
-<em>Figure 15: Moving the Year Slider</em>
+<em>Figure 16: Moving the Year Slider</em>
 </p>
 
 The year slider can be changed to view the cumulative relationship network up to the selected year.
@@ -296,7 +297,7 @@ The year slider can be changed to view the cumulative relationship network up to
 <p align="center">
 <img src="docs/text_visual.png" width="600"><br>
 
-<em>Figure 16: Text Analysis Visualization</em>
+<em>Figure 17: Text Analysis Visualization</em>
 </p>
 
 This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the `REST Server`, additional stop words can be added if the user feels the word found is not useful to the visualization. 
