@@ -133,7 +133,7 @@ We decided to apply the **Command Pattern** as we have multiple Commands, and th
 <em>Figure 5: Sequence Diagram of Trend Command</em>
 </p>
 
-When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
+When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. `Controller` the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns the JSON representation of the `Model` to the `Controller`. 
 
 ### 3.5 Implementation of RESTful Service
 
@@ -144,7 +144,7 @@ We chose not to use `Spring`, even though it provides an easy way to create a RE
 
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
-`HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
+`HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. **Front Controller** Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
 
 
 Here is a list of RESTful API that can be queried. Refer to Section **4 Visualizations** for a more indepth explanation of each query and parameter.
@@ -194,10 +194,10 @@ Visualization queries are performed through form based inputs, where the user ei
 
 There are also 3 filters that can be applied to all trend based queries. The filters are:
 
-* **Paper**: Only papers with titles specified here will be considered for the query, split by `,`.
-* **author**: Only papers with authors specified here will be considered for the query, split by `,`
-* **venue**: Only papers with venues specified here will be considered for the query, split by `,`.
-* **year**: Only papers published in the specified year range here will be considered for the query, eg. `2001-2005`.
+* **paper**: Only papers with **titles** specified here will be considered for the query, split by `,`.
+* **author**: Only papers with **authors** specified here will be considered for the query, split by `,`.
+* **venue**: Only papers with **venues** specified here will be considered for the query, split by `,`.
+* **year**: Only papers published in the specified **year range** here will be considered for the query, eg. `2001-2005`.
 
 The filters are optional, except for **4.1 Time Series** and **4.2 Composition**, where the filter for the selected category must be specified. This is because there can be a huge amount of data sent when the filter is not specified, which is too much for the small bandwidth of our free servers.
 
@@ -235,7 +235,7 @@ The legend can be clicked to toggle visibility of the line with the clicked colo
 <em>Figure 10: Composition Visualization</em>
 </p>
 
-This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 5, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
+This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 9, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
 
 <p align="center">
 <img src="docs/composition_visual_mouse.png" width="600"><br>
@@ -271,7 +271,7 @@ This chart shows the **Top N X of Y** for any specified venues/authors/papers. H
 <em>Figure 14: Relationship Visualization</em>
 </p>
 
-This chart shows the citation relationship between papers. Previously, in Figure 11, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
+This chart shows the citation relationship between papers. Previously, in Figure 13, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
 
 <p align="center">
 <img src="docs/relationship_visual_mouse.png" width="600"><br>
@@ -310,7 +310,7 @@ The purpose of this visualization is to compare the overall trend for different 
 <em>Figure 18: Comparing the trend of publication for Plos one and Arxiv</em>
 </p>
 
-For example, figure 10 shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
+For example, the above figure shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
 
 #### 4.6.2 Steps
 
