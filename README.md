@@ -61,13 +61,14 @@ CIR is a website for the NLP Research Lab to visualize conference publication da
 
 ### 2.1 Functional Requirements
 
-As a User, I can.. | so that I can..
-----|----|
-visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
-compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
-view the top few venues/authors/papers | see what venues/authors/papers are of interest
-filter information that I am not interested in |  remove confounders in the data
-see more than 3 visualizations of the data | see the data from different angles
+Priority| As a User, I can.. | so that I can..
+----|----|----|
+*** | visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
+*** |compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
+*** | view the top few venues/authors/papers | see what venues/authors/papers are of interest
+*** | filter information that I am not interested in |  remove confounders in the data
+*** | see more than 3 visualizations of the data | see the data from different angles
+** | perform text analytics queries for paper titles, venues and author names | identify popular topics/venues/authorss
 
 ### 2.2 Non-Functional Requirements
 
@@ -82,7 +83,7 @@ see more than 3 visualizations of the data | see the data from different angles
 We use a 3 tier architecture, which comprises of the following parts:
 
 * `REST Server` (Java)
-* `Website` (Javascript, d3.js, node.js)
+* `Website` (Javascript, d3.js, node.js, Vue.js, Bulma)
 * `Resource` (JSON file storage).
 
 The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `REST Server` and visualizes the data it receives.
@@ -552,7 +553,7 @@ mouseG.append("path")
 Next, we will add the circles that will appear on the data points of every line. To do that, we have to add the following codes in the update() method.
 
 ```javascript
-var mousePerLine = mouseG.selectAll('.mouse-per-line')
+var mousePerLine = mouseG.selectAll(".mouse-per-line")
   .data(data, function(d) { return d.series; });
 
 mousePerLine.exit().remove();
@@ -596,21 +597,21 @@ tooltipData.append("text")
 Now that have all the mouseover effect we want added to the chart, we now have to add the handler to set the effects where we want it to be. To do that, we need to add an svg overlay that listens for mouseover events.
 
 ```javascript
-var overlay = mouseG.append('svg:rect')
-  .attr('width', width)
-  .attr('height', height)
-  .attr('fill', 'none')
-  .attr('pointer-events', 'all');
+var overlay = mouseG.append("svg:rect")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("fill", 'none')
+  .attr("pointer-events", "all");
   
 // mouseout handler
-overlay.on('mouseout', function() {
+overlay.on("mouseout", function() {
   d3.select(".mouse-line").style("opacity", "0");
   d3.selectAll(".mouse-per-line circle").style("opacity", "0");
   d3.selectAll(".tooltip").style("opacity", "0");
 });
 
 // mouseover handler
-overlay.on('mouseover', function() {
+overlay.on("mouseover", function() {
   d3.select(".mouse-line").style("opacity", "1");
   d3.selectAll(".mouse-per-line circle").style("opacity", "1");
   d3.selectAll(".tooltip").style("opacity", "1");
@@ -715,3 +716,5 @@ For the website, `Heroku` provided easy deployment using `node`. We deployed the
 The user mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
 
 Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV". 
+
+### 5.3 Front-end Development FrameworksWe wanted something that can help us to create a fluid and reponsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
