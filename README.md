@@ -93,7 +93,26 @@ The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines 
 <em>Figure 1: Architecture Overview Diagram</em>
 </p>
 
-This makes each of our layers independent, allowing us to work simulatanuously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintaince, as changes in 1 layer will rarely affect other layers.
+This makes each of our layers independent, allowing us to work simultaneously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintenance, as changes in 1 layer will rarely affect other layers.
+
+#### Logic
+
+We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
+
+<p align="center">
+<img src="docs/command pattern.png" width="800"><br>
+<em>Figure 2: Command Pattern Diagram</em>
+</p>
+
+This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
+
+We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
+
+#### Trend Command
+
+Our customer Simon mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
+
+Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV". 
 
 ### 3.2 Typical Flow of Application
 
@@ -102,6 +121,7 @@ This makes each of our layers independent, allowing us to work simulatanuously o
 
 <em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
+
 
 At the start, `REST Server` has to prepare the data, which it requests from `Resources`. After parsing the data, the server will be open to HTTP GET requests.
 
@@ -129,7 +149,8 @@ When `Controller` recieves a request, it passes the request to `CommandParser` t
 
 ### 3.6 Implementation of RESTful Service
 
-We chose not to use `Spring`, even though provides an easy way to create a RESTful Service on Java, for 2 reasons:
+We chose not to use `Spring`, even though it provides an easy way to create a RESTful service on Java, for 2 reasons:
+
 
 1. The size of the dependencies was bigger than the project. We only needed the basic RESTful functionalities, which would bloat our project with many files that we do not need.
 2. Developers do not need to learn an additional framework to maintain/improve the current code base.
