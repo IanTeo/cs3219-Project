@@ -22,7 +22,7 @@ This project comprises of 2 parts, a `RESTful Service` (Java) and `Website` (Jav
 We decided to use a 3 tier architecture, so that we could seperate the **view** (Presentation Layer), **logic** (Application Layer) and **model** (Data Layer) into 3 distinct components.
 
 <p align="center">
-<img src="docs/Architecture.png" width="800"><br>
+<img src="docs/architecture.png" width="550"><br>
 
 <em>Figure 1: Architecture Overview Diagram</em>
 </p>
@@ -32,9 +32,9 @@ This makes each of our layers independent, allowing us to work simulatanuously o
 ### Typical Flow of Application
 
 <p align="center">
-<img src="docs/Sequence.png" width="800"><br>
+<img src="docs/sequence.png" width="550"><br>
 
-<em>Figure 1: Sequence Diagram of a typical flow</em>
+<em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
 `View` recieves a request from the user as a HTTP GET request, which it processes and sends a request over to `Logic`. `Logic` then determines the appropriate actions to take, and gets the relevant details from `Model`. After which, `Logic` processes the data into a JSON representation which best suits the user's query, which `View` displays to the user via HTTP.
@@ -48,6 +48,20 @@ We chose not to use `Spring`, even though provides an easy way to create a RESTf
 2. Developers do not need to learn an additional framework to maintain/improve the current code base.
 
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
+
+### Continuous Integration
+
+We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report.
+
+<p align="center">
+<img src="docs/jacoco_test_results.png" width="800"><br>
+
+<em>Figure 3: Latest Test Code Coverage Results</em>
+</p>
+
+In addition, we use the static analysis tool `FindBugs`, to help reduce complexity and find common bugs.
+
+These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository.
 
 ## 4. Visualizations
 
@@ -77,7 +91,38 @@ Eventually, we decided to use `DigitalOcean` to host the server. The steps to pr
 4. Create a `service` in `/etc/systemd/system` to run the JAR file.
 5. Run the `service`
 
+javaserver.service 
+
+```
+[Unit]
+Description=Java Server
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+ExecStart/usr/bin/java -jar -Xmx1500m CIR.jar
+Environment="PORT-80"
+
+[Install]
+WantedBy=multi-user.target
+```
+
 For this project, all these steps are automated, and the project can be run by executing `javaserver.sh`, which pulls the changes from github and runs the `service`
+
+javaserver.sh
+
+```
+cd ~/cs3219-Project
+git checkout master
+git pull
+./gradlew shadowJar
+mv build/libs/CIR.jar ../CIR.jar
+
+systemctl daemon-reload
+systemctl stop javaserver.service
+systemctl start javaserver.service
+systemctl status javaservice.service
+```
 
 The RESTful service can be used at [128.199.249.171](http://128.199.249.171/)
 
