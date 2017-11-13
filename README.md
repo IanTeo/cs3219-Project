@@ -212,7 +212,7 @@ This chart shows the citation relationship between papers. Previously, in Figure
 <em>Figure 13: Mouse Over Nodes</em>
 </p>
 
-We can mmouse over any node to see more details about each individual paper in the relationship network
+We can mouse over any node to see more details about each individual paper in the relationship network
 
 <p align="center">
 <img src="docs/relationship_visual_after.png" width="600"><br>
@@ -230,7 +230,7 @@ The year slider can be changed to view the cumulative relationship network up to
 <em>Figure 15: Text Analysis Visualization</em>
 </p>
 
-This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the system, additional stop words can be added if the user feels the word found is not useful to the visualization. 
+This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the `REST Server`, additional stop words can be added if the user feels the word found is not useful to the visualization. 
 
 ## 5. Additional Information
 
