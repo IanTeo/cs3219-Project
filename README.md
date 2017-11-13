@@ -112,6 +112,28 @@ In addition, `Website` provides intuitive inputs like dropdown list for predefin
 
 ## 4. Visualizations
 
+Visualization queries are performed through form based inputs, where the user either types the input or selects from a dropdown list. There are 2 types of dropdown lists:
+
+* Category
+  * **total**: Group **all** results in a single group
+  * **paper**: Group the result by **paper titles**
+  * **author**: Group the result by **author names**
+  * **venue**: Group the result by **venues**
+* Measure
+  * **paper**: Count the sum of **papers** in the group
+  * **author**: Count the sum of **authors** in the group
+  * **venue**: Count the sum of **venues** in the group
+  * **incitation**: Count the sum of **in-citations** (papers that cite this paper) in the group
+  * **outcitation**: Count the sum of **out-citations** (papers that this paper cites) in the group
+
+There are also 3 filters that can be applied to all trend based queries. The filters are:
+
+* **Paper**: Only papers with titles specified here will be considered for the query
+* **author**: Only papers with authors specified here will be considered for the query
+* **venue**: Only papers with venues specified here will be considered for the query
+
+The filters are optional, except for **4.1 Time Series** and **4.2 Composition**, where the filter for the selected category must be specified. This is because there can be a huge amount of data sent when the filter is not specified, which is too much for the small bandwidth of our free servers.
+
 ### 4.1 Time Series
 
 <p align="center">
@@ -120,48 +142,95 @@ In addition, `Website` provides intuitive inputs like dropdown list for predefin
 <em>Figure 5: Time Series Visualization</em>
 </p>
 
-This chart shows the **transition over time** for any specified venues/authors/papers.
+This chart shows the **transition over time** for any specified venues/authors/papers. Here, we count the **number of papers** per year, group by **venues (ICIP, Lancet, Neuroreport, NeuroImage)** over the years **1997 to 2016**.
+
+<p align="center">
+<img src="docs/series_visual_mouse.png" width="600"><br>
+
+<em>Figure 6: Mouse Over Lines</em>
+</p>
+
+To get a clearer view of the number of papers for each venue for a particular year, we can mouse over the chart to see the details.
+
+<p align="center">
+<img src="docs/series_visual_after.png" width="600"><br>
+
+<em>Figure 7: Toggling Visibility of Lines</em>
+</p>
+
+The legend can be clicked to toggle visibility of the line with the clicked color, so that a better comparison can be made for the data of interest.
 
 ### 4.2 Composition
-
 
 <p align="center">
 <img src="docs/composition_visual.png" width="900"><br>
 
-<em>Figure 6: Composition Visualization</em>
+<em>Figure 8: Composition Visualization</em>
 </p>
 
-This chart shows the **contemporary comparison** for any specified venues/authors/papers.
+This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 5, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
+
+<p align="center">
+<img src="docs/composition_visual_mouse.png" width="600"><br>
+
+<em>Figure 9: Mouse Over on a Slice</em>
+</p>
+
+You can **mouse over** any of the slices in the pie chart to see the exact count and percentage of the slice.
+
+<p align="center">
+<img src="docs/composition_visual_click.png" width="600"><br>
+
+<em>Figure 10: Mouse Click on Multiple Slices</em>
+</p>
+
+You can also click on each slice if you want to see the total count of multiple slices.
 
 ### 4.3 Comparison
 
 <p align="center">
 <img src="docs/comparison_visual.png" width="900"><br>
 
-<em>Figure 7: Comparison Visualization</em>
+<em>Figure 11: Comparison Visualization</em>
 </p>
 
-This chart shows the **Top N X of Y** for any specified venues/authors/papers.
+This chart shows the **Top N X of Y** for any specified venues/authors/papers. Here, we want to see the top 5 papers based on in-citation.
 
 ### 4.4 Relationship
 
 <p align="center">
 <img src="docs/relationship_visual.png" width="600"><br>
 
-<em>Figure 8: Relationship Visualization</em>
+<em>Figure 12: Relationship Visualization</em>
 </p>
 
-This chart shows the citation relationship between papers.
+This chart shows the citation relationship between papers. Previously, in Figure 11, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
+
+<p align="center">
+<img src="docs/relationship_visual_mouse.png" width="600"><br>
+
+<em>Figure 13: Mouse Over Nodes</em>
+</p>
+
+We can mmouse over any node to see more details about each individual paper in the relationship network
+
+<p align="center">
+<img src="docs/relationship_visual_after.png" width="600"><br>
+
+<em>Figure 14: Moving the Year Slider</em>
+</p>
+
+The year slider can be changed to view the cumulative relationship network up to the selected year.
 
 ### 4.5 Text Analysis
 
 <p align="center">
 <img src="docs/text_visual.png" width="600"><br>
 
-<em>Figure 8: Text Analysis Visualization</em>
+<em>Figure 15: Text Analysis Visualization</em>
 </p>
 
-This chart shows a simple text analysis of the specified category.
+This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the system, additional stop words can be added if the user feels the word found is not useful to the visualization. 
 
 ## 5. Additional Information
 
