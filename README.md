@@ -658,11 +658,11 @@ Viola! At the end of this, the created line chart should be capable of displayin
 
 ## 5. Additional Information
 
-### 5.1 Server
+### Server
 Initially, we intended to use `Heroku` to host both the website and the RESTful service, as it was free. However for Java, `Heroku` only catered towards deployment using `Spring` and `Ratpack`, and it was difficult to get the RESTful service using the built in `HttpServer` to work. In addition, the data file (500mb) was too big to be uploaded onto the **free** version.
 
 
-#### 5.1.1 RESTful Service
+#### 5.1 RESTful Service
 Eventually, we decided to use `DigitalOcean` to host the server. The steps to prepare the server to deploy the RESTful service are as follows:
 
 1. ssh into the server
@@ -704,6 +704,6 @@ systemctl start javaserver.service
 systemctl status javaservice.service
 ```
 
-#### 5.1.2 Website
+#### 5.2 Website
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
