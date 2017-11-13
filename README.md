@@ -85,7 +85,7 @@ We use a 3 tier architecture, which comprises of the following parts:
 * `Website` (Javascript, d3.js, node.js)
 * `Resource` (JSON file storage).
 
-The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `REST Server` and visualizes the data it recieves.
+The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `REST Server` and visualizes the data it receives.
 
 <p align="center">
 <img src="docs/architecture.png" width="550"><br>
@@ -137,12 +137,11 @@ We created a `ParseException` to signify that there is an error with the parsing
 <em>Figure 5: Sequence Diagram of Trend Command</em>
 </p>
 
-When `Controller` recieves a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
+When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
 
 ### 3.6 Implementation of RESTful Service
 
 We chose not to use `Spring`, even though it provides an easy way to create a RESTful service on Java, for 2 reasons:
-
 
 1. The size of the dependencies was bigger than the project. We only needed the basic RESTful functionalities, which would bloat our project with many files that we do not need.
 2. Developers do not need to learn an additional framework to maintain/improve the current code base.
@@ -150,6 +149,15 @@ We chose not to use `Spring`, even though it provides an easy way to create a RE
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
 `HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
+
+Here is a list of RESTful API that can be queried. Refer to Section **4 Visualizations** for a more indepth explanation of each query and parameter.
+
+Resource | Parameters | Optional Parameters
+---|---|---|
+trend | measure | category, paper, author, venue, year
+top | count, measure, category | paper, author, venue, year
+web | level, paper | 
+word | category | ignore (stop words)
 
 ### 3.7 Continuous Integration
 
@@ -167,7 +175,7 @@ These tools help to ensure that the application is always in a state that is rea
 
 We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
 
-Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` recieves the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
+Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
 
@@ -189,9 +197,10 @@ Visualization queries are performed through form based inputs, where the user ei
 
 There are also 3 filters that can be applied to all trend based queries. The filters are:
 
-* **Paper**: Only papers with titles specified here will be considered for the query
-* **author**: Only papers with authors specified here will be considered for the query
-* **venue**: Only papers with venues specified here will be considered for the query
+* **Paper**: Only papers with titles specified here will be considered for the query, split by `,`.
+* **author**: Only papers with authors specified here will be considered for the query, split by `,`
+* **venue**: Only papers with venues specified here will be considered for the query, split by `,`.
+* **year**: Only papers published in the specified year range here will be considered for the query, eg. `2001-2005`.
 
 The filters are optional, except for **4.1 Time Series** and **4.2 Composition**, where the filter for the selected category must be specified. This is because there can be a huge amount of data sent when the filter is not specified, which is too much for the small bandwidth of our free servers.
 
