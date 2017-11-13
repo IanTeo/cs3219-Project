@@ -13,17 +13,18 @@ Link to Frontend:
 
 ## 1. Introduction
 
-**Ang Shi Ya (A0138601M)**
+**Ang Shi Ya (A0138601M)**<br>
 Features Implemented:
 
 * Frontend `Website` Project Structure
 * UI/UX
+* Responsive UI
 * Visualization of **4.1 Time Series**
 * Visualization of **4.2 Composition**
 * Visualization of **4.3 Comparison**
 * Visualization of **4.4 Relationship**
 
-**Ian Teo (A0139930B)**
+**Ian Teo (A0139930B)**<br>
 Features Implemented:
 
 * Backend `REST Server` Project Structure
@@ -34,8 +35,9 @@ Features Implemented:
 * All related Tests for Backend
 * Visualization of **4.5 Text Analysis**
 * Server set up for Frontend and Backend
+* `FindBugs`, `JaCoCo` and `Travis CI` set up
 
-**Yong Zhi Yuan (A0139655U)**
+**Yong Zhi Yuan (A0139655U)**<br>
 Features Implemented:
 
 * Trend Command (Data for **4.1 Time Series**, **4.2 Composition**)
