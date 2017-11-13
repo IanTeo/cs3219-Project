@@ -29,6 +29,19 @@ We decided to use a 3 tier architecture, so that we could seperate the **view** 
 
 This makes each of our layers independent, allowing us to work simultaneously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintenance, as changes in 1 layer will rarely affect other layers.
 
+#### Logic
+
+We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
+
+<p align="center">
+<img src="docs/command pattern.png" width="800"><br>
+<em>Figure 2: Command Pattern Diagram</em>
+</p>
+
+This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
+
+We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
+
 ### Typical Flow of Application
 
 <p align="center">
