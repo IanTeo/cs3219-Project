@@ -24,17 +24,17 @@ CIR is a website for the NLP Research Lab to visualize conference publication da
 
 ## 2. Requirement Specification
 
-As a... | I can.. | so that I can..
+As a.. | I can.. | so that I can..
 ----|----|----|
 user | visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
 user | compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
-user | top few venues/authors/papers | see what venues/authors/papers are of interest
+user | view the top few venues/authors/papers | see what venues/authors/papers are of interest
 user | filter information that I am not interested in |  remove confounders in the data
 user | see more than 3 visualizations of the data | see the data from different angles
 
 ## 3. Design and Implementation
 
-### Architecture
+### 3.1 Architecture
 
 We use a 3 tier architecture, which comprises of the following parts:
 
@@ -54,7 +54,7 @@ This makes each of our layers independent, allowing us to work simulatanuously o
 
 `Website` is created using node.js and d3.js. `REST Server` is created using Java. `Resources` is a file based database.
 
-### Typical Flow of Application
+### 3.2 Typical Flow of Application
 
 <p align="center">
 <img src="docs/typical_sequence.png" width="550"><br>
@@ -74,7 +74,7 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 
 `REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. Command Pattern is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other `Utility`, such as **Filter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
 
-### Implementation of RESTful Service
+### 3.3 Implementation of RESTful Service
 
 We chose not to use `Spring`, even though provides an easy way to create a RESTful Service on Java, for 2 reasons:
 
@@ -83,7 +83,7 @@ We chose not to use `Spring`, even though provides an easy way to create a RESTf
 
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
-### Continuous Integration
+### 3.4 Continuous Integration
 
 We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report.
 
@@ -99,24 +99,50 @@ These tools help to ensure that the application is always in a state that is rea
 
 ## 4. Visualizations
 
-### Time Series
+### 4.1 Time Series
 
-### Composition
+<p align="center">
+<img src="docs/series_visual.png" width="850"><br>
 
-### Comparison
+<em>Figure 5: Time Series Visualization</em>
+</p>
 
-### Relationship
+### 4.2 Composition
 
-### Text Analysis
 
+<p align="center">
+<img src="docs/composition_visual.png" width="900"><br>
+
+<em>Figure 6: Composition Visualization</em>
+</p>
+
+### 4.3 Comparison
+
+<p align="center">
+<img src="docs/comparison_visual.png" width="900"><br>
+
+<em>Figure 7: Comparison Visualization</em>
+</p>
+
+
+
+### 4.4 Relationship
+
+### 4.5 Text Analysis
+
+<p align="center">
+<img src="docs/text_visual.png" width="750"><br>
+
+<em>Figure 8: Text Analysis Visualization</em>
+</p>
 
 ## 5. Additional Information
 
-### Server
+### 5.1 Server
 Initially, we intended to use `Heroku` to host both the website and the RESTful service, as it was free. However for Java, `Heroku` only catered towards deployment using `Spring` and `Ratpack`, and it was difficult to get the RESTful service using the built in `HttpServer` to work. In addition, the data file (500mb) was too big to be uploaded onto the **free** version.
 
 
-#### RESTful Service
+#### 5.1.1 RESTful Service
 Eventually, we decided to use `DigitalOcean` to host the server. The steps to prepare the server to deploy the RESTful service are as follows:
 
 1. ssh into the server
@@ -161,7 +187,7 @@ systemctl status javaservice.service
 The RESTful service can be used at [128.199.249.171](http://128.199.249.171/)
 
 
-#### Website
+#### 5.1.2 Website
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
 
