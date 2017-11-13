@@ -145,6 +145,12 @@ This chart shows the **Top N X of Y** for any specified venues/authors/papers.
 
 ### 4.4 Relationship
 
+<p align="center">
+<img src="docs/relationship_visual.png" width="600"><br>
+
+<em>Figure 8: Relationship Visualization</em>
+</p>
+
 This chart shows the citation relationship between papers.
 
 ### 4.5 Text Analysis
