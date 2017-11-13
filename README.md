@@ -57,13 +57,21 @@ CIR is a website for the NLP Research Lab to visualize conference publication da
 
 ## 2. Requirement Specification
 
-As a.. | I can.. | so that I can..
-----|----|----|
-user | visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
-user | compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
-user | view the top few venues/authors/papers | see what venues/authors/papers are of interest
-user | filter information that I am not interested in |  remove confounders in the data
-user | see more than 3 visualizations of the data | see the data from different angles
+### 2.1 Functional Requirements
+
+As a User, I can.. | so that I can..
+----|----|
+visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
+compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
+view the top few venues/authors/papers | see what venues/authors/papers are of interest
+filter information that I am not interested in |  remove confounders in the data
+see more than 3 visualizations of the data | see the data from different angles
+
+### 2.2 Non-Functional Requirements
+
+* Should work on any platform/browser with internet connection
+* Should come with automated tests that cover at least 90% of code base
+* Should be easy to deploy (less than 3 steps to deploy Frontend/Backend application)
 
 ## 3. Design and Implementation
 
