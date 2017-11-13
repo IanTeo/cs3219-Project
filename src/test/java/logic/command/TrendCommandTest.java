@@ -90,7 +90,7 @@ public class TrendCommandTest {
         assertEquals(expected[0], trendCommand.execute());
 
         category = Category.PAPER;
-        filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
+        filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A3 cite P3"),
                 new PaperVenueFilter("icse"));
         measure = Measure.INCITATION;
         trendCommand = new TrendCommand(model, measure, category, filters);
@@ -117,7 +117,7 @@ public class TrendCommandTest {
 
         category = Category.PAPER;
         filters = Arrays.asList(new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
-                new PaperVenueFilter("icse"),
+                new PaperVenueFilter("p2@icse"),
                 new YearFilter(new YearRange(2009, 2011)));
         measure = Measure.INCITATION;
         TrendCommand trendCommand = new TrendCommand(model, measure, category, filters);
@@ -142,7 +142,7 @@ public class TrendCommandTest {
         category = Category.PAPER;
         filters = Arrays.asList(new AuthorFilter("author with papers P2 P3 P4"),
                 new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
-                new PaperVenueFilter("icse"));
+                new PaperVenueFilter("P2@icse"));
         measure = Measure.VENUE;
         trendCommand = new TrendCommand(model, measure, category, filters);
         assertEquals(expected[3], trendCommand.execute());
@@ -154,7 +154,7 @@ public class TrendCommandTest {
 
         category = Category.PAPER;
         filters = Arrays.asList(
-                new PaperTitleFilter("venue ICSE with authors A1 A2 cite P1 P3"),
+                new PaperTitleFilter("venue ICSE with authors A1 A3 cite P3"),
                 new PaperVenueFilter("icse"),
                 new YearFilter(new YearRange(2009, 2011)),
                 new AuthorFilter("author with papers P1 P2"));

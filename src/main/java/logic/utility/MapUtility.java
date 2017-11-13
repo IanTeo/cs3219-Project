@@ -171,9 +171,8 @@ public class MapUtility {
         switch (category) {
             case PAPER :
             case AUTHOR :
-                return str1.equalsIgnoreCase(str2);
             case VENUE :
-                return StringUtil.containsMatchIgnoreCaseAndPunctuation(str1, str2);
+                return str1.equalsIgnoreCase(str2);
             case TOTAL :
                 return true;
             default :

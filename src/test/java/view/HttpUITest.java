@@ -26,7 +26,7 @@ public class HttpUITest {
         urlConn.connect();
         assertEquals(HttpURLConnection.HTTP_OK, urlConn.getResponseCode());
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
         String actualLine = in.readLine();
         assertEquals("{\"error\":\"Missing parameters, Required parameters: count, measure, category\"}", actualLine);
         in.close();
