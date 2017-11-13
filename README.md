@@ -163,6 +163,361 @@ This chart shows the citation relationship between papers.
 
 This chart shows a simple text analysis of the specified category.
 
+### Time Series Creation (Multi-line chart creation)
+
+#### Purpose
+The purpose of this visualization is to compare the overall trend for different categories across the years. Using this visualization, we are able to see how well a particular category is faring, relative to other competitor. This provides a broader view of the data.
+
+<p align="center">
+<img src="docs/series-plosVSarxiv.png" width="600"><br>
+
+<em>Figure 10: Comparing the trend of publication for Plos one and Arxiv</em>
+</p>
+
+For example, figure 10 shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
+
+#### Steps
+
+**1. Set up dimensions, margins and color of the chart**
+
+Before we can start drawing the chart, we would need to specify the dimensions, margins and color domain of the chart.
+
+```javascript
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 100, bottom: 30, left: 50},
+  width = 960 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+
+// set the color of the graph
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+``` 
+
+**2. Use the specified dimensions and margins to set up the svg and range**
+
+Using the specified dimensions and margins, we need to append a svg to our div so that the other components of the chart can be drawn on top of the svg. We also need to specify the range of the chart based on the dimensions.
+
+```javascript
+// append svg object to the div
+// append a group element to svg
+// moves the group element to the top left margin
+var svg = d3.select("#plotarea")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+  
+// set the range
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+```
+
+**3. Get the data**
+
+Before we can draw the chart, we need to get the data. Any codes that required the data will be enclosed in the callback.
+
+```javascript
+d3.json(url, function(error, data) {
+  // codes to draw the chart
+}
+```
+
+**4. Set the x and y scale using the data**
+
+```javascript
+// scale the range of the data
+minX = d3.min(data, function(kv) { return d3.min(kv.data, function(d) { return d.year; })});
+maxX = d3.max(data, function(kv) { return d3.max(kv.data, function(d) { return d.year; })});
+minY = d3.min(data, function(kv) { return d3.min(kv.data, function(d) { return d.count; })});
+maxY = d3.max(data, function(kv) { return d3.max(kv.data, function(d) { return d.count; })});
+
+x.domain([minX, maxX]);
+y.domain([0, maxY]);
+```
+
+**5. Set the x and y axis**
+
+```javascript
+// set the axes
+xAxis = d3.axisBottom(x).ticks(maxX - minX).tickFormat(d3.format("d"));
+yAxis = d3.axisLeft(y).ticks(Math.min(10, maxY));
+```
+
+**6. Set the x and y values for the line**
+
+```javascript
+var line = d3.line()
+  .x(function(d) { return x(d.year); })
+  .y(function(d) { return y(d.count); });
+```
+
+**7. Draw the lines based on the data**
+
+This set of codes follows the enter, update and exit data join concept of d3. This will be useful for the dynamic filtering of the data for our chart interaction.
+
+```javascript
+var category = svg.selectAll(".category")
+  .data(data, function(d) { return d.series; });
+
+  category.exit().remove();
+
+  category = category.enter().append("g")
+      .attr("class", "category");
+
+  category.append("path")
+    .attr("class", "line")
+    .attr("d", function(d) { return line(d.data); })
+    .style("fill", "none")
+    .style("stroke", function(d) { return color(d.series); })
+    .style("stroke-width", "2");
+```
+
+we will be enclosing the entire codes from step 4 till here in a method because it will be reused. Remember to call `update(data)` in place of the extracted codes.
+
+```javascript
+function update(data) {
+  // the codes from step 4 to step 7
+}
+```
+
+**8. Draw the axes**
+
+As there is no concept of z-index for svg, we will add the axes only after we have drawn the data lines. At this point, a full line chart with axes should be drawn. We will continue to add additional functions to the chart to make it more interactive.
+
+```javascript
+// Add x axis
+svg.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis);
+
+// Add y axis
+svg.append("g")
+  .attr("class", "y axis")
+  .call(yAxis);
+```
+
+**9. Add the legend and interactive filtering function**
+
+The following set of codes uses html checkbox as legend instead of svg rect to facilitate filtering of data lines on the line chart.
+
+```javascript
+var legend = d3.select("#dataseries").selectAll(".series")
+  .data(data)
+  .enter()
+  .append("div")
+  .attr("class", "series")
+
+var checkbox = legend.append("div")
+  .attr("class", "checkbox")
+       
+checkbox.append("input")
+  .attr("class", "selection")
+  .attr("checked", true)
+  .attr("type", "checkbox")
+  .attr("value", function(d) { return d.series; })
+  .attr("id", function(d) { return d.series; })
+  .on("change", selectionChanged)
+
+checkbox.append("label")
+   .attr("for", function(d) { return d.series; })
+   .style("background", function(d) { return color(d.series); })
+
+legend.append("text")
+   .text(function(d) { return d.series; });
+```
+
+Now, we need to add the codes to handle the checkbox selections. After getting the checkbok selections store as an array, we will filter the data by matching it with the selections array. Once we get the filtered data, we will pass it through update() to update the chart.
+
+```javascript
+function selectionChanged() {
+  var selections = [];
+  d3.selectAll(".selection").each(function(d) {
+    var label = d3.select(this.parentNode).select("label")
+    var checkbox = d3.select(this);
+    
+    if (checkbox.property("checked")) {
+      selections.push(checkbox.property("value"));
+      label.style("background", function(d) { return color(d.series); })
+    } else {
+       label.style("background", function(d) { return "#ddd"; })
+    }
+  });
+  
+  filteredData = data.filter(function(d) { return selections.indexOf(d.series) > -1 });
+  update(filteredData);      
+}
+```
+
+At this point, the legend should consists of normal checkboxes with ticks. To make the checkboxes looks more like a legend, we would need to add styling to the checkboxes. The follwing css codes makes the checkboxes looks circle, and instead of a tick, the checkbox will be filled with the respective data line color when it is selected.
+
+```css
+input[type=checkbox] {
+  visibility: hidden;
+}
+      
+.checkbox {
+  position: relative;
+  float: left;
+  width: 20px;
+  height: 20px;
+  background: #ddd;
+  border-radius: 100%;
+}
+
+.checkbox label {
+  position: absolute;
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  transition: all .3s ease;
+  cursor: pointer;
+  top: 2px;
+  left: 2px;
+  z-index: 1;
+}
+``` 
+
+**10. Scale the axis based on filter data**
+
+This step is added adjust the axis when we add or remove data lines. As we are only filter the data lines, we will only be adjusting the y axis.
+
+```javascript
+var t = d3.transition().duration(300)
+
+svg.select(".y").transition(t).call(yAxis);
+svg.selectAll(".line").transition(t).attr("d", function(d) { return line(d.data); });
+```
+
+**11. Add mouseover effect**
+
+To enable mouseover effect, we must first create a 'g' element to house all the mouseover element (i.e. tooltip).
+
+```javascript
+var mouseG = svg.append("g")
+  .attr("class", "mouse-over-effects");
+```
+
+Now, create a reference line that will follow the mouse as we mouseover the line chart.
+
+```javascript
+mouseG.append("path")
+  .attr("class", "mouse-line")
+  .style("stroke", "black")
+  .style("stroke-width", "1px")
+  .style("opacity", "0");
+```
+
+Next, we will add the circles that will appear on the data points of every line. To do that, we have to add the following codes in the update() method.
+
+```javascript
+var mousePerLine = mouseG.selectAll('.mouse-per-line')
+  .data(data, function(d) { return d.series; });
+
+mousePerLine.exit().remove();
+
+mousePerLine = mousePerLine.enter().append("g")
+  .attr("class", "mouse-per-line");
+
+mousePerLine.append("circle")
+  .attr("r", 7)
+  .style("stroke", function(d) { return color(d.series); })
+  .style("fill", "none")
+  .style("stroke-width", "1px")
+  .style("opacity", "0");
+```
+
+Next, we will add the tooltip that shows us the values of each data points. To do that, we have to add the following codes in the update() method too.
+
+```javascript
+mouseG.selectAll(".tooltip").remove();
+
+var tooltip = mouseG.append("g")
+  .attr("class", "tooltip")
+  .style("opacity", "0")
+
+var tooltipData = tooltip.selectAll(".tooltip-data")
+  .data(data, function(d) { return d.series; })
+  .enter().append("g")
+  .attr("class", "tooltip-data")
+  .attr("transform", function(d, i) {
+    return "translate(0," + i * 20 + ")";
+  })
+
+tooltipData.append("circle")
+  .attr("r", 5)
+  .style("fill", function(d) { return color(d.series); })
+
+tooltipData.append("text")
+  .attr("class", "tooltip-data-text");
+```
+
+Now that have all the mouseover effect we want added to the chart, we now have to add the handler to set the effects where we want it to be. To do that, we need to add an svg overlay that listens for mouseover events.
+
+```javascript
+var overlay = mouseG.append('svg:rect')
+  .attr('width', width)
+  .attr('height', height)
+  .attr('fill', 'none')
+  .attr('pointer-events', 'all');
+  
+// mouseout handler
+overlay.on('mouseout', function() {
+  d3.select(".mouse-line").style("opacity", "0");
+  d3.selectAll(".mouse-per-line circle").style("opacity", "0");
+  d3.selectAll(".tooltip").style("opacity", "0");
+});
+
+// mouseover handler
+overlay.on('mouseover', function() {
+  d3.select(".mouse-line").style("opacity", "1");
+  d3.selectAll(".mouse-per-line circle").style("opacity", "1");
+  d3.selectAll(".tooltip").style("opacity", "1");
+});
+
+// mousemove handler
+overlay.on("mousemove", function() {
+  var mouse = d3.mouse(this);
+  var xDate, bisect, d0, d1, point;
+ 
+  d3.selectAll(".mouse-per-line")
+    .attr("transform", function(d, i) {
+    // calculate and choose the data point to snap to
+    xDate = x.invert(mouse[0]);
+    bisect = d3.bisector(function(d) { return d.year; }).right;
+    idx = bisect(d.data, xDate);
+    d0 = d.data[idx - 1];
+    d1 = d.data[idx]l;
+    point = xDate - d0.year > d1.year - xDate ? d1 : d0;  
+    return "translate(" + x(point.year) + "," + y(point.count) +")";
+  });
+
+  // draw the reference mouse line
+  d3.select(".mouse-line")
+    .attr("d", function() {
+      var d = "M" + x(point.year) + "," + height;
+      d += " " + x(point.year) + "," + 0;
+      return d;
+    });
+
+  // set the tooltip to follow the mouse line
+  d3.select(".tooltip")
+    .attr("transform", "translate(" + (x(point.year) + 20) + "," + height/2 +")");
+
+  // position the data in the tooltip
+  d3.selectAll(".tooltip-data-text")
+    .attr("transform", "translate(" + 10 + "," + 5 +")")
+    .text(function(d) {
+      return d.data.filter(function(pair) { 
+        return pair.year == point.year; 
+      }).map(function(pair) { return pair.count; });
+    });
+  })
+```
+
+Viola! At the end of this, the created line chart should be capable of displaying multiple lines, filtering/toggling the visibility of the data lines by clicking the legend as well as support mouseover effects like the vertical reference line and tooltip to show the data.
+
 ## 5. Additional Information
 
 ### 5.1 Server
