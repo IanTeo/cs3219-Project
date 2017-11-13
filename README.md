@@ -117,20 +117,16 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <em>Figure 4: Architecture of REST Server</em>
 </p>
 
-`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. **Command Pattern** is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
+`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manipulate data for different Commands. 
 
 ### 3.4 Typical flow of Logic Component
 
-We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
+We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
 
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
 <em>Figure 4: Command Pattern Diagram</em>
 </p>
-
-This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
-
-We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
 
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
@@ -138,7 +134,7 @@ We created a `ParseException` to signify that there is an error with the parsing
 <em>Figure 5: Sequence Diagram of Trend Command</em>
 </p>
 
-When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
+When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. `Controller` the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns the JSON representation of the `Model` to the `Controller`. 
 
 ### 3.5 Implementation of RESTful Service
 
@@ -149,7 +145,7 @@ We chose not to use `Spring`, even though it provides an easy way to create a RE
 
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
-`HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
+`HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. **Front Controller** Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
 
 
 Here is a list of RESTful API that can be queried. Refer to Section **4 Visualizations** for a more indepth explanation of each query and parameter.
@@ -175,9 +171,9 @@ These tools help to ensure that the application is always in a state that is rea
 
 ### 3.7 Error Handling
 
-We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
+Each Command has a corresponding CommandParser to separate the parsing and validation logic from the actual execution logic. This allows us to make robust error handling mechanisms without cluttering the execution logic of each Command.
 
-Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
+When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. An `InvalidCommand` will be created, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
 
@@ -199,10 +195,10 @@ Visualization queries are performed through form based inputs, where the user ei
 
 There are also 3 filters that can be applied to all trend based queries. The filters are:
 
-* **Paper**: Only papers with titles specified here will be considered for the query, split by `,`.
-* **author**: Only papers with authors specified here will be considered for the query, split by `,`
-* **venue**: Only papers with venues specified here will be considered for the query, split by `,`.
-* **year**: Only papers published in the specified year range here will be considered for the query, eg. `2001-2005`.
+* **paper**: Only papers with **titles** specified here will be considered for the query, split by `,`.
+* **author**: Only papers with **authors** specified here will be considered for the query, split by `,`.
+* **venue**: Only papers with **venues** specified here will be considered for the query, split by `,`.
+* **year**: Only papers published in the specified **year range** here will be considered for the query, eg. `2001-2005`.
 
 The filters are optional, except for **4.1 Time Series** and **4.2 Composition**, where the filter for the selected category must be specified. This is because there can be a huge amount of data sent when the filter is not specified, which is too much for the small bandwidth of our free servers.
 
@@ -240,7 +236,7 @@ The legend can be clicked to toggle visibility of the line with the clicked colo
 <em>Figure 10: Composition Visualization</em>
 </p>
 
-This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 5, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
+This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 9, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
 
 <p align="center">
 <img src="docs/composition_visual_mouse.png" width="600"><br>
@@ -276,7 +272,7 @@ This chart shows the **Top N X of Y** for any specified venues/authors/papers. H
 <em>Figure 14: Relationship Visualization</em>
 </p>
 
-This chart shows the citation relationship between papers. Previously, in Figure 11, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
+This chart shows the citation relationship between papers. Previously, in Figure 13, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
 
 <p align="center">
 <img src="docs/relationship_visual_mouse.png" width="600"><br>
@@ -302,7 +298,7 @@ The year slider can be changed to view the cumulative relationship network up to
 <em>Figure 17: Text Analysis Visualization</em>
 </p>
 
-This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the `REST Server`, additional stop words can be added if the user feels the word found is not useful to the visualization. 
+This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although common words are already filtered by the `REST Server`, additional words can be excluded from the visualisation if the user feels the word found is not useful. 
 
 ### 4.6 Time Series Creation (Multi-line chart creation)
 
@@ -315,7 +311,7 @@ The purpose of this visualization is to compare the overall trend for different 
 <em>Figure 18: Comparing the trend of publication for Plos one and Arxiv</em>
 </p>
 
-For example, figure 10 shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
+For example, the above figure shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
 
 #### 4.6.2 Steps
 
@@ -711,10 +707,12 @@ systemctl status javaservice.service
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
 
-### 5.2 Trend Command
+### 5.2 Design Decisions
+
+#### 5.2.1 Time Series Visualisation
+
+Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV".
 
 The user mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
 
-Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV". 
-
-### 5.3 Front-end Development FrameworksWe wanted something that can help us to create a fluid and reponsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
+### 5.3 Front-end Development FrameworksWe wanted something that can help us to create a fluid and reponsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
