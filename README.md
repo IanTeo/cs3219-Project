@@ -1,7 +1,14 @@
 # CIR
 
-Link to Backend Repository: [https://github.com/IanTeo/cs3219-Project](https://github.com/IanTeo/cs3219-Project)<br>
-Link to Frontend Repository: [https://github.com/AngShiYa/cs3219-d3](https://github.com/AngShiYa/cs3219-d3)
+Link to Backend:
+
+* Repository: [https://github.com/IanTeo/cs3219-Project](https://github.com/IanTeo/cs3219-Project)
+* Link: [http://128.199.249.171/](http://128.199.249.171/)
+
+Link to Frontend:
+
+* Repository: [https://github.com/AngShiYa/cs3219-d3](https://github.com/AngShiYa/cs3219-d3)
+* Link: [http://cir-group-10.herokuapp.com/](http://cir-group-10.herokuapp.com/)
 
 
 ## 1. Introduction
@@ -39,8 +46,8 @@ user | see more than 3 visualizations of the data | see the data from different 
 We use a 3 tier architecture, which comprises of the following parts:
 
 * `REST Server` (Java)
-* `Website` (Javascript)
-* `Resource` (JSON).
+* `Website` (Javascript, d3.js, node.js)
+* `Resource` (JSON file storage).
 
 The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `REST Server` and visualizes the data it recieves.
 
@@ -51,8 +58,6 @@ The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines 
 </p>
 
 This makes each of our layers independent, allowing us to work simulatanuously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintaince, as changes in 1 layer will rarely affect other layers.
-
-`Website` is created using node.js and d3.js. `REST Server` is created using Java. `Resources` is a file based database.
 
 ### 3.2 Typical Flow of Application
 
@@ -72,7 +77,7 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <em>Figure 3: Architecture of REST Server</em>
 </p>
 
-`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. Command Pattern is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other `Utility`, such as **Filter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
+`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. **Command Pattern** is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
 
 ### 3.3 Implementation of RESTful Service
 
@@ -83,9 +88,11 @@ We chose not to use `Spring`, even though provides an easy way to create a RESTf
 
 Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
+`HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
+
 ### 3.4 Continuous Integration
 
-We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report.
+We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report. In addition, we use the static analysis tool `FindBugs`, to help maintain a consistent level of code quality, reduce complexity and find common bugs and errors.
 
 <p align="center">
 <img src="docs/jacoco_test_results.png" width="800"><br>
@@ -93,9 +100,13 @@ We use `JUnit` tests to perform automated tests application with `Gradle`, toget
 <em>Figure 4: Latest Test Code Coverage Results</em>
 </p>
 
-In addition, we use the static analysis tool `FindBugs`, to help reduce complexity and find common bugs.
-
 These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository.
+
+### 3.5 Error Handling
+
+We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
+
+Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` recieves the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 ## 4. Visualizations
 
@@ -107,6 +118,8 @@ These tools help to ensure that the application is always in a state that is rea
 <em>Figure 5: Time Series Visualization</em>
 </p>
 
+This chart shows the **transition over time** for any specified venues/authors/papers.
+
 ### 4.2 Composition
 
 
@@ -116,6 +129,8 @@ These tools help to ensure that the application is always in a state that is rea
 <em>Figure 6: Composition Visualization</em>
 </p>
 
+This chart shows the **contemporary comparison** for any specified venues/authors/papers.
+
 ### 4.3 Comparison
 
 <p align="center">
@@ -124,9 +139,11 @@ These tools help to ensure that the application is always in a state that is rea
 <em>Figure 7: Comparison Visualization</em>
 </p>
 
-
+This chart shows the **Top N X of Y** for any specified venues/authors/papers.
 
 ### 4.4 Relationship
+
+This chart shows the citation relationship between papers.
 
 ### 4.5 Text Analysis
 
@@ -135,6 +152,8 @@ These tools help to ensure that the application is always in a state that is rea
 
 <em>Figure 8: Text Analysis Visualization</em>
 </p>
+
+This chart shows a simple text analysis of the specified category.
 
 ## 5. Additional Information
 
@@ -184,11 +203,7 @@ systemctl start javaserver.service
 systemctl status javaservice.service
 ```
 
-The RESTful service can be used at [128.199.249.171](http://128.199.249.171/)
-
 
 #### 5.1.2 Website
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
-
-The website can be viewed at [cir-group-10.herokuapp.com](http://cir-group-10.herokuapp.com/)
