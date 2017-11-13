@@ -125,7 +125,7 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <em>Figure 4: Sequence Diagram of Trend Command</em>
 </p>
 
-When `Controller` recieves a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses= `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
+When `Controller` recieves a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
 
 ### 3.6 Implementation of RESTful Service
 
@@ -148,7 +148,7 @@ We use `JUnit` tests to perform automated tests application with `Gradle`, toget
 <em>Figure 5: Latest Test Code Coverage Results</em>
 </p>
 
-These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository.
+These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository. We added `JaCoCo` on the deadline of the assignment, when we made the repository public.
 
 ### 3.8 Error Handling
 
