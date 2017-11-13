@@ -13,21 +13,47 @@ Link to Frontend:
 
 ## 1. Introduction
 
-Name | Matriculation Number | Feature Implemented
-----|----|----|
-Ang Shi Ya | A0138601M | **Frontend Project Structure**, **UI/UX**, Visualization of **Time Series** & **Composition** & **Comparison** & **Relationship** Graphs
-Ian Teo | A0139930B | **Json Data Parsing**, Visualization of **Text Analysis** Graph, **Server** Set up for Frontend and Backend, **Backend Project Structure**, **Top** Command, **Web** Command, **Word** Command and all related **Tests**
-Yong Zhi Yuan | A0139655U | **Trend** Command, **Utility**, **Filters**, **Model** and all related **Tests**
+**Ang Shi Ya (A0138601M)**
+Features Implemented:
+
+* Frontend `Website` Project Structure
+* UI/UX
+* Visualization of **4.1 Time Series**
+* Visualization of **4.2 Composition**
+* Visualization of **4.3 Comparison**
+* Visualization of **4.4 Relationship**
+
+**Ian Teo (A0139930B)**
+Features Implemented:
+
+* Backend `REST Server` Project Structure
+* JSON data parsing
+* TopCommand
+* WebCommand
+* WordCommand
+* All related Tests for Backend
+* Visualization of **4.5 Text Analysis**
+* Server set up for Frontend and Backend
+
+**Yong Zhi Yuan (A0139655U)**
+Features Implemented:
+
+* TrendCommand
+* Utility for `Logic`
+* Filter for `Logic`
+* `Model`
+* All related Tests for Backend
 
 Bonus features:
 
 * Flexible Commands
 * Responsive UI
-* Intuitive
+* Beautiful and Intuitive UI
 * Maintainable
+* Extendable
 * Cloud Integration
 
-CIR is a website for the NLP Research Lab to visualize conference publication data using various queries. The website focus is solely on the visualization, and an additional `REST Server` is used to parse the data into a suitable format for visualization by the website.
+CIR is a website for the NLP Research Lab to visualize conference publication data using various queries. The `Website` focus is solely on the visualization, and an additional `REST Server` is used to parse the data into a suitable format for visualization by the website.
 
 ## 2. Requirement Specification
 
