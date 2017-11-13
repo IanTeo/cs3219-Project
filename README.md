@@ -297,7 +297,7 @@ The year slider can be changed to view the cumulative relationship network up to
 <em>Figure 17: Text Analysis Visualization</em>
 </p>
 
-This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the `REST Server`, additional stop words can be added if the user feels the word found is not useful to the visualization. 
+This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although common words are already filtered by the `REST Server`, additional words can be excluded from the visualisation if the user feels the word found is not useful. 
 
 ### 4.6 Time Series Creation (Multi-line chart creation)
 
