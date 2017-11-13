@@ -95,25 +95,6 @@ The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines 
 
 This makes each of our layers independent, allowing us to work simultaneously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintenance, as changes in 1 layer will rarely affect other layers.
 
-#### Logic
-
-We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
-
-<p align="center">
-<img src="docs/command pattern.png" width="800"><br>
-<em>Figure 2: Command Pattern Diagram</em>
-</p>
-
-This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
-
-We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
-
-#### Trend Command
-
-Our customer Simon mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
-
-Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV". 
-
 ### 3.2 Typical Flow of Application
 
 <p align="center">
@@ -139,10 +120,21 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 
 ### 3.5 Typical flow of Logic Component
 
+We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
+
+<p align="center">
+<img src="docs/command pattern.png" width="800"><br>
+<em>Figure 4: Command Pattern Diagram</em>
+</p>
+
+This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
+
+We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
+
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
 
-<em>Figure 4: Sequence Diagram of Trend Command</em>
+<em>Figure 5: Sequence Diagram of Trend Command</em>
 </p>
 
 When `Controller` recieves a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
@@ -166,7 +158,7 @@ We use `JUnit` tests to perform automated tests application with `Gradle`, toget
 <p align="center">
 <img src="docs/jacoco_test_results.png" width="800"><br>
 
-<em>Figure 5: Latest Test Code Coverage Results</em>
+<em>Figure 6: Latest Test Code Coverage Results</em>
 </p>
 
 These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository. We added `JaCoCo` on the deadline of the assignment, when we made the repository public.
@@ -208,7 +200,7 @@ The filters are optional, except for **4.1 Time Series** and **4.2 Composition**
 <p align="center">
 <img src="docs/series_visual.png" width="850"><br>
 
-<em>Figure 6: Time Series Visualization</em>
+<em>Figure 7: Time Series Visualization</em>
 </p>
 
 This chart shows the **transition over time** for any specified venues/authors/papers. Here, we count the **number of papers** per year, group by **venues (ICIP, Lancet, Neuroreport, NeuroImage)** over the years **1997 to 2016**.
@@ -216,7 +208,7 @@ This chart shows the **transition over time** for any specified venues/authors/p
 <p align="center">
 <img src="docs/series_visual_mouse.png" width="600"><br>
 
-<em>Figure 7: Mouse Over Lines</em>
+<em>Figure 8: Mouse Over Lines</em>
 </p>
 
 To get a clearer view of the number of papers for each venue for a particular year, we can mouse over the chart to see the details.
@@ -224,7 +216,7 @@ To get a clearer view of the number of papers for each venue for a particular ye
 <p align="center">
 <img src="docs/series_visual_after.png" width="600"><br>
 
-<em>Figure 8: Toggling Visibility of Lines</em>
+<em>Figure 9: Toggling Visibility of Lines</em>
 </p>
 
 The legend can be clicked to toggle visibility of the line with the clicked color, so that a better comparison can be made for the data of interest.
@@ -234,7 +226,7 @@ The legend can be clicked to toggle visibility of the line with the clicked colo
 <p align="center">
 <img src="docs/composition_visual.png" width="900"><br>
 
-<em>Figure 9: Composition Visualization</em>
+<em>Figure 10: Composition Visualization</em>
 </p>
 
 This chart shows the **contemporary comparison** for any specified venues/authors/papers. Previously, in Figure 5, there was a spike in number of papers for the venue **NeuroImage**. We can view that point of interest in more detail here. Here, we have the same fields, except we fix the year to **2016**.
@@ -242,7 +234,7 @@ This chart shows the **contemporary comparison** for any specified venues/author
 <p align="center">
 <img src="docs/composition_visual_mouse.png" width="600"><br>
 
-<em>Figure 10: Mouse Over on a Slice</em>
+<em>Figure 11: Mouse Over on a Slice</em>
 </p>
 
 You can **mouse over** any of the slices in the pie chart to see the exact count and percentage of the slice.
@@ -250,7 +242,7 @@ You can **mouse over** any of the slices in the pie chart to see the exact count
 <p align="center">
 <img src="docs/composition_visual_click.png" width="600"><br>
 
-<em>Figure 11: Mouse Click on Multiple Slices</em>
+<em>Figure 12: Mouse Click on Multiple Slices</em>
 </p>
 
 You can also click on each slice if you want to see the total count of multiple slices.
@@ -260,7 +252,7 @@ You can also click on each slice if you want to see the total count of multiple 
 <p align="center">
 <img src="docs/comparison_visual.png" width="900"><br>
 
-<em>Figure 12: Comparison Visualization</em>
+<em>Figure 13: Comparison Visualization</em>
 </p>
 
 This chart shows the **Top N X of Y** for any specified venues/authors/papers. Here, we want to see the top 5 papers based on in-citation.
@@ -270,7 +262,7 @@ This chart shows the **Top N X of Y** for any specified venues/authors/papers. H
 <p align="center">
 <img src="docs/relationship_visual.png" width="600"><br>
 
-<em>Figure 13: Relationship Visualization</em>
+<em>Figure 14: Relationship Visualization</em>
 </p>
 
 This chart shows the citation relationship between papers. Previously, in Figure 11, we saw the top few papers based on in-citation. We can view one of the points of interest there using this query. Here, we are viewing the relationship network for the paper **Theory of Games and Economic Behavior**
@@ -278,7 +270,7 @@ This chart shows the citation relationship between papers. Previously, in Figure
 <p align="center">
 <img src="docs/relationship_visual_mouse.png" width="600"><br>
 
-<em>Figure 14: Mouse Over Nodes</em>
+<em>Figure 15: Mouse Over Nodes</em>
 </p>
 
 We can mouse over any node to see more details about each individual paper in the relationship network
@@ -286,7 +278,7 @@ We can mouse over any node to see more details about each individual paper in th
 <p align="center">
 <img src="docs/relationship_visual_after.png" width="600"><br>
 
-<em>Figure 15: Moving the Year Slider</em>
+<em>Figure 16: Moving the Year Slider</em>
 </p>
 
 The year slider can be changed to view the cumulative relationship network up to the selected year.
@@ -296,25 +288,25 @@ The year slider can be changed to view the cumulative relationship network up to
 <p align="center">
 <img src="docs/text_visual.png" width="600"><br>
 
-<em>Figure 16: Text Analysis Visualization</em>
+<em>Figure 17: Text Analysis Visualization</em>
 </p>
 
 This chart shows a simple text analysis of the specified category. Here, we can find out topics of interest for each of the different categories. Although Common stop words are already filtered by the `REST Server`, additional stop words can be added if the user feels the word found is not useful to the visualization. 
 
-### Time Series Creation (Multi-line chart creation)
+### 4.6 Time Series Creation (Multi-line chart creation)
 
-#### Purpose
+#### 4.6.1 Purpose
 The purpose of this visualization is to compare the overall trend for different categories across the years. Using this visualization, we are able to see how well a particular category is faring, relative to other competitor. This provides a broader view of the data.
 
 <p align="center">
-<img src="docs/series-plosVSarxiv.png" width="600"><br>
+<img src="docs/series_plos_arxiv.png" width="600"><br>
 
-<em>Figure 10: Comparing the trend of publication for Plos one and Arxiv</em>
+<em>Figure 18: Comparing the trend of publication for Plos one and Arxiv</em>
 </p>
 
 For example, figure 10 shows clearly that the number of papers from venue ArXiv has a increasing trend but at a slower rate than Plos one.
 
-#### Steps
+#### 4.6.2 Steps
 
 **1. Set up dimensions, margins and color of the chart**
 
@@ -707,3 +699,9 @@ systemctl status javaservice.service
 #### 5.1.2 Website
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
+
+### 5.2 Trend Command
+
+The user mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
+
+Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV". 
