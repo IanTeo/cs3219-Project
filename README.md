@@ -125,6 +125,7 @@ We decided to apply the **Command Pattern** as we have multiple Commands, and th
 
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
+
 <em>Figure 4: Command Pattern Diagram</em>
 </p>
 
