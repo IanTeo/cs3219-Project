@@ -37,3 +37,12 @@ jar {
         attributes 'Main-Class': 'CIR'
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
