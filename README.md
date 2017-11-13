@@ -101,7 +101,7 @@ This makes each of our layers independent, allowing us to work simultaneously on
 <p align="center">
 <img src="docs/typical_sequence.png" width="550"><br>
 
-<em>Figure 3: Sequence Diagram of a Typical Flow in the Application</em>
+<em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
 
@@ -114,7 +114,7 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <p align="center">
 <img src="docs/rest_server_architecture.png" width="800"><br>
 
-<em>Figure 4: Architecture of REST Server</em>
+<em>Figure 3: Architecture of REST Server</em>
 </p>
 
 `REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manipulate data for different Commands. 
