@@ -11,7 +11,7 @@ Yong Zhi Yuan | A0139655U | **Trend** Command, **Utility**, **Filters**, **Model
 
 ## 1. Introduction
 
-This project comprises of 2 parts, a `RESTful Service` (Java) and `Website` (Javascript). The `RESTful Service` preprocesses the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `RESTful Service` and visualizes the data it recieves.
+CIR is a website for the NLP Research Lab to visualize conference publication data using various queries. The website focus is solely on the visualization, and an additional `REST Server` is used to parse the data into a suitable format for visualization by the website.
 
 ## 2. Requirement Specification
 
@@ -19,7 +19,13 @@ This project comprises of 2 parts, a `RESTful Service` (Java) and `Website` (Jav
 
 ### Architecture
 
-We decided to use a 3 tier architecture, so that we could seperate the **view** (Presentation Layer), **logic** (Application Layer) and **model** (Data Layer) into 3 distinct components.
+We use a 3 tier architecture, which comprises of the following parts:
+
+* `REST Server` (Java)
+* `Website` (Javascript)
+* `Resource` (JSON).
+
+The `REST Server` preprocesses the `Resource`, which is the first 200,000 lines of data from  [http://labs.semanticscholar.org/corpus/](http://labs.semanticscholar.org/corpus/) and provides a service which answers queries with a JSON file suitable for visual representation. The `Website` queries the `REST Server` and visualizes the data it recieves.
 
 <p align="center">
 <img src="docs/architecture.png" width="550"><br>
@@ -29,20 +35,31 @@ We decided to use a 3 tier architecture, so that we could seperate the **view** 
 
 This makes each of our layers independent, allowing us to work simulatanuously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintaince, as changes in 1 layer will rarely affect other layers.
 
+`Website` is created using node.js and d3.js. `REST Server` is created using Java. `Resources` is a file based database.
+
 ### Typical Flow of Application
 
 <p align="center">
-<img src="docs/sequence.png" width="550"><br>
+<img src="docs/typical_sequence.png" width="550"><br>
 
 <em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
-`View` recieves a request from the user as a HTTP GET request, which it processes and sends a request over to `Logic`. `Logic` then determines the appropriate actions to take, and gets the relevant details from `Model`. After which, `Logic` processes the data into a JSON representation which best suits the user's query, which `View` displays to the user via HTTP.
+At the start, `REST Server` has to prepare the data, which it requests from `Resources`. After parsing the data, the server will be open to HTTP GET requests.
 
+User will query `Website`, which sends a HTTP GET request with the appropriate parameters to `REST Server`, which handles the request and passes back a suitable JSON representation which best suits the user's query, which `Website` will use to generate a suitable chart.
+
+<p align="center">
+<img src="docs/rest_server_architecture.png" width="800"><br>
+
+<em>Figure 3: Architecture of REST Server</em>
+</p>
+
+`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. Command Pattern is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other `Utility`, such as **Filter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
 
 ### Implementation of RESTful Service
 
-We chose not to use `Spring`, even though provides an easy way to create a RESTful service on Java, for 2 reasons:
+We chose not to use `Spring`, even though provides an easy way to create a RESTful Service on Java, for 2 reasons:
 
 1. The size of the dependencies was bigger than the project. We only needed the basic RESTful functionalities, which would bloat our project with many files that we do not need.
 2. Developers do not need to learn an additional framework to maintain/improve the current code base.
@@ -56,7 +73,7 @@ We use `JUnit` tests to perform automated tests application with `Gradle`, toget
 <p align="center">
 <img src="docs/jacoco_test_results.png" width="800"><br>
 
-<em>Figure 3: Latest Test Code Coverage Results</em>
+<em>Figure 4: Latest Test Code Coverage Results</em>
 </p>
 
 In addition, we use the static analysis tool `FindBugs`, to help reduce complexity and find common bugs.
