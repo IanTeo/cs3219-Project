@@ -173,7 +173,7 @@ These tools help to ensure that the application is always in a state that is rea
 
 Each Command has a corresponding CommandParser to separate the parsing and validation logic from the actual execution logic. This allows us to make robust error handling mechanisms without cluttering the execution logic of each Command.
 
-When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. An `InvalidCommand` will be created, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
+When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. When `CommandParser` catches the `ParseException`, it creates an `InvalidCommand`. Upon execution of `InvalidCommand`, a JSON representation of the error will be returned to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
 
