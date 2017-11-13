@@ -27,7 +27,7 @@ We decided to use a 3 tier architecture, so that we could seperate the **view** 
 <em>Figure 1: Architecture Overview Diagram</em>
 </p>
 
-This makes each of our layers independent, allowing us to work simulatanuously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintaince, as changes in 1 layer will rarely affect other layers.
+This makes each of our layers independent, allowing us to work simultaneously on different parts of the project at the same time, with minimal affect to the other parts of the system. The independence also makes unit testing each component easier as they are less coupled. Lastly, this architecture provides ease of maintenance, as changes in 1 layer will rarely affect other layers.
 
 ### Typical Flow of Application
 
@@ -37,12 +37,12 @@ This makes each of our layers independent, allowing us to work simulatanuously o
 <em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
-`View` recieves a request from the user as a HTTP GET request, which it processes and sends a request over to `Logic`. `Logic` then determines the appropriate actions to take, and gets the relevant details from `Model`. After which, `Logic` processes the data into a JSON representation which best suits the user's query, which `View` displays to the user via HTTP.
+`View` receives a request from the user as a HTTP GET request, which it processes and sends a request over to `Logic`. `Logic` then determines the appropriate actions to take, and gets the relevant details from `Model`. After which, `Logic` processes the data into a JSON representation which best suits the user's query, which `View` displays to the user via HTTP.
 
 
 ### Implementation of RESTful Service
 
-We chose not to use `Spring`, even though provides an easy way to create a RESTful service on Java, for 2 reasons:
+We chose not to use `Spring`, even though it provides an easy way to create a RESTful service on Java, for 2 reasons:
 
 1. The size of the dependencies was bigger than the project. We only needed the basic RESTful functionalities, which would bloat our project with many files that we do not need.
 2. Developers do not need to learn an additional framework to maintain/improve the current code base.
