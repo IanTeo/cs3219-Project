@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import logic.command.WordCommand;
 import logic.exception.ParseException;
@@ -40,8 +41,10 @@ public class WordCommandParser {
         if (ignore == null) {
             return new ArrayList<>();
         }
-        
-        String stopWords = StringUtil.parseString(ignore);
-        return Arrays.asList(stopWords.split(","));
+
+        List<String> stopWords = Arrays.asList(ignore.split(",")).stream()
+                .map(StringUtil::parseString)
+                .collect(Collectors.toList());
+        return stopWords;
     }
 }

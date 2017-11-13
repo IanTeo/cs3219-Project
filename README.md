@@ -108,6 +108,8 @@ We added a Parser for each Command, seperate the parsing and validation logic fr
 
 Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` recieves the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
+In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
+
 ## 4. Visualizations
 
 ### 4.1 Time Series
