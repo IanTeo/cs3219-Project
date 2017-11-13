@@ -1,9 +1,5 @@
 package util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 public class StringUtil {
     /**
      * Takes a String, turn it to lower case and replaces all '\n' and spaces with a single space

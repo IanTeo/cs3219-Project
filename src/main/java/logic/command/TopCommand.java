@@ -43,11 +43,8 @@ public class TopCommand implements Command{
                         return e1.getKey().compareTo(e2.getKey()); // Ascending by group
                     return e2.getValue().compareTo(e1.getValue()); // Descending by count
                 })
+                .limit(count)
                 .collect(Collectors.toList());
-
-        if (entryList.size() > count) {
-            entryList = entryList.subList(0, count);
-        }
 
         return JsonConverter.entryListToJson(entryList).toString();
     }

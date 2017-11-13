@@ -1,6 +1,7 @@
 package logic.command;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,12 +63,9 @@ public class WordCommand implements Command{
         }
 
         List<Map.Entry<String, Integer>> entryList = wordMap.entrySet().stream()
-                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .limit(MAX_WORDS)
                 .collect(Collectors.toList());
-
-        if (entryList.size() > MAX_WORDS) {
-            entryList = entryList.subList(0, MAX_WORDS);
-        }
 
         return JsonConverter.entryListToWordCloudJson(entryList).toString();
     }
