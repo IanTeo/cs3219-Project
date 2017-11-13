@@ -101,7 +101,7 @@ This makes each of our layers independent, allowing us to work simultaneously on
 <p align="center">
 <img src="docs/typical_sequence.png" width="550"><br>
 
-<em>Figure 3: Sequence Diagram of a Typical Flow in the Application</em>
+<em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
 
@@ -114,19 +114,20 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <p align="center">
 <img src="docs/rest_server_architecture.png" width="800"><br>
 
-<em>Figure 4: Architecture of REST Server</em>
+<em>Figure 3: Architecture of REST Server</em>
 </p>
 
 `REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manipulate data for different Commands. 
 
 ### 3.4 Typical flow of Logic Component
 
-We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
-
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
+
 <em>Figure 4: Command Pattern Diagram</em>
 </p>
+
+We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
 
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
@@ -173,7 +174,7 @@ These tools help to ensure that the application is always in a state that is rea
 
 Each Command has a corresponding CommandParser to separate the parsing and validation logic from the actual execution logic. This allows us to make robust error handling mechanisms without cluttering the execution logic of each Command.
 
-When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. An `InvalidCommand` will be created, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
+When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. When `CommandParser` catches the `ParseException`, it creates an `InvalidCommand`. Upon execution of `InvalidCommand`, a JSON representation of the error will be returned to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
 
@@ -709,10 +710,10 @@ For the website, `Heroku` provided easy deployment using `node`. We deployed the
 
 ### 5.2 Design Decisions
 
-#### 5.2.1 Time Series Visualisation
-
-Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV".
+#### Time Series Visualisation
 
 The user mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
 
-### 5.3 Front-end Development FrameworksWe wanted something that can help us to create a fluid and reponsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
+### 5.3 Front-end Development Frameworks
+
+We wanted something that can help us to create a fluid and responsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
