@@ -24,6 +24,14 @@ CIR is a website for the NLP Research Lab to visualize conference publication da
 
 ## 2. Requirement Specification
 
+As a... | I can.. | so that I can..
+----|----|----|
+user | visualize trends over a time period with specific venues/authors/papers | compare the trends of the data that I am interested in
+user | compare specific venues/authors/papers over a specific year | compare the trends of the data that I am interested in
+user | top few venues/authors/papers | see what venues/authors/papers are of interest
+user | filter information that I am not interested in |  remove confounders in the data
+user | see more than 3 visualizations of the data | see the data from different angles
+
 ## 3. Design and Implementation
 
 ### Architecture
