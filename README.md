@@ -710,10 +710,10 @@ For the website, `Heroku` provided easy deployment using `node`. We deployed the
 
 ### 5.2 Design Decisions
 
-#### 5.2.1 Time Series Visualisation
-
-Also, we have included a filtering functionality to allow users to filter data. What Simon required from us is to support mono-filtering (e.g. Only the term `Authors` will be filtered in the query: "Number of Papers written by Authors x, y, z in 2001"), however we have implemented the functionality to perform multiple filterings. As such, we can accept queries such as: "Number of Papers written by Authors x, y, z where Venue is ICSE or ACXiV".
+#### Time Series Visualisation
 
 The user mentioned that the trend he is looking for is one-dimensional, that is if the `year` is fixed, then the viewpoints for inspection is `conferences` (i.e. The comparisons made are between `conferences` for the same year). Conversely, if the `conference` is fixed, then the viewpoints for inspection is `years`. However, we thought that these graph plots are very limiting and do not convey much information. As such, we have decided to do a two-dimensional visualisation, that is both `years` and `conferences` can have varying values. This allows users to perform more meaningful comparisons, namely comparing different `conferences` across different `years`. 
 
-### 5.3 Front-end Development FrameworksWe wanted something that can help us to create a fluid and reponsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
+### 5.3 Front-end Development Frameworks
+
+We wanted something that can help us to create a fluid and responsive website and yet not too heavy for a simple website. We decided to learn some frameworks that we have not used before. They are `Bulma`, a CSS frameworks based on Flexbox, and `Vue.js`, a javascript framework that is getting popular.
