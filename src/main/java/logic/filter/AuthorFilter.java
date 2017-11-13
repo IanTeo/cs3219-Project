@@ -2,18 +2,24 @@ package logic.filter;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import logic.model.Category;
 import model.Author;
 import model.Paper;
+import util.StringUtil;
 
 import static logic.model.Category.AUTHOR;
 
 public class AuthorFilter extends Filter {
     public AuthorFilter(String... keywords) {
-        this.predicate = new AuthorPredicate(Arrays.asList(keywords));
+
+        List<String> keywordList = Arrays.asList(keywords).stream()
+                .map(StringUtil::sanitise)
+                .collect(Collectors.toList());
+        this.predicate = new AuthorPredicate(keywordList);
     }
 
     @Override

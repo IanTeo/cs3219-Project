@@ -4,7 +4,9 @@ import static logic.model.Category.VENUE;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import logic.model.Category;
 import model.Paper;
@@ -12,7 +14,10 @@ import util.StringUtil;
 
 public class PaperVenueFilter extends Filter {
     public PaperVenueFilter(String... keywords) {
-        this.predicate = new PaperVenuePredicate(Arrays.asList(keywords));
+        List<String> keywordList = Arrays.asList(keywords).stream()
+                .map(StringUtil::sanitise)
+                .collect(Collectors.toList());
+        this.predicate = new PaperVenuePredicate(keywordList);
     }
 
     @Override
