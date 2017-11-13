@@ -121,13 +121,13 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 
 ### 3.4 Typical flow of Logic Component
 
-We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
-
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
 
 <em>Figure 4: Command Pattern Diagram</em>
 </p>
+
+We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
 
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
