@@ -116,20 +116,16 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <em>Figure 4: Architecture of REST Server</em>
 </p>
 
-`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. **Command Pattern** is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
+`REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manipulate data for different Commands. 
 
 ### 3.4 Typical flow of Logic Component
 
-We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
+We decided to apply the **Command Pattern** as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing. **Command Pattern** also allows us to encapsulate the different commands, making it easier to extend, maintain and add new commands, thereby following the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands. 
 
 <p align="center">
 <img src="docs/command pattern.png" width="800"><br>
 <em>Figure 4: Command Pattern Diagram</em>
 </p>
-
-This also follows the `Open-Closed Principle` as new Commands can be added without having to modify the existing Commands.
-
-We created a `ParseException` to signify that there is an error with the parsing of the given data. `XCommandParser` will throw `ParseException` whenever compulsory fields are missing, or when any of the fields fail input validation. The erroneous fields will be captured as part of the error message, which allows the user to know which field to correct.
 
 <p align="center">
 <img src="docs/command_sequence.png" width="900"><br>
@@ -174,9 +170,9 @@ These tools help to ensure that the application is always in a state that is rea
 
 ### 3.7 Error Handling
 
-We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
+Each Command has a corresponding CommandParser to separate the parsing and validation logic from the actual execution logic. This allows us to make robust error handling mechanisms without cluttering the execution logic of each Command.
 
-Errors are detected by the individual parsers and sent back as an `InvalidCommand`, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
+When the individual parsers detect errors in the input such as missing compulsory fields or failure of input validation by any of the fields, they will throw a `ParseException` with the information of the erroneous fields. An `InvalidCommand` will be created, where it sends a JSON representation of the error to `View`. Once `Website` receives the error message, the user will be prompted with an appropriate error message, guiding the user to fix the problem area.
 
 In addition, `Website` provides intuitive inputs like dropdown list for predefined categories, which minimizes erroneous input.
 
