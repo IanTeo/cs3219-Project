@@ -100,7 +100,7 @@ This makes each of our layers independent, allowing us to work simultaneously on
 <p align="center">
 <img src="docs/typical_sequence.png" width="550"><br>
 
-<em>Figure 2: Sequence Diagram of a Typical Flow in the Application</em>
+<em>Figure 3: Sequence Diagram of a Typical Flow in the Application</em>
 </p>
 
 
@@ -113,12 +113,12 @@ User will query `Website`, which sends a HTTP GET request with the appropriate p
 <p align="center">
 <img src="docs/rest_server_architecture.png" width="800"><br>
 
-<em>Figure 3: Architecture of REST Server</em>
+<em>Figure 4: Architecture of REST Server</em>
 </p>
 
 `REST Server` is mainly comprised of 3 components, `Model`, `View` and `Logic`. `Model` is a data structure to store and represent the data. `View` is the way to communicate with external channels, in this case using HTTP, but can easily be changed for another type of view. `Logic` is where the main processing of the data happens. **Command Pattern** is used to encapsulate the different commands, making it easier to extend, maintain and add new commands. `Logic` also contains other packages, such as **Filter**, **JsonConverter** and **MapUtility** that provide commonly used features to manupilate data for different Commands.
 
-### 3.5 Typical flow of Logic Component
+### 3.4 Typical flow of Logic Component
 
 We decided to apply the `Command Pattern` as we have multiple Commands, and the executor of these Commands to not need to know anything about the command that it is executing.
 
@@ -139,7 +139,7 @@ We created a `ParseException` to signify that there is an error with the parsing
 
 When `Controller` receives a request, it passes the request to `CommandParser` to choose the appropriate command. In this case, it chose trend command, and activates `TrendCommandParser` to parse the data and create a new `TrendCommand` object. Controller the executes the command, which in this case, gets the data from `Model`, and uses `Filter` to remove unwanted data. Once `TrendCommand` is done executing the command, it returns 
 
-### 3.6 Implementation of RESTful Service
+### 3.5 Implementation of RESTful Service
 
 We chose not to use `Spring`, even though it provides an easy way to create a RESTful service on Java, for 2 reasons:
 
@@ -150,6 +150,7 @@ Instead, we opted to use `HttpServer`, which was included in `Java 6`.
 
 `HttpServer` creates a listener on the specified port, based on the system's environment variable. If not port is specified, it defaults to port 8000. A single listener is created that acts as a **Front Controller** for the application. The listener waits for HTTP requests, parses the request and sends it to `Logic` to execute the request. Front Controller Pattern was chosen to avoid code duplication, as the parsing is similar for all requests.
 
+
 Here is a list of RESTful API that can be queried. Refer to Section **4 Visualizations** for a more indepth explanation of each query and parameter.
 
 Resource | Parameters | Optional Parameters
@@ -159,7 +160,7 @@ top | count, measure, category | paper, author, venue, year
 web | level, paper | 
 word | category | ignore (stop words)
 
-### 3.7 Continuous Integration
+### 3.6 Continuous Integration
 
 We use `JUnit` tests to perform automated tests application with `Gradle`, together with `JaCoCo` to generate the test coverage report. In addition, we use the static analysis tool `FindBugs`, to help maintain a consistent level of code quality, reduce complexity and find common bugs and errors.
 
@@ -171,7 +172,7 @@ We use `JUnit` tests to perform automated tests application with `Gradle`, toget
 
 These tools help to ensure that the application is always in a state that is ready to be deployed at any time. All these tools are run automatically by `Travis` whenever new code is pushed, except for `JaCoCo`, which cannot be run for free on a private repository. We added `JaCoCo` on the deadline of the assignment, when we made the repository public.
 
-### 3.8 Error Handling
+### 3.7 Error Handling
 
 We added a Parser for each Command, seperate the parsing and validation logic from the actual execution logic. This allowed us to make robust error handling mechanisms without cluttering the execution logic of each command.
 
