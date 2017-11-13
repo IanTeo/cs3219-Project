@@ -3,13 +3,22 @@
 Link to Backend Repository: [https://github.com/IanTeo/cs3219-Project](https://github.com/IanTeo/cs3219-Project)<br>
 Link to Frontend Repository: [https://github.com/AngShiYa/cs3219-d3](https://github.com/AngShiYa/cs3219-d3)
 
+
+## 1. Introduction
+
 Name | Matriculation Number | Feature Implemented
 ----|----|----|
 Ang Shi Ya | A0138601M | **Frontend Project Structure**, **UI/UX**, Visualization of **Time Series** & **Composition** & **Comparison** & **Relationship** Graphs
 Ian Teo | A0139930B | **Json Data Parsing**, Visualization of **Text Analysis** Graph, **Server** Set up for Frontend and Backend, **Backend Project Structure**, **Top** Command, **Web** Command, **Word** Command and all related **Tests**
 Yong Zhi Yuan | A0139655U | **Trend** Command, **Utility**, **Filters**, **Model** and all related **Tests**
 
-## 1. Introduction
+Bonus features:
+
+* Flexible Commands
+* Responsive UI
+* Intuitive
+* Maintainable
+* Cloud Integration
 
 CIR is a website for the NLP Research Lab to visualize conference publication data using various queries. The website focus is solely on the visualization, and an additional `REST Server` is used to parse the data into a suitable format for visualization by the website.
 
@@ -148,4 +157,4 @@ The RESTful service can be used at [128.199.249.171](http://128.199.249.171/)
 
 For the website, `Heroku` provided easy deployment using `node`. We deployed the website following the steps on their online [tutorial](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
 
-The website can be viewed at [cir-group-7.herokuapp.com](http://cir-group-7.herokuapp.com/)
+The website can be viewed at [cir-group-10.herokuapp.com](http://cir-group-10.herokuapp.com/)
